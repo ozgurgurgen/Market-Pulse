@@ -262,7 +262,7 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
       }
 
       // 9Router endpoints: standard /chat/completions or /v1/chat/completions
-      const targetEndpoint = nineUrl.endsWith('/chat/completions')
+      let targetEndpoint = nineUrl.endsWith('/chat/completions')
         ? nineUrl
         : nineUrl.endsWith('/v1')
         ? `${nineUrl}/chat/completions`
@@ -272,29 +272,52 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
         model,
         messages,
         temperature: temp,
+        stream: false
       };
       if (maxTokens) {
         requestBody.max_tokens = maxTokens;
       }
 
+      // Try fetching the primary endpoint
       let response = await fetch(targetEndpoint, {
         method: 'POST',
         headers,
         body: JSON.stringify(requestBody),
         signal: controller.signal,
-      }).catch(async (e) => {
-        // Fallback endpoint if /v1/ was duplicated or missing
-        if (targetEndpoint.includes('/v1/chat/completions')) {
-          const altEndpoint = `${nineUrl}/chat/completions`;
-          return fetch(altEndpoint, {
+      }).catch(() => null);
+
+      // If it fails or returns 404/405, try the alternative endpoint (without /v1)
+      if (!response || !response.ok) {
+        const altEndpoint = nineUrl.endsWith('/chat/completions')
+          ? nineUrl
+          : `${nineUrl}/chat/completions`;
+        
+        if (altEndpoint !== targetEndpoint) {
+          const altResponse = await fetch(altEndpoint, {
             method: 'POST',
             headers,
             body: JSON.stringify(requestBody),
             signal: controller.signal,
-          });
+          }).catch(() => null);
+          
+          if (altResponse) {
+             response = altResponse; // Use alt response even if it's an error, it might be more accurate
+             targetEndpoint = altEndpoint;
+          }
         }
-        throw e;
-      });
+      }
+      
+      // If still no response due to network error (ECONNREFUSED) with localhost, try IPv4 127.0.0.1 fallback
+      if (!response && targetEndpoint.includes('localhost')) {
+         const ipv4Endpoint = targetEndpoint.replace('localhost', '127.0.0.1');
+         response = await fetch(ipv4Endpoint, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify(requestBody),
+            signal: controller.signal,
+         }).catch(() => null);
+      }
+
       clearTimeout(timeoutId);
 
       if (response && response.ok) {
@@ -308,10 +331,14 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
           };
           responseCache.set(cacheKey, { timestamp: Date.now(), data: res });
           return res;
+        } else {
+          throw new Error('9Router API boş yanıt döndürdü.');
         }
       } else {
-        const errText = response ? await response.text() : 'Yanıt yok';
-        throw new Error(`9Router HTTP ${response?.status || 'ERR'}: ${errText}`);
+        const errText = response ? await response.text() : 'Ağ hatası veya sunucuya ulaşılamadı (Bağlantı reddedildi).';
+        let parseErr;
+        try { parseErr = JSON.parse(errText); } catch(e) {}
+        throw new Error(`9Router API Hatası (HTTP ${response?.status || 'BİLİNMİYOR'}): ${parseErr?.error?.message || parseErr?.message || errText}`);
       }
     } catch (err: any) {
       console.warn(`9Router (${nineUrl} - ${model}) hatası:`, err.message);
@@ -404,33 +431,89 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
         headers['Authorization'] = `Bearer ${apiKey}`;
       }
 
-      const messages = [];
+      const messages: Array<{ role: string; content: string }> = [];
       if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
       messages.push({ role: 'user', content: prompt });
 
-      const response = await fetch(`${baseUrl}/chat/completions`, {
+      // Make sure the endpoint uses the exact path expected by OpenAI standard
+      let targetEndpoint = baseUrl.endsWith('/chat/completions')
+        ? baseUrl
+        : baseUrl.endsWith('/v1')
+        ? `${baseUrl}/chat/completions`
+        : `${baseUrl}/v1/chat/completions`;
+
+      let response = await fetch(targetEndpoint, {
         method: 'POST',
         headers,
         body: JSON.stringify({
           model: modelName,
           messages,
           temperature: effectiveTemperature,
+          stream: false
         }),
-      });
+      }).catch(() => null);
 
-      if (response.ok) {
+      if (!response || !response.ok) {
+        const altEndpoint = baseUrl.endsWith('/chat/completions')
+          ? baseUrl
+          : `${baseUrl}/chat/completions`;
+        
+        if (altEndpoint !== targetEndpoint) {
+          const altResponse = await fetch(altEndpoint, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              model: modelName,
+              messages,
+              temperature: effectiveTemperature,
+              stream: false
+            }),
+          }).catch(() => null);
+          
+          if (altResponse) {
+             response = altResponse; 
+             targetEndpoint = altEndpoint;
+          }
+        }
+      }
+
+      if (!response && targetEndpoint.includes('localhost')) {
+         const ipv4Endpoint = targetEndpoint.replace('localhost', '127.0.0.1');
+         response = await fetch(ipv4Endpoint, {
+            method: 'POST',
+            headers,
+            body: JSON.stringify({
+              model: modelName,
+              messages,
+              temperature: effectiveTemperature,
+              stream: false
+            }),
+         }).catch(() => null);
+      }
+
+      if (response && response.ok) {
         const data = await response.json();
-        const content = data.choices?.[0]?.message?.content || '';
-        const res: AICallResponse = {
-          text: content,
-          modelUsed: `Custom (${modelName})`,
-          provider: 'custom',
-        };
-        responseCache.set(cacheKey, { timestamp: Date.now(), data: res });
-        return res;
+        const content = data.choices?.[0]?.message?.content || data.response || '';
+        if (content) {
+          const res: AICallResponse = {
+            text: content,
+            modelUsed: `Custom (${modelName})`,
+            provider: 'custom',
+          };
+          responseCache.set(cacheKey, { timestamp: Date.now(), data: res });
+          return res;
+        } else {
+          throw new Error('Özel API boş yanıt döndürdü.');
+        }
+      } else {
+        const errText = response ? await response.text() : 'Bağlantı reddedildi veya ulaşılamadı.';
+        let parseErr;
+        try { parseErr = JSON.parse(errText); } catch(e) {}
+        throw new Error(`Custom API Hatası (HTTP ${response?.status || 'BİLİNMİYOR'}): ${parseErr?.error?.message || parseErr?.message || errText}`);
       }
     } catch (err: any) {
       console.warn('Custom API endpoint error:', err.message);
+      // Fallback is already handled by returning empty if it fails and jumping down to Gemini
     }
   }
 
