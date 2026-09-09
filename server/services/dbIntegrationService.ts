@@ -2,7 +2,7 @@ import { Pool, Client } from 'pg';
 import { adminDb, safeAdminGet, safeAdminWrite } from './firebaseAdminService';
 import { serverLocalDatabase } from './serverLocalDatabase';
 import { logAudit } from './auditService';
-import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
+import { localFinanceApi, DataModuleSettings, DEFAULT_DATA_MODULES } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
 
 export type DatabaseProviderType = 'firebase' | 'postgresql' | 'hybrid';
 
@@ -21,6 +21,7 @@ export interface LocalFinanceApiSettings {
   disclosuresCount?: number;
   companiesCount?: number;
   tablesCount?: number;
+  dataModules?: DataModuleSettings;
 }
 
 export interface PostgresConfig {
@@ -121,7 +122,8 @@ export const DEFAULT_DB_SETTINGS: DatabaseIntegrationSettings = {
     apiKey: (process.env.LOCAL_API_KEY || process.env.X_API_KEY)?.trim() || '',
     lastStatus: 'untested',
     lastConnectedAt: null,
-    lastErrorMessage: null
+    lastErrorMessage: null,
+    dataModules: { ...DEFAULT_DATA_MODULES }
   },
   lastSyncAt: null,
   lastSyncStatus: 'idle',
@@ -187,6 +189,7 @@ export async function getDatabaseIntegrationSettings(): Promise<DatabaseIntegrat
     if (cachedDbSettings.localFinanceApi?.enabled && cachedDbSettings.localFinanceApi.baseUrl) {
       localFinanceApi.setBaseUrl(cachedDbSettings.localFinanceApi.baseUrl, buildFinanceApiHeaders(cachedDbSettings.localFinanceApi));
     }
+    localFinanceApi.setDataModules(cachedDbSettings.localFinanceApi?.dataModules);
     return cachedDbSettings;
   }
 
@@ -194,6 +197,7 @@ export async function getDatabaseIntegrationSettings(): Promise<DatabaseIntegrat
   if (cachedDbSettings.localFinanceApi?.enabled && cachedDbSettings.localFinanceApi.baseUrl) {
     localFinanceApi.setBaseUrl(cachedDbSettings.localFinanceApi.baseUrl, buildFinanceApiHeaders(cachedDbSettings.localFinanceApi));
   }
+  localFinanceApi.setDataModules(cachedDbSettings.localFinanceApi?.dataModules);
   return cachedDbSettings;
 }
 
@@ -240,6 +244,7 @@ export async function updateDatabaseIntegrationSettings(
   } else if (resolvedFinanceApi.enabled === false) {
     localFinanceApi.setBaseUrl('');
   }
+  localFinanceApi.setDataModules(resolvedFinanceApi.dataModules);
 
   const updated: DatabaseIntegrationSettings = {
     ...current,

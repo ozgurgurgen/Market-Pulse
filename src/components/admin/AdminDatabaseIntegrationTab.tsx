@@ -28,13 +28,37 @@ import {
   Check,
   Play,
   Download,
-  Code2
+  Code2,
+  Sliders,
+  TrendingUp,
+  Calendar,
+  BarChart3,
+  Newspaper,
+  Rocket,
+  DollarSign,
+  Bitcoin,
+  XCircle
 } from 'lucide-react';
 import { safeFetchJson } from '../../utils/apiClient';
 import { testFirestoreConnection } from '../../services/firebaseClient';
 import { useAuth } from '../../contexts/AuthContext';
 
 export type DatabaseProviderType = 'firebase' | 'postgresql' | 'hybrid';
+
+export interface DataModuleSettings {
+  bist_stocks: boolean;
+  bist_history: boolean;
+  bist_indicators: boolean;
+  tefas_funds: boolean;
+  tefas_holdings: boolean;
+  kap_disclosures: boolean;
+  ipo_tracker: boolean;
+  us_markets: boolean;
+  macro_data: boolean;
+  crypto_assets: boolean;
+  analyst_reports: boolean;
+  ai_agent_mcp: boolean;
+}
 
 export interface LocalFinanceApiConfig {
   enabled: boolean;
@@ -51,6 +75,7 @@ export interface LocalFinanceApiConfig {
   disclosuresCount?: number;
   companiesCount?: number;
   tablesCount?: number;
+  dataModules?: DataModuleSettings;
 }
 
 interface PostgresConfig {
@@ -132,9 +157,122 @@ const DEFAULT_SETTINGS: DatabaseSettings = {
     enabled: true,
     baseUrl: '',
     apiKey: '',
-    lastStatus: 'untested'
+    lastStatus: 'untested',
+    dataModules: {
+      bist_stocks: true,
+      bist_history: true,
+      bist_indicators: true,
+      tefas_funds: true,
+      tefas_holdings: true,
+      kap_disclosures: true,
+      ipo_tracker: true,
+      us_markets: true,
+      macro_data: true,
+      crypto_assets: true,
+      analyst_reports: true,
+      ai_agent_mcp: true,
+    }
   }
 };
+
+const DATA_MODULES_LIST = [
+  {
+    key: 'bist_stocks',
+    title: 'BIST Hisse Senetleri & Canlı Piyasa',
+    badge: 'GET /api/v1/bist/stocks',
+    desc: 'Borsa İstanbul 625+ hisse senedi canlı fiyatları, piyasa değerleri, F/K, P/DD ve hacim verileri.',
+    icon: TrendingUp,
+    category: 'Borsa İstanbul'
+  },
+  {
+    key: 'bist_history',
+    title: '5 Yıllık BIST OHLCV Fiyat Geçmişi',
+    badge: 'GET /api/v1/bist/stock/:ticker/history',
+    desc: 'BIST hisseleri için 5 yıllık günlük Açılış, Yüksek, Düşük, Kapanış ve Hacim bar serisi.',
+    icon: Calendar,
+    category: 'Borsa İstanbul'
+  },
+  {
+    key: 'bist_indicators',
+    title: 'BIST Teknik İndikatörler & Sinyaller',
+    badge: 'GET /api/v1/bist/stock/:ticker/indicators',
+    desc: 'RSI(14), MACD, SMA20/50/200, Bollinger Bantları ve otomatik Al/Sat sinyalleri.',
+    icon: Zap,
+    category: 'Borsa İstanbul'
+  },
+  {
+    key: 'tefas_funds',
+    title: 'TEFAS Yatırım Fonları & Getiriler',
+    badge: 'GET /api/v1/tefas/funds',
+    desc: 'TEFAS’taki 1.063+ yatırım fonunun günlük birim fiyatları, 1A/1Y/5Y getirileri ve risk seviyeleri.',
+    icon: Layers,
+    category: 'Yatırım Fonları'
+  },
+  {
+    key: 'tefas_holdings',
+    title: 'Fon Portföy Dağılımları & Hisse İçerikleri',
+    badge: 'GET /api/v1/tefas/fund/:code/holdings',
+    desc: 'KAP duyurularından çekilen fon varlık dağılımları ve fon içindeki hisse senedi tutum oranları.',
+    icon: BarChart3,
+    category: 'Yatırım Fonları'
+  },
+  {
+    key: 'kap_disclosures',
+    title: 'KAP Şirket Bildirimleri & AI Özetler',
+    badge: 'GET /api/v1/kap/disclosures',
+    desc: 'Kamuyu Aydınlatma Platformu (KAP) haber akışı, duyuru kategorileri ve yapay zeka özetleri.',
+    icon: Newspaper,
+    category: 'Haber & Kamuyu Aydınlatma'
+  },
+  {
+    key: 'ipo_tracker',
+    title: 'Halka Arz (IPO) Takibi & Tavan Serileri',
+    badge: 'GET /api/v1/ipos',
+    desc: 'SPK bültenlerinden halka arz taslakları, onaylanan arzlar, talep toplama ve tavan serisi takipçisi.',
+    icon: Rocket,
+    category: 'Halka Arzlar'
+  },
+  {
+    key: 'us_markets',
+    title: 'ABD Hisseleri & Global ETF\'ler',
+    badge: 'GET /api/v1/us-stocks / GET /api/v1/us-etfs',
+    desc: 'S&P 500, Nasdaq 100 en büyük 1.000 ABD şirketi ve SPY, QQQ, VOO gibi ETF canlı verileri.',
+    icon: Globe,
+    category: 'Küresel Piyasalar'
+  },
+  {
+    key: 'macro_data',
+    title: 'Makroekonomik Göstergeler (TCMB / EVDS / FRED)',
+    badge: 'GET /api/macro',
+    desc: 'USD/TRY, EUR/TRY kurları, TCMB politika faizi, TÜFE enflasyon oranları ve ABD 10Y tahvil verileri.',
+    icon: DollarSign,
+    category: 'Makro Ekonomi'
+  },
+  {
+    key: 'crypto_assets',
+    title: 'Kripto Varlıklar & On-Chain Veriler',
+    badge: 'GET /api/crypto/prices',
+    desc: 'Bitcoin, Ethereum ve 500+ kripto çifti için canlı fiyatlar, 15d/1s/1d mum grafikleri.',
+    icon: Bitcoin,
+    category: 'Kripto Para'
+  },
+  {
+    key: 'analyst_reports',
+    title: 'Kurumsal Analist Raporları & Konsensüs',
+    badge: 'GET /api/v1/analyst-reports',
+    desc: 'Aracı kurum hedef fiyatları, AL/SAT tavsiyeleri ve konsensüs analiz raporları.',
+    icon: FileText,
+    category: 'Analist & Araştırma'
+  },
+  {
+    key: 'ai_agent_mcp',
+    title: 'Otonom AI Ajanları & MCP Protokol Entegrasyonu',
+    badge: 'POST /api/v1/agent/mcp',
+    desc: 'OpenClaw, Harness ve Anthropic MCP (Model Context Protocol) otonom yapay zeka ajan araçları.',
+    icon: Code2,
+    category: 'Yapay Zeka & Ajanlar'
+  }
+];
 
 export const AdminDatabaseIntegrationTab: React.FC = () => {
   const { user, token } = useAuth();
@@ -149,6 +287,58 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
       headers['Authorization'] = `Bearer ${token}`;
     }
     return headers;
+  };
+
+  const handleToggleModule = (key: keyof DataModuleSettings) => {
+    setSettings((prev) => {
+      const currentModules = prev.localFinanceApi?.dataModules || {
+        bist_stocks: true,
+        bist_history: true,
+        bist_indicators: true,
+        tefas_funds: true,
+        tefas_holdings: true,
+        kap_disclosures: true,
+        ipo_tracker: true,
+        us_markets: true,
+        macro_data: true,
+        crypto_assets: true,
+        analyst_reports: true,
+        ai_agent_mcp: true,
+      };
+      return {
+        ...prev,
+        localFinanceApi: {
+          ...prev.localFinanceApi!,
+          dataModules: {
+            ...currentModules,
+            [key]: !currentModules[key],
+          },
+        },
+      };
+    });
+  };
+
+  const handleToggleAllModules = (enabled: boolean) => {
+    setSettings((prev) => ({
+      ...prev,
+      localFinanceApi: {
+        ...prev.localFinanceApi!,
+        dataModules: {
+          bist_stocks: enabled,
+          bist_history: enabled,
+          bist_indicators: enabled,
+          tefas_funds: enabled,
+          tefas_holdings: enabled,
+          kap_disclosures: enabled,
+          ipo_tracker: enabled,
+          us_markets: enabled,
+          macro_data: enabled,
+          crypto_assets: enabled,
+          analyst_reports: enabled,
+          ai_agent_mcp: enabled,
+        },
+      },
+    }));
   };
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
@@ -1539,6 +1729,106 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             </div>
           </div>
         )}
+
+        {/* ============================================================ */}
+        {/* MODÜL BAZLI VERİ AKIŞ YÖNETİMİ (MODULE DATA ROUTING)         */}
+        {/* ============================================================ */}
+        <div className="border-t border-slate-800/80 pt-5 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+            <div>
+              <div className="flex items-center gap-2">
+                <Sliders size={18} className="text-orange-400" />
+                <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+                  Modül Bazlı Veri Akış Yönetimi (Module Data Routing)
+                </h4>
+              </div>
+              <p className="text-xs text-slate-400 mt-1">
+                Aşağıdaki finansal veri modüllerinden <span className="text-emerald-400 font-semibold">AÇIK</span> olanlar tüm sistemde tanımladığınız <span className="text-orange-300 font-mono">Ana API Gateway</span> üzerinden canlı veri çeker. <span className="text-slate-400 font-semibold">KAPALI</span> olanlar dahili önbellek/veritabanı katmanını kullanır.
+              </p>
+            </div>
+            
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => handleToggleAllModules(true)}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 hover:bg-emerald-500/20 transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <CheckCircle2 size={13} />
+                Tümünü Aç
+              </button>
+              <button
+                type="button"
+                onClick={() => handleToggleAllModules(false)}
+                className="px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 transition-colors flex items-center gap-1.5 cursor-pointer"
+              >
+                <XCircle size={13} />
+                Tümünü Kapat
+              </button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {DATA_MODULES_LIST.map((mod) => {
+              const isEnabled = settings.localFinanceApi?.dataModules?.[mod.key as keyof DataModuleSettings] ?? true;
+              const IconComp = mod.icon;
+              return (
+                <div
+                  key={mod.key}
+                  className={`p-3.5 rounded-xl border transition-all duration-200 flex flex-col justify-between ${
+                    isEnabled
+                      ? 'bg-slate-900/90 border-orange-500/30 hover:border-orange-500/50 shadow-sm'
+                      : 'bg-slate-950/50 border-slate-800/80 opacity-75'
+                  }`}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-2.5">
+                      <div className={`p-2 rounded-lg mt-0.5 shrink-0 ${
+                        isEnabled ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20' : 'bg-slate-800 text-slate-500'
+                      }`}>
+                        <IconComp size={16} />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <h5 className="text-xs font-bold text-white">{mod.title}</h5>
+                          <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700/60">
+                            {mod.badge}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{mod.desc}</p>
+                      </div>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleToggleModule(mod.key as keyof DataModuleSettings)}
+                      className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${
+                        isEnabled ? 'bg-orange-500' : 'bg-slate-700'
+                      }`}
+                      title={isEnabled ? 'Modülü Kapalı Konuma Getir' : 'Modülü Açık Konuma Getir'}
+                    >
+                      <span
+                        className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${
+                          isEnabled ? 'translate-x-5' : 'translate-x-0'
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-800/60 text-[11px]">
+                    <span className="text-slate-500 font-medium">{mod.category}</span>
+                    <span className={`font-mono text-[10px] px-2 py-0.5 rounded-full ${
+                      isEnabled
+                        ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/50'
+                        : 'bg-slate-800/80 text-slate-400 border border-slate-700/50'
+                    }`}>
+                      {isEnabled ? '⚡ Ana API\'den Çekiliyor' : '🔒 Dahili Önbellek / Pasif'}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
 
         {/* ============================================================ */}
         {/* 10 UÇ NOKTALI FINANCE PIPELINE API GEZGİNİ & CANLI SORGULAYICI */}

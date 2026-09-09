@@ -1,8 +1,39 @@
 import { serverLocalDatabase } from '../../services/serverLocalDatabase';
 
+export interface DataModuleSettings {
+  bist_stocks: boolean;
+  bist_history: boolean;
+  bist_indicators: boolean;
+  tefas_funds: boolean;
+  tefas_holdings: boolean;
+  kap_disclosures: boolean;
+  ipo_tracker: boolean;
+  us_markets: boolean;
+  macro_data: boolean;
+  crypto_assets: boolean;
+  analyst_reports: boolean;
+  ai_agent_mcp: boolean;
+}
+
+export const DEFAULT_DATA_MODULES: DataModuleSettings = {
+  bist_stocks: true,
+  bist_history: true,
+  bist_indicators: true,
+  tefas_funds: true,
+  tefas_holdings: true,
+  kap_disclosures: true,
+  ipo_tracker: true,
+  us_markets: true,
+  macro_data: true,
+  crypto_assets: true,
+  analyst_reports: true,
+  ai_agent_mcp: true,
+};
+
 export class LocalFinanceApiAdapter {
   private baseUrl: string;
   private customHeaders: Record<string, string> = {};
+  private dataModules: DataModuleSettings = { ...DEFAULT_DATA_MODULES };
 
   constructor() {
     // 1. Çevresel değişkenlerden adresi kontrol et
@@ -18,6 +49,9 @@ export class LocalFinanceApiAdapter {
         } else {
           this.baseUrl = 'https://bobby-layout-circles-reform.trycloudflare.com';
         }
+        if (local?.localFinanceApi?.dataModules) {
+          this.dataModules = { ...DEFAULT_DATA_MODULES, ...local.localFinanceApi.dataModules };
+        }
       } catch {
         this.baseUrl = 'https://bobby-layout-circles-reform.trycloudflare.com';
       }
@@ -29,6 +63,21 @@ export class LocalFinanceApiAdapter {
     if (headers) {
       this.customHeaders = headers;
     }
+  }
+
+  setDataModules(modules?: Partial<DataModuleSettings>) {
+    if (modules) {
+      this.dataModules = { ...DEFAULT_DATA_MODULES, ...this.dataModules, ...modules };
+    }
+  }
+
+  getDataModules(): DataModuleSettings {
+    return this.dataModules;
+  }
+
+  isModuleEnabled(moduleKey: keyof DataModuleSettings): boolean {
+    if (!this.isConfigured()) return false;
+    return this.dataModules[moduleKey] !== false;
   }
 
   setCustomHeaders(headers: Record<string, string>) {
@@ -123,6 +172,7 @@ export class LocalFinanceApiAdapter {
   // 1️⃣ GET /api/v1/bist/stocks — BIST Canlı Hisse Listesi
   // ==========================================
   async getV1BistStocks(params: { search?: string; page?: number; limit?: number; sortBy?: string; order?: string } = {}): Promise<any | null> {
+    if (!this.isModuleEnabled('bist_stocks')) return null;
     const qs = new URLSearchParams();
     if (params.search) qs.append('search', params.search);
     if (params.page) qs.append('page', params.page.toString());
@@ -139,6 +189,7 @@ export class LocalFinanceApiAdapter {
    * GET /api/v1/bist/stock/:ticker — Tek Hisse Detayı
    */
   async getV1BistStockDetail(ticker: string): Promise<any | null> {
+    if (!this.isModuleEnabled('bist_stocks')) return null;
     const cleanTicker = ticker.replace('.IS', '').toUpperCase();
     return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}`);
   }
@@ -147,6 +198,7 @@ export class LocalFinanceApiAdapter {
    * GET /api/v1/bist/stock/:ticker/history — 5 Yıllık OHLCV Fiyat Serisi
    */
   async getV1BistStockHistory(ticker: string, limit: number = 1500): Promise<any | null> {
+    if (!this.isModuleEnabled('bist_history')) return null;
     const cleanTicker = ticker.replace('.IS', '').toUpperCase();
     return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}/history?limit=${limit}`);
   }
@@ -155,6 +207,7 @@ export class LocalFinanceApiAdapter {
    * GET /api/v1/bist/stock/:ticker/indicators — Hesaplanmış Teknik İndikatörler
    */
   async getV1BistStockIndicators(ticker: string): Promise<any | null> {
+    if (!this.isModuleEnabled('bist_indicators')) return null;
     const cleanTicker = ticker.replace('.IS', '').toUpperCase();
     return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}/indicators`);
   }
@@ -163,6 +216,7 @@ export class LocalFinanceApiAdapter {
   // 2️⃣ TEFAS Yatırım Fonları & Portföy Dağılımları (PDR)
   // ==========================================
   async getV1TefasFunds(params: { search?: string; category?: string; page?: number; limit?: number } = {}): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_funds')) return null;
     const qs = new URLSearchParams();
     if (params.search) qs.append('search', params.search);
     if (params.category) qs.append('category', params.category);
@@ -173,23 +227,28 @@ export class LocalFinanceApiAdapter {
   }
 
   async getV1TefasFundDetail(code: string): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_funds')) return null;
     return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}`);
   }
 
   async getV1TefasFundHoldings(code: string): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_holdings')) return null;
     return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}/holdings`);
   }
 
   async getV1TefasStockInFunds(ticker: string): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_holdings')) return null;
     const cleanTicker = ticker.replace('.IS', '').toUpperCase();
     return this.safeFetch(`/api/v1/tefas/stock/${cleanTicker}/in-funds`);
   }
 
   async getV1TefasTopHeldStocks(): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_holdings')) return null;
     return this.safeFetch('/api/v1/tefas/top-held-stocks');
   }
 
   async getV1TefasFundDailyHistory(code: string): Promise<any | null> {
+    if (!this.isModuleEnabled('tefas_funds')) return null;
     return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}/daily-history`);
   }
 
@@ -197,6 +256,7 @@ export class LocalFinanceApiAdapter {
   // 3️⃣ ABD Borsaları & ETF'ler
   // ==========================================
   async getV1UsStocks(params: { search?: string; sector?: string; page?: number; limit?: number } = {}): Promise<any | null> {
+    if (!this.isModuleEnabled('us_markets')) return null;
     const qs = new URLSearchParams();
     if (params.search) qs.append('search', params.search);
     if (params.sector) qs.append('sector', params.sector);
@@ -207,10 +267,12 @@ export class LocalFinanceApiAdapter {
   }
 
   async getV1UsEtfs(): Promise<any | null> {
+    if (!this.isModuleEnabled('us_markets')) return null;
     return this.safeFetch('/api/v1/us-etfs');
   }
 
   async getV1UsHistory(type: 'stock' | 'etf', ticker: string): Promise<any | null> {
+    if (!this.isModuleEnabled('us_markets')) return null;
     return this.safeFetch(`/api/v1/us-history/${type}/${ticker.toUpperCase()}`);
   }
 
@@ -218,12 +280,14 @@ export class LocalFinanceApiAdapter {
   // 4️⃣ Halka Arzlar (IPO) & KAP Bildirimleri
   // ==========================================
   async getV1Ipos(): Promise<any | null> {
+    if (!this.isModuleEnabled('ipo_tracker')) return null;
     const v1Res = await this.safeFetch('/api/v1/ipos');
     if (v1Res) return v1Res;
     return this.getIpos();
   }
 
   async getV1KapDisclosures(ticker?: string, page: number = 1, limit: number = 30): Promise<any | null> {
+    if (!this.isModuleEnabled('kap_disclosures')) return null;
     const qs = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
     if (ticker) qs.append('ticker', ticker.replace('.IS', '').toUpperCase());
     const res = await this.safeFetch(`/api/v1/kap/disclosures?${qs.toString()}`);
@@ -235,6 +299,7 @@ export class LocalFinanceApiAdapter {
   // 5️⃣ Analist Raporları & Birleşik Profiller
   // ==========================================
   async getV1AnalystReports(market: string = 'ALL', ticker?: string): Promise<any | null> {
+    if (!this.isModuleEnabled('analyst_reports')) return null;
     const qs = new URLSearchParams({ market });
     if (ticker) qs.append('ticker', ticker.replace('.IS', '').toUpperCase());
     return this.safeFetch(`/api/v1/analyst-reports?${qs.toString()}`);
@@ -260,14 +325,17 @@ export class LocalFinanceApiAdapter {
   }
 
   async getV1CryptoPrices(): Promise<any | null> {
+    if (!this.isModuleEnabled('crypto_assets')) return null;
     return this.safeFetch('/api/crypto/prices');
   }
 
   async getV1CryptoCandles(symbol: string, timeframe: string = '1d'): Promise<any | null> {
+    if (!this.isModuleEnabled('crypto_assets')) return null;
     return this.safeFetch(`/api/crypto/candles/${symbol}?timeframe=${timeframe}`);
   }
 
   async getV1MacroData(): Promise<any | null> {
+    if (!this.isModuleEnabled('macro_data')) return null;
     return this.safeFetch('/api/macro');
   }
 
