@@ -1,0 +1,21 @@
+{
+  "displayName": "🚨 CRITICAL: Admin RBAC/Security Failure",
+  "combiner": "OR",
+  "conditions": [
+    {
+      "displayName": "Log match condition",
+      "conditionMatchedLog": {
+        "filter": "jsonPayload.severity=\"CRITICAL\" AND jsonPayload.type=\"SECURITY_FAILURE\""
+      }
+    }
+  ],
+  "notificationChannels": [
+    "projects/[YOUR_PROJECT_ID]/notificationChannels/[YOUR_CHANNEL_ID]"
+  ],
+  "alertStrategy": {
+    "notificationRateLimit": {
+      "period": "300s"
+    },
+    "autoClose": "86400s"
+  }
+}

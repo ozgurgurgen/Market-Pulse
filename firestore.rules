@@ -1,0 +1,102 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'boschozgur@gmail.com' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'superadmin'])
+      );
+    }
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    match /adminConfig/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /auditLogs/{logId} {
+      allow read, list, delete: if isAdmin();
+      allow create: if true;
+    }
+    match /audit_logs/{logId} {
+      allow read, list, delete: if isAdmin();
+      allow create: if true;
+    }
+    match /errorLogs/{logId} {
+      allow read, list, delete: if isAdmin();
+      allow create: if true;
+    }
+    match /error_logs/{logId} {
+      allow read, list, delete: if isAdmin();
+      allow create: if true;
+    }
+    match /data_integrity_audit/{logId} {
+      allow read, write: if isAdmin();
+    }
+    match /upgrade_requests/{reqId} {
+      allow read: if isAdmin() || (isSignedIn() && resource.data.userId == request.auth.uid);
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid && (
+        !('status' in request.resource.data) || request.resource.data.status == 'pending'
+      );
+      allow update: if isAdmin() || (
+        isSignedIn() &&
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == resource.data.userId &&
+        request.resource.data.get('status', 'pending') == resource.data.get('status', 'pending')
+      );
+      allow delete: if isAdmin();
+    }
+    match /roles/{roleId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(userId) && (
+        (
+          (!('role' in request.resource.data) || request.resource.data.role == 'standard_user') &&
+          (!('subscription' in request.resource.data) || request.resource.data.get('subscription', {}).get('tier', 'free') == 'free') &&
+          (!('usage' in request.resource.data) || request.resource.data.get('usage', {}).get('analysisQueriesToday', 0) == 0)
+        ) || (
+          request.auth.token.email == 'boschozgur@gmail.com'
+        )
+      ) || isAdmin();
+      allow update: if (isOwner(userId) && 
+        request.resource.data.get('role', 'none') == resource.data.get('role', 'none') &&
+        request.resource.data.get('subscription', 'none') == resource.data.get('subscription', 'none') &&
+        request.resource.data.get('usage', 'none') == resource.data.get('usage', 'none')
+      ) || isAdmin();
+      allow delete: if isAdmin();
+      match /{collectionId}/{document=**} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
+    }
+    match /platform_settings/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /system_health/{document=**} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /symbols/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /market_data_snapshots/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /companies/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /signals/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /funds/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /macro_indicators/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /intelligence_reports/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /ipoListings/{document=**} { allow read: if true; allow write: if isAdmin(); }
+    match /telegramTokens/{token} { allow read, write: if isAdmin(); }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

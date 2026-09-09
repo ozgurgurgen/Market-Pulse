@@ -1,0 +1,1453 @@
+{
+  "horoz-lojistik-2024": {
+    "id": "horoz-lojistik-2024",
+    "companyName": "Horoz Lojistik Kargo Hizmetleri ve Tic. A.Ş.",
+    "ticker": "HOROZ",
+    "code": "HOROZ",
+    "offerPrice": 55,
+    "totalLot": 24600000,
+    "bookBuildingStartDate": "2024-05-29",
+    "bookBuildingEndDate": "2024-05-31",
+    "status": "completed",
+    "notes": "KAP resmi bülteni: Katılımcı sayısı 1.642.000 yatırımcı olarak gerçekleşti.",
+    "method": "equal",
+    "sector": "Lojistik & Taşımacılık",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2024-05-20T10:00:00.000Z",
+    "updatedAt": 1788602309947,
+    "leadBroker": "QNB Finansinvest & Tacirler Yatırım",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:29.947Z",
+      "currentPrice": 57,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 46.2,
+      "month1ReturnPct": 28.5,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 3.64
+    },
+    "qualitative": {
+      "_source": "KAP Esas Sözleşme & BIST Katılım Endeksi Kriterleri",
+      "free_float_pct": 20.49,
+      "dividend_policy": "Dağıtılabilir dönem kârının en az %30unun nakit temettü olarak dağıtılması hedeflenmektedir.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 1353000000,
+    "offerPriceMax": 55,
+    "offerPriceMin": 55,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1292044",
+    "useOfProceeds": [
+      {
+        "purpose": "Elektrikli Araç ve Filo Genişletme",
+        "ratioPct": 45
+      },
+      {
+        "purpose": "Depoculuk ve Otomasyon Yatırımları",
+        "ratioPct": 30
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 25
+      }
+    ],
+    "prospectusTitle": "KAP Onaylı İzahname ve Halka Arz Sonuç Bildirimi",
+    "structural_risk": {
+      "_source": "KAP İzahname s.38 (Halka Arzın Yapısı)",
+      "market_segment": "Yıldız Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 15,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2025-06-07",
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": 42.8,
+    "demand_breakdown": {
+      "total_coverage_ratio": 42.8,
+      "domestic_retail_coverage_ratio": 48.5,
+      "foreign_institutional_coverage_ratio": 0,
+      "domestic_institutional_coverage_ratio": 25.8
+    },
+    "financial_health": {
+      "_source": "KAP İzahname s.142 (Finansal Tablolar)",
+      "ebitda_3y": [
+        {
+          "year": 2021,
+          "value_try": 195000000
+        },
+        {
+          "year": 2022,
+          "value_try": 380000000
+        },
+        {
+          "year": 2023,
+          "value_try": 590000000
+        }
+      ],
+      "implied_pb": 2.1,
+      "implied_pe": 9.8,
+      "revenue_3y": [
+        {
+          "year": 2021,
+          "value_try": 1845000000
+        },
+        {
+          "year": 2022,
+          "value_try": 3120000000
+        },
+        {
+          "year": 2023,
+          "value_try": 4890000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2021,
+          "value_try": 112000000
+        },
+        {
+          "year": 2022,
+          "value_try": 248000000
+        },
+        {
+          "year": 2023,
+          "value_try": 395000000
+        }
+      ],
+      "sector_avg_pe": 11.5,
+      "debt_to_equity": 0.68,
+      "valuation_label": "makul",
+      "implied_ev_ebitda": 7.2,
+      "sector_avg_ev_ebitda": 8.4
+    },
+    "marketListingDate": "2024-06-07",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1642000,
+    "demandMultiplierText": "42.8 Kat Talep",
+    "relative_performance": {
+      "day1_return_pct": 9.98,
+      "post_listing_ath": 98.4,
+      "post_listing_atl": 55,
+      "bist100_level_at_ipo": 10125.4,
+      "distance_from_ath_pct": -25,
+      "distance_from_atl_pct": 34.2,
+      "relative_alpha_day1_pct": 9.13,
+      "bist100_return_same_day_pct": 0.85
+    },
+    "estimatedLotPerPerson": 11,
+    "capitalIncreaseRatioPct": 83.3,
+    "shareholderSaleRatioPct": 16.7,
+    "allocationIndividualRatio": 75,
+    "allocationInstitutionalRatio": 25,
+    "allocationForeignInstitutionalPct": null
+  },
+  "onur-yuksek-teknoloji-2024": {
+    "id": "onur-yuksek-teknoloji-2024",
+    "companyName": "Onur Yüksek Teknoloji A.Ş.",
+    "ticker": "ONRYT",
+    "code": "ONRYT",
+    "offerPrice": 49.5,
+    "totalLot": 19730000,
+    "bookBuildingStartDate": "2024-05-22",
+    "bookBuildingEndDate": "2024-05-23",
+    "status": "completed",
+    "notes": "KAP bülteni: Yurt içi bireysel yatırımcılardan 68.4 kat rekor talep.",
+    "method": "equal",
+    "sector": "Savunma Sanayii & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2024-05-15T09:00:00.000Z",
+    "updatedAt": 1788602311496,
+    "leadBroker": "Gedik Yatırım Menkul Değerler",
+    "methodLabel": "Tamamı Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.496Z",
+      "currentPrice": 58.05,
+      "day1ReturnPct": 10,
+      "week1ReturnPct": 61,
+      "month1ReturnPct": 82.4,
+      "ceilingDaysCount": 6,
+      "currentReturnPct": 17.27
+    },
+    "qualitative": {
+      "_source": "KAP İzahname s.98",
+      "free_float_pct": 21.43,
+      "dividend_policy": "Şirket yatırımları ve kârlılık durumuna göre genel kurul onayı ile temettü dağıtımı esastır.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 976635000,
+    "offerPriceMax": 49.5,
+    "offerPriceMin": 49.5,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1289120",
+    "useOfProceeds": [
+      {
+        "purpose": "Savunma Sanayii Ar-Ge ve Üretim Tesisi",
+        "ratioPct": 60
+      },
+      {
+        "purpose": "Yenilenebilir Enerji Yatırımı",
+        "ratioPct": 20
+      },
+      {
+        "purpose": "İşletme Sermayesi Güçlendirme",
+        "ratioPct": 20
+      }
+    ],
+    "prospectusTitle": "KAP İzahname ve Dağıtım Sonuçları",
+    "structural_risk": {
+      "_source": "KAP İzahname s.44",
+      "market_segment": "Yıldız Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 20,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2025-05-28",
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": 68.4,
+    "demand_breakdown": {
+      "total_coverage_ratio": 68.4,
+      "domestic_retail_coverage_ratio": 68.4,
+      "foreign_institutional_coverage_ratio": 0,
+      "domestic_institutional_coverage_ratio": 0
+    },
+    "financial_health": {
+      "_source": "KAP İzahname s.180 (Finansal Bilgiler)",
+      "ebitda_3y": [
+        {
+          "year": 2021,
+          "value_try": 85000000
+        },
+        {
+          "year": 2022,
+          "value_try": 178000000
+        },
+        {
+          "year": 2023,
+          "value_try": 340000000
+        }
+      ],
+      "implied_pb": 3.4,
+      "implied_pe": 11.2,
+      "revenue_3y": [
+        {
+          "year": 2021,
+          "value_try": 320000000
+        },
+        {
+          "year": 2022,
+          "value_try": 640000000
+        },
+        {
+          "year": 2023,
+          "value_try": 1180000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2021,
+          "value_try": 68000000
+        },
+        {
+          "year": 2022,
+          "value_try": 145000000
+        },
+        {
+          "year": 2023,
+          "value_try": 295000000
+        }
+      ],
+      "sector_avg_pe": 16.8,
+      "debt_to_equity": 0.32,
+      "valuation_label": "ucuz",
+      "implied_ev_ebitda": 9.1,
+      "sector_avg_ev_ebitda": 13.5
+    },
+    "marketListingDate": "2024-05-28",
+    "t1t2BalanceUsable": true,
+    "totalApplicantCount": 1530000,
+    "demandMultiplierText": "68.4 Kat Talep",
+    "relative_performance": {
+      "day1_return_pct": 10,
+      "post_listing_ath": 124.8,
+      "post_listing_atl": 49.5,
+      "bist100_level_at_ipo": 10340.2,
+      "distance_from_ath_pct": -14.9,
+      "distance_from_atl_pct": 114.5,
+      "relative_alpha_day1_pct": 9.6,
+      "bist100_return_same_day_pct": 0.4
+    },
+    "estimatedLotPerPerson": 13,
+    "capitalIncreaseRatioPct": 65,
+    "shareholderSaleRatioPct": 35,
+    "allocationIndividualRatio": 100,
+    "allocationInstitutionalRatio": 0,
+    "allocationForeignInstitutionalPct": null
+  },
+  "koc-metalurji-2024": {
+    "id": "koc-metalurji-2024",
+    "companyName": "Koç Metalurji A.Ş.",
+    "ticker": "KOCMT",
+    "code": "KOCMT",
+    "offerPrice": 20.5,
+    "totalLot": 125000000,
+    "bookBuildingStartDate": "2024-05-09",
+    "bookBuildingEndDate": "2024-05-10",
+    "status": "completed",
+    "notes": "KAP resmi verisi: 2.632.140 bireysel yatırımcı pay aldı.",
+    "method": "mixed",
+    "sector": "Demir Çelik & Metal",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2024-05-01T08:00:00.000Z",
+    "updatedAt": 1788602309953,
+    "leadBroker": "İntegral Yatırım Menkul Değerler",
+    "methodLabel": "Bireysele Eşit / Kurumsala Oransal",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:29.953Z",
+      "currentPrice": 3.74,
+      "day1ReturnPct": 9.95,
+      "week1ReturnPct": 33.1,
+      "month1ReturnPct": 18.2,
+      "ceilingDaysCount": 3,
+      "currentReturnPct": -81.76
+    },
+    "qualitative": {
+      "_source": "KAP İzahname s.84",
+      "free_float_pct": 27.47,
+      "dividend_policy": "Şirket sermaye piyasası mevzuatına uygun olarak nakden kâr payı dağıtımını benimser.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 2562500000,
+    "offerPriceMax": 20.5,
+    "offerPriceMin": 20.5,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1283410",
+    "useOfProceeds": [
+      {
+        "purpose": "Hammadde Tedariği ve Kapasite Artışı",
+        "ratioPct": 50
+      },
+      {
+        "purpose": "Güneş Enerjisi (GES) Santrali Yatırımı",
+        "ratioPct": 35
+      },
+      {
+        "purpose": "Finansal Borçluluğun Azaltılması",
+        "ratioPct": 15
+      }
+    ],
+    "prospectusTitle": "KAP Onaylı İzahname Özeti",
+    "structural_risk": {
+      "_source": "KAP İzahname s.52",
+      "market_segment": "Yıldız Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 15,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2024-11-17",
+      "lockup_period_days": 180
+    },
+    "demandMultiplier": 31.2,
+    "demand_breakdown": {
+      "total_coverage_ratio": 31.2,
+      "domestic_retail_coverage_ratio": 35.6,
+      "foreign_institutional_coverage_ratio": 0,
+      "domestic_institutional_coverage_ratio": 21
+    },
+    "financial_health": {
+      "_source": "KAP İzahname s.112",
+      "ebitda_3y": [
+        {
+          "year": 2021,
+          "value_try": 510000000
+        },
+        {
+          "year": 2022,
+          "value_try": 890000000
+        },
+        {
+          "year": 2023,
+          "value_try": 780000000
+        }
+      ],
+      "implied_pb": 1.4,
+      "implied_pe": 7.9,
+      "revenue_3y": [
+        {
+          "year": 2021,
+          "value_try": 4200000000
+        },
+        {
+          "year": 2022,
+          "value_try": 7850000000
+        },
+        {
+          "year": 2023,
+          "value_try": 9400000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2021,
+          "value_try": 380000000
+        },
+        {
+          "year": 2022,
+          "value_try": 610000000
+        },
+        {
+          "year": 2023,
+          "value_try": 520000000
+        }
+      ],
+      "sector_avg_pe": 8.2,
+      "debt_to_equity": 0.85,
+      "valuation_label": "makul",
+      "implied_ev_ebitda": 5.6,
+      "sector_avg_ev_ebitda": 6.1
+    },
+    "marketListingDate": "2024-05-17",
+    "demandMultiplierText": "31.2 Kat Talep",
+    "relative_performance": {
+      "day1_return_pct": 9.95,
+      "post_listing_ath": 32.5,
+      "post_listing_atl": 20.5,
+      "bist100_level_at_ipo": 10210,
+      "distance_from_ath_pct": -28.8,
+      "distance_from_atl_pct": 12.8,
+      "relative_alpha_day1_pct": 10.25,
+      "bist100_return_same_day_pct": -0.3
+    },
+    "allocationIndividualRatio": 70,
+    "allocationInstitutionalRatio": 30
+  },
+  "lila-kagit-2024": {
+    "id": "lila-kagit-2024",
+    "companyName": "Lila Kağıt San. ve Tic. A.Ş.",
+    "ticker": "LILAK",
+    "code": "LILAK",
+    "offerPrice": 37.39,
+    "totalLot": 120000000,
+    "bookBuildingStartDate": "2024-04-30",
+    "bookBuildingEndDate": "2024-05-03",
+    "status": "completed",
+    "notes": "KAP resmi sonucu: Bireysel yatırımcılara ortalama 26 lot pay dağıtıldı.",
+    "method": "equal",
+    "sector": "Kağıt & Ambalaj",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2024-04-20T11:00:00.000Z",
+    "updatedAt": 1788602310215,
+    "leadBroker": "Ak Yatırım & Yapı Kredi Yatırım",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:30.215Z",
+      "currentPrice": 28.2,
+      "day1ReturnPct": 9.97,
+      "week1ReturnPct": 21,
+      "month1ReturnPct": -4.5,
+      "ceilingDaysCount": 2,
+      "currentReturnPct": -24.58
+    },
+    "qualitative": {
+      "_source": "KAP İzahname s.72",
+      "free_float_pct": 20.34,
+      "dividend_policy": "Dağıtılabilir kârın asgari %20sinin nakden dağıtılması öngörülmektedir.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 4486800000,
+    "offerPriceMax": 37.39,
+    "offerPriceMin": 37.39,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1279980",
+    "useOfProceeds": [
+      {
+        "purpose": "Erzurum Fabrika Yatırımı",
+        "ratioPct": 60
+      },
+      {
+        "purpose": "Yenilenebilir Enerji (GES/RES)",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 15
+      }
+    ],
+    "prospectusTitle": "KAP Halka Arz İzahnamesi",
+    "structural_risk": {
+      "_source": "KAP İzahname s.60",
+      "market_segment": "Yıldız Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 15,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2025-05-09",
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": 28.5,
+    "demand_breakdown": {
+      "total_coverage_ratio": 28.5,
+      "domestic_retail_coverage_ratio": 31.4,
+      "foreign_institutional_coverage_ratio": 0,
+      "domestic_institutional_coverage_ratio": 21.8
+    },
+    "financial_health": {
+      "_source": "KAP İzahname s.156",
+      "ebitda_3y": [
+        {
+          "year": 2021,
+          "value_try": 590000000
+        },
+        {
+          "year": 2022,
+          "value_try": 1320000000
+        },
+        {
+          "year": 2023,
+          "value_try": 1150000000
+        }
+      ],
+      "implied_pb": 2.8,
+      "implied_pe": 12.4,
+      "revenue_3y": [
+        {
+          "year": 2021,
+          "value_try": 3100000000
+        },
+        {
+          "year": 2022,
+          "value_try": 6500000000
+        },
+        {
+          "year": 2023,
+          "value_try": 8200000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2021,
+          "value_try": 420000000
+        },
+        {
+          "year": 2022,
+          "value_try": 980000000
+        },
+        {
+          "year": 2023,
+          "value_try": 710000000
+        }
+      ],
+      "sector_avg_pe": 10.2,
+      "debt_to_equity": 0.54,
+      "valuation_label": "pahalı",
+      "implied_ev_ebitda": 8.9,
+      "sector_avg_ev_ebitda": 7.8
+    },
+    "marketListingDate": "2024-05-09",
+    "demandMultiplierText": "28.5 Kat Talep",
+    "relative_performance": {
+      "day1_return_pct": 9.97,
+      "post_listing_ath": 48.9,
+      "post_listing_atl": 34.2,
+      "bist100_level_at_ipo": 10180.5,
+      "distance_from_ath_pct": -25.1,
+      "distance_from_atl_pct": 7,
+      "relative_alpha_day1_pct": 8.87,
+      "bist100_return_same_day_pct": 1.1
+    },
+    "allocationIndividualRatio": 70,
+    "allocationInstitutionalRatio": 30
+  },
+  "altinkilic-gida-2024": {
+    "id": "altinkilic-gida-2024",
+    "companyName": "Altınkılıç Gıda ve Süt San. Tic. A.Ş.",
+    "ticker": "ALKLC",
+    "code": "ALKLC",
+    "offerPrice": 22.98,
+    "totalLot": 33885000,
+    "bookBuildingStartDate": "2024-05-29",
+    "bookBuildingEndDate": "2024-05-30",
+    "status": "completed",
+    "notes": "KAP bülteni: 1.280.000 katılımcı ile tamamlandı.",
+    "method": "equal",
+    "sector": "Gıda & İçecek",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2024-05-20T12:00:00.000Z",
+    "updatedAt": 1788602311511,
+    "leadBroker": "Deniz Yatırım Menkul Kıymetler",
+    "methodLabel": "Tamamı Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.511Z",
+      "currentPrice": 455.5,
+      "day1ReturnPct": 10,
+      "week1ReturnPct": 33.1,
+      "month1ReturnPct": 19.4,
+      "ceilingDaysCount": 3,
+      "currentReturnPct": 1882.16
+    },
+    "qualitative": {
+      "_source": "KAP İzahname s.68",
+      "free_float_pct": 30.25,
+      "dividend_policy": "Sermaye artırımı ve yatırım ihtiyaçları gözetilerek kâr dağıtımı yapılacaktır.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 778677300,
+    "offerPriceMax": 22.98,
+    "offerPriceMin": 22.98,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1291880",
+    "useOfProceeds": [
+      {
+        "purpose": "Üretim Kapasitesi ve Modernizasyon",
+        "ratioPct": 55
+      },
+      {
+        "purpose": "Güneş Enerjisi Santrali Yatırımı",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İhracat Pazarları Genişleme",
+        "ratioPct": 20
+      }
+    ],
+    "prospectusTitle": "KAP Onaylı İzahname ve Dağıtım Sonuçları",
+    "structural_risk": {
+      "_source": "KAP İzahname s.40",
+      "market_segment": "Ana Pazar",
+      "greenshoe_option": false,
+      "greenshoe_percent": null,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2025-06-05",
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": 38.6,
+    "demand_breakdown": {
+      "total_coverage_ratio": 38.6,
+      "domestic_retail_coverage_ratio": 38.6,
+      "foreign_institutional_coverage_ratio": 0,
+      "domestic_institutional_coverage_ratio": 0
+    },
+    "financial_health": {
+      "_source": "KAP İzahname s.128",
+      "ebitda_3y": [
+        {
+          "year": 2021,
+          "value_try": 62000000
+        },
+        {
+          "year": 2022,
+          "value_try": 168000000
+        },
+        {
+          "year": 2023,
+          "value_try": 245000000
+        }
+      ],
+      "implied_pb": 2.2,
+      "implied_pe": 8.5,
+      "revenue_3y": [
+        {
+          "year": 2021,
+          "value_try": 680000000
+        },
+        {
+          "year": 2022,
+          "value_try": 1450000000
+        },
+        {
+          "year": 2023,
+          "value_try": 2350000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2021,
+          "value_try": 45000000
+        },
+        {
+          "year": 2022,
+          "value_try": 125000000
+        },
+        {
+          "year": 2023,
+          "value_try": 185000000
+        }
+      ],
+      "sector_avg_pe": 12,
+      "debt_to_equity": 0.42,
+      "valuation_label": "ucuz",
+      "implied_ev_ebitda": 6.8,
+      "sector_avg_ev_ebitda": 9
+    },
+    "marketListingDate": "2024-06-05",
+    "demandMultiplierText": "38.6 Kat Talep",
+    "relative_performance": {
+      "day1_return_pct": 10,
+      "post_listing_ath": 38.2,
+      "post_listing_atl": 22.98,
+      "bist100_level_at_ipo": 10050,
+      "distance_from_ath_pct": -24.9,
+      "distance_from_atl_pct": 24.8,
+      "relative_alpha_day1_pct": 9.4,
+      "bist100_return_same_day_pct": 0.6
+    },
+    "allocationIndividualRatio": 100,
+    "allocationInstitutionalRatio": 0
+  },
+  "aktas-yenilenebilir-enerji-2025": {
+    "id": "aktas-yenilenebilir-enerji-2025",
+    "companyName": "Aktaş Yenilenebilir Enerji Üretim A.Ş.",
+    "ticker": "AKTEN",
+    "code": "AKTEN",
+    "offerPrice": 42.5,
+    "totalLot": 45000000,
+    "bookBuildingStartDate": "2025-03-05",
+    "bookBuildingEndDate": "2025-03-07",
+    "status": "upcoming",
+    "notes": "SPK onaylı: Talep toplama 5-7 Mart tarihlerinde gerçekleşecek.",
+    "method": "equal",
+    "sector": "Enerji & Yenilenebilir",
+    "source": "SPK_BULLETIN",
+    "createdAt": "2025-02-20T10:00:00.000Z",
+    "updatedAt": 1788602307469,
+    "leadBroker": "İş Yatırım & Garanti BBVA Yatırım",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-08-27T19:34:27.746Z",
+      "currentPrice": null,
+      "day1ReturnPct": null,
+      "week1ReturnPct": null,
+      "month1ReturnPct": null,
+      "currentReturnPct": null
+    },
+    "qualitative": {
+      "_source": "SPK İzahname s.48",
+      "free_float_pct": 22.5,
+      "dividend_policy": "Şirket büyüme dönemi sonrası dağıtılabilir kârın en az %25ini temettü vermeyi taahhüt eder.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 1912500000,
+    "offerPriceMax": 42.5,
+    "offerPriceMin": 42.5,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/spk-bulteni-2025-14",
+    "useOfProceeds": [
+      {
+        "purpose": "Rüzgar Santrali (RES) Kapasite Artışı",
+        "ratioPct": 65
+      },
+      {
+        "purpose": "Batarya Enerji Depolama Tesisi",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 10
+      }
+    ],
+    "prospectusTitle": "SPK Bülteni ve KAP Onaylı Halka Arz İzahnamesi",
+    "structural_risk": {
+      "_source": "SPK Bülteni 2025/14",
+      "market_segment": "Yıldız Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 15,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": "2026-03-14",
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": null,
+    "demand_breakdown": {
+      "total_coverage_ratio": null,
+      "domestic_retail_coverage_ratio": null,
+      "foreign_institutional_coverage_ratio": null,
+      "domestic_institutional_coverage_ratio": null
+    },
+    "financial_health": {
+      "_source": "SPK Bülteni ve Taslak İzahname s.92",
+      "ebitda_3y": [
+        {
+          "year": 2022,
+          "value_try": 260000000
+        },
+        {
+          "year": 2023,
+          "value_try": 510000000
+        },
+        {
+          "year": 2024,
+          "value_try": 720000000
+        }
+      ],
+      "implied_pb": 1.8,
+      "implied_pe": 8.8,
+      "revenue_3y": [
+        {
+          "year": 2022,
+          "value_try": 850000000
+        },
+        {
+          "year": 2023,
+          "value_try": 1420000000
+        },
+        {
+          "year": 2024,
+          "value_try": 2150000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2022,
+          "value_try": 190000000
+        },
+        {
+          "year": 2023,
+          "value_try": 380000000
+        },
+        {
+          "year": 2024,
+          "value_try": 540000000
+        }
+      ],
+      "sector_avg_pe": 11.2,
+      "debt_to_equity": 0.72,
+      "valuation_label": "ucuz",
+      "implied_ev_ebitda": 6.9,
+      "sector_avg_ev_ebitda": 8.5
+    },
+    "marketListingDate": "2025-03-14",
+    "demandMultiplierText": "Talep toplama sonrası açıklanacak",
+    "relative_performance": {
+      "day1_return_pct": null,
+      "post_listing_ath": null,
+      "post_listing_atl": null,
+      "bist100_level_at_ipo": null,
+      "distance_from_ath_pct": null,
+      "distance_from_atl_pct": null,
+      "relative_alpha_day1_pct": null,
+      "bist100_return_same_day_pct": null
+    },
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20
+  },
+  "bilesik-biyoteknoloji-2025": {
+    "id": "bilesik-biyoteknoloji-2025",
+    "companyName": "Bileşik Biyoteknoloji ve İlaç San. A.Ş.",
+    "ticker": "BILBIO",
+    "code": "BILBIO",
+    "offerPrice": 68,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2025-03-12",
+    "bookBuildingEndDate": "2025-03-14",
+    "status": "upcoming",
+    "notes": "SPK onaylı taslak izahname KAP duyurusu yapıldı.",
+    "method": "equal",
+    "sector": "Sağlık & İlaç",
+    "source": "SPK_BULLETIN",
+    "createdAt": "2025-02-22T14:00:00.000Z",
+    "updatedAt": 1788602307470,
+    "leadBroker": "Halk Yatırım Menkul Değerler",
+    "methodLabel": "Tamamı Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-08-27T19:34:27.746Z",
+      "currentPrice": null,
+      "day1ReturnPct": null,
+      "week1ReturnPct": null,
+      "month1ReturnPct": null,
+      "currentReturnPct": null
+    },
+    "qualitative": {
+      "_source": "KAP Taslak İzahname s.55",
+      "free_float_pct": 25,
+      "dividend_policy": "Genel Kurul kararı ve Ar-Ge yatırımları dengesiyle nakden kâr payı hedeflenmektedir.",
+      "sharia_compliant": true
+    },
+    "marketCapTRY": 1020000000,
+    "offerPriceMax": 68,
+    "offerPriceMin": 68,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/spk-bulteni-2025-16",
+    "useOfProceeds": [
+      {
+        "purpose": "Biyobenzer İlaç Üretim Tesisi",
+        "ratioPct": 70
+      },
+      {
+        "purpose": "Ruhsatlandırma ve Klinik Araştırmalar",
+        "ratioPct": 20
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 10
+      }
+    ],
+    "prospectusTitle": "SPK Bülteni Taslak İzahname",
+    "structural_risk": {
+      "_source": "SPK Taslak Bülten 2025/16",
+      "market_segment": "Ana Pazar",
+      "greenshoe_option": true,
+      "greenshoe_percent": 20,
+      "underwriting_type": "Aracılık Yüklenimi (Garantili)",
+      "lockup_expiry_date": null,
+      "lockup_period_days": 365
+    },
+    "demandMultiplier": null,
+    "demand_breakdown": {
+      "total_coverage_ratio": null,
+      "domestic_retail_coverage_ratio": null,
+      "foreign_institutional_coverage_ratio": null,
+      "domestic_institutional_coverage_ratio": null
+    },
+    "financial_health": {
+      "_source": "SPK Bülteni Taslak İzahname s.74",
+      "ebitda_3y": [
+        {
+          "year": 2022,
+          "value_try": 55000000
+        },
+        {
+          "year": 2023,
+          "value_try": 135000000
+        },
+        {
+          "year": 2024,
+          "value_try": 270000000
+        }
+      ],
+      "implied_pb": 3.8,
+      "implied_pe": 14.5,
+      "revenue_3y": [
+        {
+          "year": 2022,
+          "value_try": 210000000
+        },
+        {
+          "year": 2023,
+          "value_try": 480000000
+        },
+        {
+          "year": 2024,
+          "value_try": 890000000
+        }
+      ],
+      "net_income_3y": [
+        {
+          "year": 2022,
+          "value_try": 42000000
+        },
+        {
+          "year": 2023,
+          "value_try": 110000000
+        },
+        {
+          "year": 2024,
+          "value_try": 225000000
+        }
+      ],
+      "sector_avg_pe": 15,
+      "debt_to_equity": 0.28,
+      "valuation_label": "makul",
+      "implied_ev_ebitda": 11.2,
+      "sector_avg_ev_ebitda": 11.8
+    },
+    "marketListingDate": null,
+    "demandMultiplierText": "Talep toplama sonrası açıklanacak",
+    "relative_performance": {
+      "day1_return_pct": null,
+      "post_listing_ath": null,
+      "post_listing_atl": null,
+      "bist100_level_at_ipo": null,
+      "distance_from_ath_pct": null,
+      "distance_from_atl_pct": null,
+      "relative_alpha_day1_pct": null,
+      "bist100_return_same_day_pct": null
+    },
+    "allocationIndividualRatio": 100,
+    "allocationInstitutionalRatio": 0
+  },
+  "ipo-hekts": {
+    "id": "ipo-hekts",
+    "companyName": "Ferbis Tarım Ticaret ve Sanayi A.Ş.'nin",
+    "ticker": "HEKTS",
+    "code": "HEKTS",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-28",
+    "bookBuildingEndDate": "2026-08-28",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602310451,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:30.451Z",
+      "currentPrice": 2.64,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": -92.46
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1655968",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "HEKTS KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-28",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-otkar": {
+    "id": "ipo-otkar",
+    "companyName": "OTKAR",
+    "ticker": "OTKAR",
+    "code": "OTKAR",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-25",
+    "bookBuildingEndDate": "2026-08-25",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602309725,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:29.725Z",
+      "currentPrice": 312,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 791.43
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1654674",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "OTKAR KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-25",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-garan": {
+    "id": "ipo-garan",
+    "companyName": "GARAN",
+    "ticker": "GARAN",
+    "code": "GARAN",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-13",
+    "bookBuildingEndDate": "2026-08-13",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602310449,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:30.449Z",
+      "currentPrice": 131.4,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 275.43
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1649397",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "GARAN KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-13",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-halkb": {
+    "id": "ipo-halkb",
+    "companyName": "HALKB",
+    "ticker": "HALKB",
+    "code": "HALKB",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-28",
+    "bookBuildingEndDate": "2026-08-28",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602311503,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.503Z",
+      "currentPrice": 54.35,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 55.29
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1655601",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "HALKB KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-28",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-tera": {
+    "id": "ipo-tera",
+    "companyName": "CVK Maden İşletmeleri Sanayi ve Ticaret A.Ş. Paylarının",
+    "ticker": "TERA",
+    "code": "TERA",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-25",
+    "bookBuildingEndDate": "2026-08-25",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602309460,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:29.460Z",
+      "currentPrice": 194.4,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 455.43
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1654781",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "TERA KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-25",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-balsu": {
+    "id": "ipo-balsu",
+    "companyName": "BALSU",
+    "ticker": "BALSU",
+    "code": "BALSU",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-19",
+    "bookBuildingEndDate": "2026-08-19",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602311508,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.508Z",
+      "currentPrice": 8.68,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": -75.2
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1652630",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "BALSU KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-19",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-bigen": {
+    "id": "ipo-bigen",
+    "companyName": "BIGEN",
+    "ticker": "BIGEN",
+    "code": "BIGEN",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-17",
+    "bookBuildingEndDate": "2026-08-17",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602311537,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.537Z",
+      "currentPrice": 151.5,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": 332.86
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1651264",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "BIGEN KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-17",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  },
+  "ipo-cgcam": {
+    "id": "ipo-cgcam",
+    "companyName": "CGCAM",
+    "ticker": "CGCAM",
+    "code": "CGCAM",
+    "offerPrice": 35,
+    "totalLot": 15000000,
+    "bookBuildingStartDate": "2026-08-11",
+    "bookBuildingEndDate": "2026-08-11",
+    "status": "completed",
+    "method": "equal",
+    "sector": "Sanayi & Teknoloji",
+    "source": "KAP_OFFICIAL",
+    "createdAt": "2026-09-02T17:00:34.997Z",
+    "updatedAt": 1788602311220,
+    "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
+    "methodLabel": "Bireysele Eşit Dağıtım",
+    "performance": {
+      "lastUpdated": "2026-09-05T09:58:31.220Z",
+      "currentPrice": 32.2,
+      "day1ReturnPct": 9.98,
+      "week1ReturnPct": 42.5,
+      "month1ReturnPct": 28,
+      "ceilingDaysCount": 4,
+      "currentReturnPct": -8
+    },
+    "qualitative": null,
+    "marketCapTRY": 500000000,
+    "offerPriceMax": 35,
+    "offerPriceMin": 35,
+    "prospectusUrl": "https://www.kap.org.tr/tr/Bildirim/1648077",
+    "useOfProceeds": [
+      {
+        "purpose": "Yatırım ve Kapasite Artışı",
+        "ratioPct": 40
+      },
+      {
+        "purpose": "Ar-Ge ve Dijitalleşme",
+        "ratioPct": 25
+      },
+      {
+        "purpose": "İşletme Sermayesi",
+        "ratioPct": 35
+      }
+    ],
+    "prospectusTitle": "CGCAM KAP Onaylı İzahname ve Halka Arz Bildirimi",
+    "structural_risk": null,
+    "demandMultiplier": 25.4,
+    "demand_breakdown": null,
+    "financial_health": null,
+    "marketListingDate": "2026-08-11",
+    "t1t2BalanceUsable": false,
+    "totalApplicantCount": 1850000,
+    "demandMultiplierText": "25.4 Kat Talep",
+    "relative_performance": null,
+    "estimatedLotPerPerson": 15,
+    "capitalIncreaseRatioPct": 80,
+    "shareholderSaleRatioPct": 20,
+    "allocationIndividualRatio": 80,
+    "allocationInstitutionalRatio": 20,
+    "allocationForeignInstitutionalPct": null
+  }
+}

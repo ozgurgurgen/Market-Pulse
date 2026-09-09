@@ -1,0 +1,18 @@
+================================================================
+  🔥 MODÜL 3: WARM-UP & 30 DÖNGÜLÜK BELLEK SIZINTISI (LEAK) TESTİ
+================================================================
+
+1️⃣   AŞAMA 1: WARM-UP (ISINMA FAZI - 10 DÖNGÜ)...
+▶️   [Warm-up] 10 Döngü Çalıştırılıyor...
+   - [1/10] Rapor: THYAO | Technical Score: 50
+   - [2/10] Rapor: ASELS | Technical Score: 50
+   - [3/10] Rapor: NVDA | Technical Score: 50
+   - [4/10] Rapor: BTC-USD | Technical Score: 50
+   - [5/10] Rapor: ETH-USD | Technical Score: 50
+   - [6/10] Rapor: EREGL | Technical Score: 50
+   - [7/10] Rapor: TUPRS | Technical Score: 50
+   - [8/10] Rapor: KCHOL | Technical Score: 50
+   - [9/10] Rapor: BIMAS | Technical Score: 50
+   - [10/10] Rapor: SISE | Technical Score: 50
+   ✔️  [Warm-up] 10 Döngü 1357 ms sürdü (135.7 ms/döngü)
+

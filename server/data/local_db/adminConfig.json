@@ -1,0 +1,383 @@
+{
+  "subscriptionPlans": {
+    "plans": {
+      "free": {
+        "id": "free",
+        "name": "Ücretsiz",
+        "displayName": "Ücretsiz",
+        "badge": "Temel Erişim",
+        "description": "Piyasa verilerini ve temel analizleri keşfetmek isteyen bireysel yatırımcılar için.",
+        "priceMonthlyTRY": 0,
+        "priceAnnualTRY": 0,
+        "limits": {
+          "dailyAnalysisQueries": 3,
+          "ratioDepth": "basic",
+          "backtestMaxYears": 1,
+          "backtestMultiAsset": false,
+          "aiReportsPerPeriod": 1,
+          "aiReportsPeriodType": "week",
+          "whatIfSimulator": false,
+          "ipoTracker": false,
+          "telegramTier": "price_only",
+          "cronDigest": false,
+          "peerComparison": false,
+          "opportunityScanner": false,
+          "advancedFundMetrics": false,
+          "portfolioMaxAssets": 5,
+          "watchlist": false,
+          "multiPortfolio": false,
+          "priorityAiModel": false,
+          "earlyAccess": false
+        },
+        "featureBullets": [
+          {
+            "title": "Günde 3 Hisse / Fon Analizi",
+            "included": true
+          },
+          {
+            "title": "Temel Rasyolar (F/K, PD/DD)",
+            "included": true
+          },
+          {
+            "title": "1 Yıllık Tekil Backtest",
+            "included": true
+          },
+          {
+            "title": "Haftada 1 Derin AI Raporu",
+            "included": true
+          },
+          {
+            "title": "5 Varlığa Kadar Portföy Takibi",
+            "included": true
+          },
+          {
+            "title": "Telegram Fiyat Alarmları",
+            "included": true
+          },
+          {
+            "title": "Halka Arz (IPO) Takvim & İstihbarat",
+            "included": false
+          },
+          {
+            "title": "What-If Değerleme Simülatörü",
+            "included": false
+          },
+          {
+            "title": "Akran Kıyaslama & 18 Kriterli Karne",
+            "included": false
+          },
+          {
+            "title": "Kişisel Takip Listesi (Watchlist)",
+            "included": false
+          },
+          {
+            "title": "Sabah/Akşam Telegram Bülteni (Digest)",
+            "included": false
+          },
+          {
+            "title": "Çoklu Portföy Yönetimi",
+            "included": false
+          }
+        ]
+      },
+      "starter": {
+        "id": "starter",
+        "name": "Başlangıç",
+        "displayName": "Başlangıç",
+        "badge": "Yatırımcı",
+        "description": "Bilinçli kararlar almak ve portföyünü aktif büyütmek isteyen yatırımcılar için.",
+        "priceMonthlyTRY": 299,
+        "priceAnnualTRY": 2990,
+        "limits": {
+          "dailyAnalysisQueries": -1,
+          "ratioDepth": "full",
+          "backtestMaxYears": 5,
+          "backtestMultiAsset": true,
+          "aiReportsPerPeriod": 3,
+          "aiReportsPeriodType": "day",
+          "whatIfSimulator": false,
+          "ipoTracker": false,
+          "telegramTier": "price_and_news",
+          "cronDigest": false,
+          "peerComparison": false,
+          "opportunityScanner": false,
+          "advancedFundMetrics": false,
+          "portfolioMaxAssets": 20,
+          "watchlist": true,
+          "multiPortfolio": false,
+          "priorityAiModel": false,
+          "earlyAccess": false
+        },
+        "featureBullets": [
+          {
+            "title": "Sınırsız Günlük Analiz Sorgusu",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Tüm Gelişmiş Finansal Rasyolar",
+            "included": true
+          },
+          {
+            "title": "5 Yıla Kadar Çoklu Varlık Backtest",
+            "included": true
+          },
+          {
+            "title": "Günde 3 Derin AI Raporu",
+            "included": true
+          },
+          {
+            "title": "20 Varlığa Kadar Portföy & Takip Listesi",
+            "included": true
+          },
+          {
+            "title": "Telegram Fiyat + Haber Alarmları",
+            "included": true
+          },
+          {
+            "title": "Halka Arz (IPO) Takvim & İstihbarat",
+            "included": false
+          },
+          {
+            "title": "What-If Değerleme Simülatörü",
+            "included": false
+          },
+          {
+            "title": "TEFAS Akran Kıyaslama & Risk Matrisi",
+            "included": false
+          },
+          {
+            "title": "Sabah/Akşam Otomatik Telegram Bülteni",
+            "included": false
+          },
+          {
+            "title": "Çoklu Portföy Yönetimi",
+            "included": false
+          }
+        ]
+      },
+      "pro": {
+        "id": "pro",
+        "name": "Pro",
+        "displayName": "Pro",
+        "badge": "En Popüler",
+        "isPopular": true,
+        "description": "Profesyonel traderlar, fon takipçileri ve derin değerleme arayanlar için tam cephane.",
+        "priceMonthlyTRY": 699,
+        "priceAnnualTRY": 6990,
+        "limits": {
+          "dailyAnalysisQueries": -1,
+          "ratioDepth": "full",
+          "backtestMaxYears": -1,
+          "backtestMultiAsset": true,
+          "aiReportsPerPeriod": -1,
+          "aiReportsPeriodType": "unlimited",
+          "whatIfSimulator": true,
+          "ipoTracker": true,
+          "telegramTier": "full_command_center",
+          "cronDigest": true,
+          "peerComparison": true,
+          "opportunityScanner": true,
+          "advancedFundMetrics": true,
+          "portfolioMaxAssets": -1,
+          "watchlist": true,
+          "multiPortfolio": false,
+          "priorityAiModel": false,
+          "earlyAccess": false
+        },
+        "featureBullets": [
+          {
+            "title": "Sınırsız Günlük Analiz & AI Raporları",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Halka Arz (IPO) Takvim & Derin İstihbarat",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "What-If Dinamik Değerleme Simülatörü",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Sınırsız Geçmiş & Çoklu Varlık Backtest",
+            "included": true
+          },
+          {
+            "title": "TEFAS Fon Akran Kıyaslaması & Sharpe Analizi",
+            "included": true
+          },
+          {
+            "title": "18 Kriterli Şirket Sağlık Karnesi & İndirme",
+            "included": true
+          },
+          {
+            "title": "Telegram Tam Komuta Merkezi (/rapor, /portfoy)",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Sabah 08:30 & Akşam 18:30 Otomatik Telegram Özeti",
+            "included": true
+          },
+          {
+            "title": "Sınırsız Varlık Portföyü & Takip Listesi",
+            "included": true
+          },
+          {
+            "title": "Çoklu Portföy Yönetimi (BIST, Fon, Emtia)",
+            "included": false
+          }
+        ]
+      },
+      "premium": {
+        "id": "premium",
+        "name": "Premium",
+        "displayName": "Premium",
+        "badge": "Kurumsal & VIP",
+        "description": "Çoklu portföy yöneten, en yüksek işlem önceliği ve erken erişim isteyen üst düzey yatırımcılar.",
+        "priceMonthlyTRY": 1299,
+        "priceAnnualTRY": 12990,
+        "limits": {
+          "dailyAnalysisQueries": -1,
+          "ratioDepth": "full",
+          "backtestMaxYears": -1,
+          "backtestMultiAsset": true,
+          "aiReportsPerPeriod": -1,
+          "aiReportsPeriodType": "unlimited",
+          "whatIfSimulator": true,
+          "ipoTracker": true,
+          "telegramTier": "full_command_center",
+          "cronDigest": true,
+          "peerComparison": true,
+          "opportunityScanner": true,
+          "advancedFundMetrics": true,
+          "portfolioMaxAssets": -1,
+          "watchlist": true,
+          "multiPortfolio": true,
+          "priorityAiModel": true,
+          "earlyAccess": true
+        },
+        "featureBullets": [
+          {
+            "title": "Pro Paketindeki Tüm Özellikler + Halka Arz Modülü",
+            "included": true
+          },
+          {
+            "title": "Çoklu Portföy Yönetimi (Ayrı Fon, Hisse, Emtia Hesapları)",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Öncelikli AI Model Kuyruğu & En Düşük Gecikme",
+            "included": true,
+            "highlight": true
+          },
+          {
+            "title": "Yeni Geliştirilen Modüllere Erken Erişim (Beta)",
+            "included": true
+          },
+          {
+            "title": "VIP Destek & Özel Analiz İstekleri",
+            "included": true
+          },
+          {
+            "title": "Sınırsız Telegram Komutları & Otomasyonlar",
+            "included": true
+          }
+        ]
+      }
+    },
+    "seededAt": "2026-08-27T19:32:27.817Z",
+    "updatedAt": 1787859147817
+  },
+  "aiSettings": {
+    "aiEnabled": true,
+    "freeTierModel": "gemini-3.7-flash",
+    "starterTierModel": "gemini-3.7-flash",
+    "proTierModel": "gemini-3.1-pro-preview",
+    "premiumTierModel": "gemini-3.1-pro-preview",
+    "defaultTemperature": 0.2,
+    "maxTokens": 4096,
+    "updatedAt": 1787864774212,
+    "updatedBy": "system",
+    "defaultModel": "gemini-3.7-flash"
+  },
+  "databaseIntegration": {
+    "activeProvider": "postgresql",
+    "fallbackToFirestore": false,
+    "enableMockFallback": false,
+    "autoSyncEnabled": false,
+    "postgres": {
+      "enabled": false,
+      "connectionMode": "url",
+      "connectionUrl": "postgresql://marketpulse:marketpulse2026@0.tcp.eu.ngrok.io:17784/marketpulse",
+      "host": "localhost",
+      "port": 5432,
+      "database": "marketpulse_db",
+      "user": "postgres",
+      "password": "",
+      "ssl": "disable",
+      "maxPool": 10,
+      "idleTimeoutMillis": 30000,
+      "connectionTimeoutMillis": 5000,
+      "lastStatus": "untested",
+      "lastConnectedAt": null,
+      "lastErrorMessage": null,
+      "latencyMs": 245
+    },
+    "firebase": {
+      "enabled": true,
+      "projectId": "ai-studio-marketpulseaitef-9befce23-8089-4716-9c4d-feabc89be875",
+      "databaseId": "(default)",
+      "region": "europe-west2",
+      "authEnabled": true,
+      "firestoreEnabled": true,
+      "lastStatus": "connected",
+      "lastConnectedAt": "2026-09-02T16:51:03.691Z"
+    },
+    "localFinanceApi": {
+      "enabled": true,
+      "baseUrl": "https://bobby-layout-circles-reform.trycloudflare.com/",
+      "lastStatus": "untested",
+      "lastConnectedAt": null,
+      "lastErrorMessage": null
+    },
+    "lastSyncAt": "2026-09-03T18:28:08.361Z",
+    "lastSyncStatus": "success",
+    "lastSyncReport": {
+      "success": true,
+      "timestamp": "2026-09-03T18:28:08.361Z",
+      "direction": "bidirectional",
+      "synced": {
+        "users": {
+          "pushed": 1,
+          "pulled": 1,
+          "failed": 0
+        },
+        "ipoListings": {
+          "pushed": 15,
+          "pulled": 15,
+          "failed": 0
+        },
+        "auditLogs": {
+          "pushed": 151,
+          "pulled": 0,
+          "failed": 0
+        },
+        "watchlists": {
+          "pushed": 0,
+          "pulled": 0,
+          "failed": 0
+        }
+      },
+      "details": [
+        "Eşitleme tamamlandı (18380 ms). Kullanıcılar: 1 aktarıldı / 1 çekildi, Halka Arzlar: 15 aktarıldı / 15 çekildi, Audit Loglar: 151 aktarıldı."
+      ]
+    },
+    "updatedAt": 1788460105578,
+    "updatedBy": "boschozgur@gmail.com"
+  }
+}

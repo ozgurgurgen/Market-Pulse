@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Kullanıcı profil ve ayar verileri",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string" },
+        "subscription": {
+          "type": "object",
+          "properties": {
+            "tier": { "type": "string" },
+            "status": { "type": "string" },
+            "grantedAt": { "type": "string" },
+            "expiresAt": { "type": ["string", "null"] },
+            "grantedBy": { "type": "string" }
+          }
+        },
+        "usage": {
+          "type": "object",
+          "properties": {
+            "analysisQueriesToday": { "type": "number" },
+            "aiReportsThisPeriod": { "type": "number" },
+            "lastResetDate": { "type": "string" },
+            "lastWeeklyResetDate": { "type": "string" }
+          }
+        },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId"]
+    },
+    "WatchlistItem": {
+      "title": "WatchlistItem",
+      "description": "Kullanıcının takip listesindeki varlıklar",
+      "type": "object",
+      "properties": {
+        "symbol": { "type": "string" },
+        "name": { "type": "string" },
+        "exchange": { "type": "string" },
+        "addedPrice": { "type": "number" },
+        "addedDate": { "type": "string" },
+        "targetPrice": { "type": "number" },
+        "stopLoss": { "type": "number" },
+        "notes": { "type": "string" }
+      },
+      "required": ["symbol", "name"]
+    },
+    "UserAppConfig": {
+      "title": "UserAppConfig",
+      "description": "Kullanıcının özelleştirilmiş sistem, AI ve arayüz ayarları",
+      "type": "object",
+      "properties": {
+        "provider": { "type": "string" },
+        "geminiModel": { "type": "string" },
+        "tickerSpeed": { "type": "number" },
+        "newsTickerSpeed": { "type": "number" },
+        "radarScope": { "type": "string" },
+        "radarLayout": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      }
+    },
+    "IntelligenceCache": {
+      "title": "IntelligenceCache",
+      "description": "Finansal istihbarat rapor önbelleği",
+      "type": "object",
+      "properties": {
+        "ticker": { "type": "string" },
+        "summary": { "type": "string" },
+        "technicalScore": { "type": "number" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["ticker"]
+    },
+    "AdminConfig": {
+      "title": "AdminConfig",
+      "description": "Yönetici sistem ve üyelik planları ince ayar konfigürasyonu",
+      "type": "object",
+      "properties": {
+        "key": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "updatedBy": { "type": "string" }
+      }
+    },
+    "AuditLogEntry": {
+      "title": "AuditLogEntry",
+      "description": "Değiştirilemez sistem ve yönetici denetim kayıtları",
+      "type": "object",
+      "properties": {
+        "adminUid": { "type": "string" },
+        "adminEmail": { "type": "string" },
+        "action": { "type": "string" },
+        "targetId": { "type": "string" },
+        "details": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["action", "timestamp"]
+    },
+    "ErrorLogEntry": {
+      "title": "ErrorLogEntry",
+      "description": "Sistem, API ve sunucu hata ve istisna logları",
+      "type": "object",
+      "properties": {
+        "message": { "type": "string" },
+        "stack": { "type": "string" },
+        "context": { "type": "string" },
+        "path": { "type": "string" },
+        "method": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "timestamp": { "type": "string" }
+      },
+      "required": ["message", "timestamp"]
+    },
+    "IPOListing": {
+      "title": "IPOListing",
+      "description": "Halka arz takip ve analiz kayıtları",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ticker": { "type": "string" },
+        "companyName": { "type": "string" },
+        "status": { "type": "string" },
+        "offerPrice": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "companyName", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "Kullanıcı profil belgeleri"
+    },
+    "/users/{userId}/watchlist/{symbol}": {
+      "schema": "WatchlistItem",
+      "description": "Kullanıcının takip listesi alt koleksiyonu"
+    },
+    "/users/{userId}/config/settings": {
+      "schema": "UserAppConfig",
+      "description": "Kullanıcı konfigürasyon belgesi"
+    },
+    "/intelligence_reports/{ticker}": {
+      "schema": "IntelligenceCache",
+      "description": "Genel erişilebilir finansal istihbarat kayıtları"
+    },
+    "/adminConfig/{docId}": {
+      "schema": "AdminConfig",
+      "description": "Admin tarafından yönetilen üyelik ve model konfigürasyonu"
+    },
+    "/auditLogs/{logId}": {
+      "schema": "AuditLogEntry",
+      "description": "Değiştirilemez denetim kayıtları"
+    },
+    "/errorLogs/{logId}": {
+      "schema": "ErrorLogEntry",
+      "description": "Backend sunucu ve sistem hata kayıtları"
+    },
+    "/ipoListings/{id}": {
+      "schema": "IPOListing",
+      "description": "Halka arz kayıtları"
+    }
+  }
+}

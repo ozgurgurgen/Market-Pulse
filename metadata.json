@@ -1,0 +1,6 @@
+{
+  "name": "MarketPulse AI - TEFAS Fonları, Borsa & Backtest Radar",
+  "description": "Halka Arz (IPO) Takip & İstihbarat Merkezi, Finansal İstihbarat (4-Agent Intelligence Hub), TEFAS Fonları, Canlı BIST/ABD/Kripto/Emtia analizi, Enflasyon üstü getiri radarı ve Portföy Backtest motoru.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

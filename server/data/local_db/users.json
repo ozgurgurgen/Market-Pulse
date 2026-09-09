@@ -1,0 +1,27 @@
+{
+  "mock-uid-with-no-role": {
+    "role": "standard_user",
+    "updatedAt": 1787860097898
+  },
+  "admin_boschozgur": {
+    "uid": "admin_boschozgur",
+    "id": "admin_boschozgur",
+    "email": "boschozgur@gmail.com",
+    "fullName": "Özgür Bosch (Admin)",
+    "role": "admin",
+    "isActive": true,
+    "subscription": {
+      "tier": "premium",
+      "status": "active",
+      "expiresAt": null,
+      "grantedBy": "database_sync"
+    },
+    "usage": {
+      "analysisQueriesToday": 0,
+      "aiReportsThisPeriod": 0,
+      "lastResetDate": "2026-09-03T00:00:00.000Z"
+    },
+    "createdAt": "2026-09-03T18:28:09.433Z",
+    "updatedAt": 1788460089661
+  }
+}

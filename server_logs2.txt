@@ -1,0 +1,68 @@
+✅ [ServerLocalDB] Sunucu tarafı yerel veritabanı motoru başlatıldı: /app/applet/server/data/local_db
+[Yahoo Limiter] Acquiring token. Active: 0, Queue: 0
+[Yahoo Limiter] Acquiring token. Active: 1, Queue: 0
+[Yahoo Limiter] Acquiring token. Active: 2, Queue: 0
+[Yahoo Limiter] Acquiring token. Active: 3, Queue: 0
+[Yahoo Limiter] Acquiring token. Active: 4, Queue: 0
+◇ injected env (0) from .env // tip: ⌘ enable debugging { debug: true }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+🚀 [SchedulerService] Kademeli Finansal İstihbarat Zamanlayıcısı Başlatıldı
+📊 Toplam İstek Bütçesi: ~92 istek/saat (Rate limit güvenlik sınırı altında)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ [MacroAggregator] Yerel veritabanından 26 ekonomik gösterge yüklendi.
+WebSocket server error: Port 24678 is already in use
+Uncaught Exception: Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+    at Server.setupListenHandle [as _listen2] (node:net:1941:16)
+    at listenInCluster (node:net:1998:12)
+    at node:net:2207:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '0.0.0.0',
+  port: 3000
+}
+[SystemErrorLog] [UNCAUGHT_EXCEPTION] listen EADDRINUSE: address already in use 0.0.0.0:3000 Error: listen EADDRINUSE: address already in use 0.0.0.0:3000
+    at Server.setupListenHandle [as _listen2] (node:net:1941:16)
+    at listenInCluster (node:net:1998:12)
+    at node:net:2207:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:89:21)
+[IpoDataService] Firestore sync notice (using local storage fallback): 5 NOT_FOUND: 
+[AuditService] Failed to save error log to Firestore via adminDb: Error: 5 NOT_FOUND: 
+    at callErrorFromStatus (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/call.js:32:19)
+    at Object.onReceiveStatus (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:193:76)
+    at Object.onReceiveStatus (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:367:141)
+    at Object.onReceiveStatus (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client-interceptors.js:327:181)
+    at /app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/resolving-call.js:135:78
+    at process.processTicksAndRejections (node:internal/process/task_queues:84:11)
+for call at
+    at ServiceClientImpl.makeUnaryRequest (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/client.js:161:32)
+    at ServiceClientImpl.<anonymous> (/app/applet/node_modules/google-gax/node_modules/@grpc/grpc-js/build/src/make-client.js:105:19)
+    at /app/applet/node_modules/@google-cloud/firestore/build/src/v1/firestore_client.js:269:29
+    at /app/applet/node_modules/google-gax/build/src/normalCalls/timeout.js:44:16
+    at repeat (/app/applet/node_modules/google-gax/build/src/normalCalls/retries.js:114:25)
+    at /app/applet/node_modules/google-gax/build/src/normalCalls/retries.js:156:13
+    at OngoingCallPromise.call (/app/applet/node_modules/google-gax/build/src/call.js:70:27)
+    at NormalApiCaller.call (/app/applet/node_modules/google-gax/build/src/normalCalls/normalApiCaller.js:34:19)
+    at /app/applet/node_modules/google-gax/build/src/createApiCall.js:110:30
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+Caused by: Error
+    at _firestore._traceUtil.startActiveSpan (/app/applet/node_modules/@google-cloud/firestore/build/src/write-batch.js:442:27)
+    at /app/applet/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js:125:30
+    at NoopContextManager.with (/app/applet/node_modules/@opentelemetry/api/build/src/context/NoopContextManager.js:14:19)
+    at ContextAPI.with (/app/applet/node_modules/@opentelemetry/api/build/src/api/context.js:51:46)
+    at NoopTracer.startActiveSpan (/app/applet/node_modules/@opentelemetry/api/build/src/trace/NoopTracer.js:54:31)
+    at ProxyTracer.startActiveSpan (/app/applet/node_modules/@opentelemetry/api/build/src/trace/ProxyTracer.js:27:24)
+    at EnabledTraceUtil.startActiveSpan (/app/applet/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js:117:28)
+    at WriteBatch.commit (/app/applet/node_modules/@google-cloud/firestore/build/src/write-batch.js:440:43)
+    at /app/applet/node_modules/@google-cloud/firestore/build/src/reference/document-reference.js:353:31
+    at /app/applet/node_modules/@google-cloud/firestore/build/src/telemetry/enabled-trace-util.js:125:30 {
+  code: 5,
+  details: '',
+  metadata: Metadata {
+    internalRepr: Map(1) { 'x-debug-tracking-id' => [Array] },
+    opaqueData: Map(0) {},
+    options: {}
+  },
+  note: 'Exception occurred in retry method that was not classified as transient'
+}
