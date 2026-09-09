@@ -59,6 +59,18 @@ export class LocalFinanceApiAdapter {
     return !!this.baseUrl && this.baseUrl.trim() !== '';
   }
 
+  getApiKey(): string {
+    const envKey = (process.env.LOCAL_API_KEY || process.env.X_API_KEY || process.env.API_KEY)?.trim();
+    if (envKey) return envKey;
+    try {
+      const local = serverLocalDatabase.get<any>('adminConfig', 'databaseIntegration');
+      if (local?.localFinanceApi?.apiKey) {
+        return local.localFinanceApi.apiKey;
+      }
+    } catch {}
+    return 'fin_live_master_9vdthiz069';
+  }
+
   /**
    * Güvenli ve zaman aşımlı (timeout) HTTP istek yardımcısı
    * Cloudflare Tunnel ve ters vekil sunucular (WAF / bot koruması) için optimize edilmiştir.
@@ -70,9 +82,12 @@ export class LocalFinanceApiAdapter {
       // Cloudflare Tunnel tünel gecikmelerini karşılamak için 8000ms zaman aşımı
       const timeoutId = setTimeout(() => controller.abort(), 8000);
       
+      const apiKey = this.getApiKey();
       const defaultHeaders: Record<string, string> = {
         'Accept': 'application/json, text/plain, */*',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 MarketPulse-Cloudflare/1.0',
+        'X-API-Key': apiKey,
+        'Authorization': `Bearer ${apiKey}`,
         ...this.customHeaders,
         ...(options.headers as Record<string, string> || {})
       };
@@ -91,8 +106,165 @@ export class LocalFinanceApiAdapter {
   }
 
   // ==========================================
+  // 1️⃣ GET /api/v1/bist/stocks — BIST Canlı Hisse Listesi
+  // ==========================================
+  async getV1BistStocks(params: { search?: string; page?: number; limit?: number; sortBy?: string; order?: string } = {}): Promise<any | null> {
+    const qs = new URLSearchParams();
+    if (params.search) qs.append('search', params.search);
+    if (params.page) qs.append('page', params.page.toString());
+    if (params.limit) qs.append('limit', params.limit.toString());
+    if (params.sortBy) qs.append('sortBy', params.sortBy);
+    if (params.order) qs.append('order', params.order);
+    const queryStr = qs.toString() ? `?${qs.toString()}` : '';
+    const res = await this.safeFetch(`/api/v1/bist/stocks${queryStr}`);
+    if (res && res.data) return res;
+    return res;
+  }
+
+  /**
+   * GET /api/v1/bist/stock/:ticker — Tek Hisse Detayı
+   */
+  async getV1BistStockDetail(ticker: string): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}`);
+  }
+
+  /**
+   * GET /api/v1/bist/stock/:ticker/history — 5 Yıllık OHLCV Fiyat Serisi
+   */
+  async getV1BistStockHistory(ticker: string, limit: number = 1500): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}/history?limit=${limit}`);
+  }
+
+  /**
+   * GET /api/v1/bist/stock/:ticker/indicators — Hesaplanmış Teknik İndikatörler
+   */
+  async getV1BistStockIndicators(ticker: string): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/v1/bist/stock/${cleanTicker}/indicators`);
+  }
+
+  // ==========================================
+  // 2️⃣ TEFAS Yatırım Fonları & Portföy Dağılımları (PDR)
+  // ==========================================
+  async getV1TefasFunds(params: { search?: string; category?: string; page?: number; limit?: number } = {}): Promise<any | null> {
+    const qs = new URLSearchParams();
+    if (params.search) qs.append('search', params.search);
+    if (params.category) qs.append('category', params.category);
+    if (params.page) qs.append('page', params.page.toString());
+    if (params.limit) qs.append('limit', params.limit.toString());
+    const queryStr = qs.toString() ? `?${qs.toString()}` : '';
+    return this.safeFetch(`/api/v1/tefas/funds${queryStr}`);
+  }
+
+  async getV1TefasFundDetail(code: string): Promise<any | null> {
+    return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}`);
+  }
+
+  async getV1TefasFundHoldings(code: string): Promise<any | null> {
+    return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}/holdings`);
+  }
+
+  async getV1TefasStockInFunds(ticker: string): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/v1/tefas/stock/${cleanTicker}/in-funds`);
+  }
+
+  async getV1TefasTopHeldStocks(): Promise<any | null> {
+    return this.safeFetch('/api/v1/tefas/top-held-stocks');
+  }
+
+  async getV1TefasFundDailyHistory(code: string): Promise<any | null> {
+    return this.safeFetch(`/api/v1/tefas/fund/${code.toUpperCase()}/daily-history`);
+  }
+
+  // ==========================================
+  // 3️⃣ ABD Borsaları & ETF'ler
+  // ==========================================
+  async getV1UsStocks(params: { search?: string; sector?: string; page?: number; limit?: number } = {}): Promise<any | null> {
+    const qs = new URLSearchParams();
+    if (params.search) qs.append('search', params.search);
+    if (params.sector) qs.append('sector', params.sector);
+    if (params.page) qs.append('page', params.page.toString());
+    if (params.limit) qs.append('limit', params.limit.toString());
+    const queryStr = qs.toString() ? `?${qs.toString()}` : '';
+    return this.safeFetch(`/api/v1/us-stocks${queryStr}`);
+  }
+
+  async getV1UsEtfs(): Promise<any | null> {
+    return this.safeFetch('/api/v1/us-etfs');
+  }
+
+  async getV1UsHistory(type: 'stock' | 'etf', ticker: string): Promise<any | null> {
+    return this.safeFetch(`/api/v1/us-history/${type}/${ticker.toUpperCase()}`);
+  }
+
+  // ==========================================
+  // 4️⃣ Halka Arzlar (IPO) & KAP Bildirimleri
+  // ==========================================
+  async getV1Ipos(): Promise<any | null> {
+    const v1Res = await this.safeFetch('/api/v1/ipos');
+    if (v1Res) return v1Res;
+    return this.getIpos();
+  }
+
+  async getV1KapDisclosures(ticker?: string, page: number = 1, limit: number = 30): Promise<any | null> {
+    const qs = new URLSearchParams({ page: page.toString(), limit: limit.toString() });
+    if (ticker) qs.append('ticker', ticker.replace('.IS', '').toUpperCase());
+    const res = await this.safeFetch(`/api/v1/kap/disclosures?${qs.toString()}`);
+    if (res) return res;
+    return this.getKapDisclosures(limit);
+  }
+
+  // ==========================================
+  // 5️⃣ Analist Raporları & Birleşik Profiller
+  // ==========================================
+  async getV1AnalystReports(market: string = 'ALL', ticker?: string): Promise<any | null> {
+    const qs = new URLSearchParams({ market });
+    if (ticker) qs.append('ticker', ticker.replace('.IS', '').toUpperCase());
+    return this.safeFetch(`/api/v1/analyst-reports?${qs.toString()}`);
+  }
+
+  async getV1AssetProfile(code: string): Promise<any | null> {
+    return this.safeFetch(`/api/v1/assets/profile/${code.toUpperCase()}`);
+  }
+
+  async getV1SectorsOverview(market: string = 'ALL'): Promise<any | null> {
+    return this.safeFetch(`/api/v1/sectors/overview?market=${market}`);
+  }
+
+  async getV1SectorsStocksHeatmap(): Promise<any | null> {
+    return this.safeFetch('/api/v1/sectors/stocks-heatmap');
+  }
+
+  // ==========================================
+  // 6️⃣ Canlı Piyasa, Kripto, Makro & Sistem Sağlığı
+  // ==========================================
+  async getV1MarketOverview(): Promise<any | null> {
+    return this.safeFetch('/api/market/overview');
+  }
+
+  async getV1CryptoPrices(): Promise<any | null> {
+    return this.safeFetch('/api/crypto/prices');
+  }
+
+  async getV1CryptoCandles(symbol: string, timeframe: string = '1d'): Promise<any | null> {
+    return this.safeFetch(`/api/crypto/candles/${symbol}?timeframe=${timeframe}`);
+  }
+
+  async getV1MacroData(): Promise<any | null> {
+    return this.safeFetch('/api/macro');
+  }
+
+  async getV1Health(): Promise<any | null> {
+    return this.safeFetch('/api/v1/health');
+  }
+
+  // ==========================================
   // 1️⃣ GET /api/export/companies — Şirket Listesi
   // ==========================================
+
   async getAllCompanies(): Promise<any[] | null> {
     const res = await this.safeFetch('/api/export/companies');
     if (Array.isArray(res)) return res;

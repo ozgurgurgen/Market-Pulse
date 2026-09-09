@@ -131,6 +131,7 @@ const DEFAULT_SETTINGS: DatabaseSettings = {
   localFinanceApi: {
     enabled: true,
     baseUrl: 'https://bobby-layout-circles-reform.trycloudflare.com',
+    apiKey: 'fin_live_master_9vdthiz069',
     lastStatus: 'untested'
   }
 };
@@ -1158,20 +1159,20 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
         )}
       </div>
 
-      {/* CANLI TEFAS & KAP FİNANS APİ TÜNELİ (CLOUDFLARE TUNNEL DESTEKLİ) CARD */}
+      {/* KAPSAMLI FİNANSAL VERİ APİ GATEWAY CARD */}
       <div className="bg-slate-900 border border-orange-500/30 rounded-2xl p-6 shadow-xl space-y-5 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
           <div className="flex items-start gap-3">
             <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20 mt-0.5">
-              <Cloud size={20} className={settings.localFinanceApi?.enabled ? 'animate-pulse' : ''} />
+              <Server size={22} className={settings.localFinanceApi?.enabled ? 'animate-pulse text-orange-400' : 'text-slate-400'} />
             </div>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-base font-bold text-white">Canlı TEFAS & KAP Finans API Tüneli</h3>
+                <h3 className="text-base font-bold text-white">Ana Finansal Veri API Gateway (Primary Data Provider)</h3>
                 <span className="px-2 py-0.5 text-[10px] font-bold rounded-full bg-orange-500/10 text-orange-400 border border-orange-500/30">
-                  Cloudflare Tunnel Uyumlu
+                  REST API & Tünel Gateway
                 </span>
                 <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${
                   settings.localFinanceApi?.enabled 
@@ -1182,7 +1183,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-slate-400 mt-1 max-w-2xl">
-                Kendi bilgisayarınızda çalışan Python (FastAPI/Flask) veya Node.js finans botunuzu <strong className="text-orange-300 font-semibold">Cloudflare Tunnel (<code className="text-[11px] font-mono">cloudflared</code>)</strong> ile bağlayın. Uygulama TEFAS fonlarını ve KAP bildirimlerini anlık olarak doğrudan Cloudflare tüneliniz üzerinden çeker.
+                Veri sağlayan ikinci projenizi (Python, Node.js, Go vb.) veya özel tünel adresinizi bağlayın. Platform; <strong className="text-slate-200">BIST 625+ hisse canlı verilerini, 5 yıllık OHLCV mumlarını, bilançoları, TEFAS fonlarını, PDR portföylerini, ABD borsalarını, halka arzları, KAP haberlerini ve makroekonomik göstergeleri</strong> bu gateway üzerinden anlık çeker.
               </p>
             </div>
           </div>
@@ -1194,43 +1195,53 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
               className="px-3.5 py-2 bg-orange-600 hover:bg-orange-500 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer disabled:opacity-50 shadow-lg shadow-orange-950/40"
             >
               <RefreshCw className={financeApiTestState.loading ? 'animate-spin' : ''} size={14} />
-              {financeApiTestState.loading ? 'Cloudflare Test Ediliyor...' : 'API Bağlantısını Test Et'}
+              {financeApiTestState.loading ? 'API Servisleri Test Ediliyor...' : 'API Bağlantısını Test Et'}
             </button>
           </div>
         </div>
 
-        {/* Cloudflare Quick Command Prompt Box */}
+        {/* API Connection Mode & Quick Presets Bar */}
         <div className="bg-slate-950/80 border border-slate-800 rounded-xl p-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
           <div className="flex items-center gap-2.5">
             <div className="p-1.5 rounded-lg bg-orange-500/10 text-orange-400">
-              <Terminal size={15} />
+              <Zap size={15} />
             </div>
             <div>
-              <span className="text-slate-400 text-[11px] block font-medium">Hızlı Cloudflare Tünel Başlatma Komutu (Terminal):</span>
-              <code className="text-orange-300 font-mono text-xs font-semibold">cloudflared tunnel --url http://localhost:8000</code>
+              <span className="text-slate-300 font-semibold text-xs block">Desteklenen Bağlantı Türleri:</span>
+              <span className="text-slate-400 text-[11px]">
+                Yerel HTTP Server (<code className="text-orange-300 font-mono">http://localhost:5000</code>), Özel Alan Adı veya Tünel (<code className="text-orange-300 font-mono">cloudflared / ngrok</code>)
+              </span>
             </div>
           </div>
-          <button
-            type="button"
-            onClick={() => {
-              navigator.clipboard.writeText('cloudflared tunnel --url http://localhost:8000');
-              setCopiedCfCmd(true);
-              setTimeout(() => setCopiedCfCmd(false), 2500);
-            }}
-            className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-lg transition-all flex items-center gap-1.5 text-xs font-medium cursor-pointer shrink-0"
-          >
-            {copiedCfCmd ? (
-              <>
-                <Check size={13} className="text-emerald-400" />
-                <span className="text-emerald-400 font-semibold">Kopyalandı</span>
-              </>
-            ) : (
-              <>
-                <Copy size={13} />
-                <span>Komutu Kopyala</span>
-              </>
-            )}
-          </button>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <span className="text-[11px] text-slate-400 font-medium">Hızlı Şablonlar:</span>
+            <button
+              type="button"
+              onClick={() => setSettings(prev => ({
+                ...prev,
+                localFinanceApi: {
+                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  baseUrl: 'http://localhost:5000'
+                }
+              }))}
+              className="px-2.5 py-1 text-[11px] font-mono bg-orange-950/60 hover:bg-orange-900/80 border border-orange-500/60 text-orange-200 rounded-lg transition-all font-bold cursor-pointer"
+            >
+              http://localhost:5000
+            </button>
+            <button
+              type="button"
+              onClick={() => setSettings(prev => ({
+                ...prev,
+                localFinanceApi: {
+                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  baseUrl: 'http://localhost:8000'
+                }
+              }))}
+              className="px-2.5 py-1 text-[11px] font-mono bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg transition-all cursor-pointer"
+            >
+              http://localhost:8000
+            </button>
+          </div>
         </div>
 
         {/* API Switch & URL Inputs */}
@@ -1238,7 +1249,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           <div className="md:col-span-1 bg-slate-950/60 border border-slate-800/80 rounded-xl p-4 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-200">Canlı Veri Akışını Aç</span>
+                <span className="text-xs font-bold text-slate-200">Birincil API Akışını Aç</span>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input 
                     type="checkbox"
@@ -1256,14 +1267,14 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 </label>
               </div>
               <p className="text-[11px] text-slate-400 mt-2">
-                Açık olduğunda TEFAS Fonları ve KAP Bildirimleri sayfaları öncelikle Cloudflare tüneliniz üzerinden verileri çeker.
+                Açık olduğunda tüm platform modülleri (BIST, TEFAS, ABD, KAP, Makro, Taramalar) öncelikle bu API gateway üzerinden canlı beslenir.
               </p>
             </div>
 
             <div className="mt-4 pt-3 border-t border-slate-800/60 flex items-center justify-between text-[11px] text-slate-400">
               <span>Sistem Durumu:</span>
               <span className={`font-semibold ${settings.localFinanceApi?.enabled ? 'text-orange-400' : 'text-slate-400'}`}>
-                {settings.localFinanceApi?.enabled ? 'Cloudflare Tüneli Öncelikli' : 'Dahili Veritabanı'}
+                {settings.localFinanceApi?.enabled ? 'Harici API Öncelikli (Primary Gateway)' : 'Dahili Önbellek / Veritabanı'}
               </span>
             </div>
           </div>
@@ -1272,14 +1283,14 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             <div>
               <div className="flex items-center justify-between mb-1.5">
                 <label className="text-xs font-bold text-slate-300">
-                  Cloudflare Tünel Adresi (Base URL)
+                  API Sunucu Adresi (Base URL)
                 </label>
                 <button
                   type="button"
                   onClick={() => setShowCloudflareAccess(prev => !prev)}
                   className="text-[11px] text-orange-400 hover:text-orange-300 underline cursor-pointer"
                 >
-                  {showCloudflareAccess ? 'Zero Trust Ayarlarını Gizle' : 'Cloudflare Zero Trust Token Ekle (Opsiyonel)'}
+                  {showCloudflareAccess ? 'Özel HTTP Başlıklarını Gizle' : 'Özel HTTP Başlıkları & Zero Trust (Opsiyonel)'}
                 </button>
               </div>
               <div className="relative">
@@ -1296,12 +1307,41 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                       baseUrl: e.target.value
                     }
                   }))}
-                  placeholder="https://xxxx-xxxx.trycloudflare.com veya https://api.siteniz.com"
+                  placeholder="http://localhost:5000 veya https://api.siteniz.com"
                   className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
                 />
               </div>
               <span className="text-[11px] text-slate-400 block mt-1">
-                Cloudflare terminal çıktısındaki <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">https://xxxx.trycloudflare.com</code> adresini yapıştırın.
+                İkinci veri sağlayıcı projenizin çalıştığı kök adresi yapıştırın (Örn: <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">http://localhost:5000</code>).
+              </span>
+            </div>
+
+            {/* API Key (X-API-Key / Authorization) Field */}
+            <div className="pt-1">
+              <label className="text-xs font-semibold text-slate-300 block mb-1.5 flex items-center justify-between">
+                <span>API Yetkilendirme Anahtarı (X-API-Key / Bearer Token)</span>
+                <span className="text-[10px] text-emerald-400 font-mono">Otomatik Header Gönderilir</span>
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-500">
+                  <KeyRound size={16} />
+                </div>
+                <input
+                  type="text"
+                  value={settings.localFinanceApi?.apiKey || ''}
+                  onChange={(e) => setSettings(prev => ({
+                    ...prev,
+                    localFinanceApi: {
+                      ...(prev.localFinanceApi || { enabled: false, baseUrl: '' }),
+                      apiKey: e.target.value
+                    }
+                  }))}
+                  placeholder="fin_live_master_9vdthiz069"
+                  className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
+                />
+              </div>
+              <span className="text-[11px] text-slate-400 block mt-1">
+                Veri sağlayıcı API'nize istek atılırken <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">X-API-Key</code> ve <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">Authorization: Bearer</code> başlıklarında otomatik iletilir.
               </span>
             </div>
 
@@ -1310,10 +1350,10 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
               <div className="p-3 bg-slate-950/70 border border-orange-500/20 rounded-xl space-y-2.5">
                 <div className="flex items-center gap-1.5 text-orange-300 text-xs font-semibold">
                   <ShieldCheck size={14} />
-                  <span>Cloudflare Zero Trust / Access Service Token (Opsiyonel)</span>
+                  <span>Özel Servis / Zero Trust Başlıkları (Opsiyonel)</span>
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  Tüneliniz Cloudflare Access politikası ile korunuyorsa Service Token başlıklarını buraya girin. Quick tunnel (<code className="text-slate-300 font-mono">trycloudflare.com</code>) kullanıyorsanız bu alanları boş bırakabilirsiniz.
+                  Sunucunuz Cloudflare Access veya özel proxy politikaları ile korunuyorsa Service Client başlıklarını buraya girebilirsiniz.
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
                   <div>
@@ -1351,51 +1391,6 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 </div>
               </div>
             )}
-
-            {/* Quick URL Presets */}
-            <div className="flex flex-wrap items-center gap-2 pt-1">
-              <span className="text-[11px] text-slate-400 font-medium">Hızlı Şablon:</span>
-              <button
-                type="button"
-                onClick={() => setSettings(prev => ({
-                  ...prev,
-                  localFinanceApi: {
-                    ...(prev.localFinanceApi || { enabled: true }),
-                    baseUrl: 'https://bobby-layout-circles-reform.trycloudflare.com'
-                  }
-                }))}
-                className="px-2.5 py-1 text-[11px] font-mono bg-orange-950/60 hover:bg-orange-900/80 border border-orange-500/60 text-orange-200 rounded-lg transition-all flex items-center gap-1.5 font-bold"
-              >
-                <Cloud size={12} className="text-orange-400" />
-                <span>Cloudflare Tüneli (Aktif)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setSettings(prev => ({
-                  ...prev,
-                  localFinanceApi: {
-                    ...(prev.localFinanceApi || { enabled: true }),
-                    baseUrl: 'http://127.0.0.1:8000'
-                  }
-                }))}
-                className="px-2.5 py-1 text-[11px] font-mono bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg transition-all"
-              >
-                http://127.0.0.1:8000
-              </button>
-              <button
-                type="button"
-                onClick={() => setSettings(prev => ({
-                  ...prev,
-                  localFinanceApi: {
-                    ...(prev.localFinanceApi || { enabled: true }),
-                    baseUrl: 'http://127.0.0.1:5000'
-                  }
-                }))}
-                className="px-2.5 py-1 text-[11px] font-mono bg-slate-950 hover:bg-slate-800 border border-slate-700 text-slate-300 rounded-lg transition-all"
-              >
-                http://127.0.0.1:5000
-              </button>
-            </div>
           </div>
         </div>
 
@@ -1404,8 +1399,8 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 flex items-center gap-3">
             <RefreshCw size={18} className="animate-spin text-orange-400" />
             <div>
-              <p className="text-xs font-bold text-white">Cloudflare Tüneli ve API Uç Noktaları Denetleniyor...</p>
-              <p className="text-[11px] text-slate-400">Cloudflare üzerinden /api/export/funds (TEFAS), /api/export/bulk (KAP), /api/export/companies ve /api/export/schema çağrılıyor.</p>
+              <p className="text-xs font-bold text-white">API Gateway ve Finansal Servis Uç Noktaları Denetleniyor...</p>
+              <p className="text-[11px] text-slate-400">Tüm modüller için /api/v1/bist/stocks, /api/v1/tefas/funds, /api/export/companies ve /api/export/schema çağrıları test ediliyor.</p>
             </div>
           </div>
         )}
@@ -1415,7 +1410,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2 text-emerald-400 font-bold text-xs">
                 <CheckCircle2 size={16} />
-                <span>Cloudflare Tunnel Bağlantısı Başarılı & Aktif</span>
+                <span>API Gateway Bağlantısı Başarılı & Tüm Veri Servisleri Aktif</span>
               </div>
               <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-900/60 text-emerald-300">
                 Gecikme: {financeApiTestState.latencyMs} ms
@@ -1424,7 +1419,15 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
               <div className="bg-slate-950/60 border border-emerald-900/40 rounded-lg p-2.5 text-center">
-                <span className="text-[10px] text-slate-400 block uppercase">TEFAS Fonları</span>
+                <span className="text-[10px] text-slate-400 block uppercase">BIST 625+ Hisse</span>
+                <span className="text-sm font-bold text-emerald-300">
+                  {financeApiTestState.companiesCount !== undefined && financeApiTestState.companiesCount > 0 
+                    ? `${financeApiTestState.companiesCount} Şirket Doğrulandı` 
+                    : 'Uç Nokta Aktif'}
+                </span>
+              </div>
+              <div className="bg-slate-950/60 border border-emerald-900/40 rounded-lg p-2.5 text-center">
+                <span className="text-[10px] text-slate-400 block uppercase">TEFAS & PDR Fonlar</span>
                 <span className="text-sm font-bold text-emerald-300">
                   {financeApiTestState.fundsCount !== undefined && financeApiTestState.fundsCount > 0 
                     ? `${financeApiTestState.fundsCount} Fon Doğrulandı` 
@@ -1432,7 +1435,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 </span>
               </div>
               <div className="bg-slate-950/60 border border-emerald-900/40 rounded-lg p-2.5 text-center">
-                <span className="text-[10px] text-slate-400 block uppercase">KAP Bildirimleri</span>
+                <span className="text-[10px] text-slate-400 block uppercase">KAP & Finansallar</span>
                 <span className="text-sm font-bold text-emerald-300">
                   {financeApiTestState.disclosuresCount !== undefined && financeApiTestState.disclosuresCount > 0 
                     ? `${financeApiTestState.disclosuresCount} Bildirim Doğrulandı` 
@@ -1440,19 +1443,11 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 </span>
               </div>
               <div className="bg-slate-950/60 border border-emerald-900/40 rounded-lg p-2.5 text-center">
-                <span className="text-[10px] text-slate-400 block uppercase">BIST Şirketleri</span>
-                <span className="text-sm font-bold text-emerald-300">
-                  {financeApiTestState.companiesCount !== undefined && financeApiTestState.companiesCount > 0 
-                    ? `${financeApiTestState.companiesCount} Şirket` 
-                    : 'Uç Nokta Aktif'}
-                </span>
-              </div>
-              <div className="bg-slate-950/60 border border-emerald-900/40 rounded-lg p-2.5 text-center">
-                <span className="text-[10px] text-slate-400 block uppercase">Veritabanı Şeması</span>
+                <span className="text-[10px] text-slate-400 block uppercase">Veri Şeması</span>
                 <span className="text-sm font-bold text-emerald-300">
                   {financeApiTestState.tablesCount !== undefined && financeApiTestState.tablesCount > 0 
-                    ? `${financeApiTestState.tablesCount} Tablo Doğrulandı` 
-                    : '43 Tablo Aktif'}
+                    ? `${financeApiTestState.tablesCount} Tablo Uyumlu` 
+                    : 'Tüm Tablolar Aktif'}
                 </span>
               </div>
             </div>
@@ -1688,9 +1683,9 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           {showEndpointsGuide && (
             <div className="p-4 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-4 font-mono text-slate-300">
               <div className="border-b border-slate-800 pb-3 font-sans space-y-1.5">
-                <p className="text-orange-400 font-bold text-sm">Finance Pipeline API Rehberi (Tüm 10 Uç Nokta):</p>
+                <p className="text-orange-400 font-bold text-sm">Ana Finansal Veri API Entegrasyon Rehberi (Uç Nokta Haritası):</p>
                 <p className="text-slate-400 text-xs">
-                  Bu uç noktalar Cloudflare tüneli aracılığıyla BIST hisseleri, bilançolar, KAP bildirimleri, TEFAS fonları ve makroekonomik verileri canlı beslemektedir.
+                  Bu uç noktalar yerel API'niz (http://localhost:5000 vb.) veya gateway aracılığıyla BIST 625+ hisse verileri, 5 yıllık OHLCV mumları, bilançolar, TEFAS fonları, PDR portföyleri, ABD borsaları, halka arzlar, KAP bildirimleri ve makroekonomik verileri canlı beslemektedir.
                 </p>
               </div>
 
