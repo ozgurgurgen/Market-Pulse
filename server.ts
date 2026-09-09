@@ -92,12 +92,22 @@ app.use((req, res, next) => {
   next();
 });
 
+// Helper to exempt local development, loopback, and admins from rate limiters
+const isExemptFromRateLimit = (req: any) => {
+  const ip = req.ip || req.connection?.remoteAddress || '';
+  const isLoopback = ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1' || ip.includes('127.0.0.1');
+  const isDev = process.env.NODE_ENV !== 'production';
+  const isAdmin = req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com' || req.headers['x-user-email'] === 'boschozgur@gmail.com';
+  return isLoopback || isDev || isAdmin;
+};
+
 // Rate Limiting: Brute-force ve DDoS koruması
 const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 1000,
+  max: 5000,
   standardHeaders: true,
   legacyHeaders: false,
+  skip: isExemptFromRateLimit,
   message: { error: "Çok fazla istek gönderildi, lütfen daha sonra tekrar deneyin." },
   validate: { trustProxy: false, xForwardedForHeader: false, default: true }
 });
@@ -107,9 +117,7 @@ const adminLimiter = rateLimit({
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req: any) => {
-    return req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com' || req.headers['x-user-email'] === 'boschozgur@gmail.com';
-  },
+  skip: isExemptFromRateLimit,
   message: { error: "Admin endpointleri için çok fazla istek gönderildi, lütfen daha sonra tekrar deneyin." },
   validate: { trustProxy: false, xForwardedForHeader: false, default: true }
 });
@@ -119,9 +127,7 @@ const subscriptionLimiter = rateLimit({
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req: any) => {
-    return req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com' || req.headers['x-user-email'] === 'boschozgur@gmail.com';
-  },
+  skip: isExemptFromRateLimit,
   message: { error: "Abonelik ve faturalandırma endpointleri için çok fazla istek gönderildi, lütfen daha sonra tekrar deneyin." },
   validate: { trustProxy: false, xForwardedForHeader: false, default: true }
 });
@@ -131,9 +137,7 @@ const writeLimiter = rateLimit({
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-  skip: (req: any) => {
-    return req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com' || req.headers['x-user-email'] === 'boschozgur@gmail.com';
-  },
+  skip: isExemptFromRateLimit,
   message: { error: "Veri yazma ve işlem endpointleri için çok fazla istek gönderildi, lütfen daha sonra tekrar deneyin." },
   validate: { trustProxy: false, xForwardedForHeader: false, default: true }
 });
@@ -2183,7 +2187,19 @@ async function startServer() {
 
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
-      server: { middlewareMode: true },
+      server: {
+        middlewareMode: true,
+        watch: {
+          ignored: [
+            '**/server/data/**',
+            '**/server/data/local_db/**',
+            '**/server/logs/**',
+            '**/*.log',
+            '**/dist/**',
+            '**/.git/**',
+          ],
+        },
+      },
       appType: 'spa',
     });
     app.use(vite.middlewares);

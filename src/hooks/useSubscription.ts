@@ -34,21 +34,49 @@ export interface UseSubscriptionReturn {
   refreshSubscription: () => Promise<void>;
 }
 
+// Module-level cache and promise deduplication to prevent hundreds of concurrent requests
+let cachedPlans: Record<SubscriptionTier, SubscriptionPlanConfig> | null = null;
+let plansFetchPromise: Promise<Record<SubscriptionTier, SubscriptionPlanConfig> | null> | null = null;
+const planListeners = new Set<(plans: Record<SubscriptionTier, SubscriptionPlanConfig>) => void>();
+
+function fetchPlansOnce(): Promise<Record<SubscriptionTier, SubscriptionPlanConfig> | null> {
+  if (cachedPlans) return Promise.resolve(cachedPlans);
+  if (plansFetchPromise) return plansFetchPromise;
+
+  plansFetchPromise = safeFetchJson<{ success: boolean; plans: Record<SubscriptionTier, SubscriptionPlanConfig> }>('/api/subscription/plans')
+    .then(({ ok, data }) => {
+      if (ok && data?.plans) {
+        cachedPlans = data.plans;
+        planListeners.forEach(fn => fn(data.plans));
+        return data.plans;
+      }
+      return null;
+    })
+    .catch(() => null)
+    .finally(() => {
+      plansFetchPromise = null;
+    });
+
+  return plansFetchPromise;
+}
+
 export function useSubscription(): UseSubscriptionReturn {
   const { user, userData, refreshUserData } = useAuth();
   const [isUpgradeModalOpen, setIsUpgradeModalOpen] = useState(false);
   const [upgradeTargetFeature, setUpgradeTargetFeature] = useState<string | undefined>();
   const [upgradeRequiredTier, setUpgradeRequiredTier] = useState<SubscriptionTier | undefined>();
-  const [dynamicPlans, setDynamicPlans] = useState<Record<SubscriptionTier, SubscriptionPlanConfig>>(SUBSCRIPTION_PLANS);
+  const [dynamicPlans, setDynamicPlans] = useState<Record<SubscriptionTier, SubscriptionPlanConfig>>(cachedPlans || SUBSCRIPTION_PLANS);
 
   useEffect(() => {
-    safeFetchJson<{ success: boolean; plans: Record<SubscriptionTier, SubscriptionPlanConfig> }>('/api/subscription/plans')
-      .then(({ ok, data }) => {
-        if (ok && data?.plans) {
-          setDynamicPlans(data.plans);
-        }
-      })
-      .catch(() => {});
+    if (cachedPlans) {
+      setDynamicPlans(cachedPlans);
+      return;
+    }
+    planListeners.add(setDynamicPlans);
+    fetchPlansOnce();
+    return () => {
+      planListeners.delete(setDynamicPlans);
+    };
   }, []);
 
   const isAdmin = userData?.role === 'admin' || 
