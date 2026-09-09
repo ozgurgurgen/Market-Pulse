@@ -4,6 +4,31 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
     <title>MarketPulse AI - TEFAS Fonları, Borsa & Backtest Radar</title>
+    
+    <!-- PWA Anti-Loop / Cache Clear Script -->
+    <script>
+      (function() {
+        if ('serviceWorker' in navigator) {
+          navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            var promises = [];
+            for(let registration of registrations) {
+              promises.push(registration.unregister());
+            }
+            if (promises.length > 0) {
+              Promise.all(promises).then(function() {
+                console.log('All ServiceWorkers unregistered. Refreshing...');
+                window.location.reload(true);
+              });
+            }
+          }).catch(function(err) {
+            console.error('Service Worker unregistration failed: ', err);
+          });
+        }
+        
+        // Also clear any potentially problematic localStorage flags if needed
+        // but avoid clearing user auth.
+      })();
+    </script>
     <meta name="description" content="Halka Arz (IPO) Takip & İstihbarat Merkezi, Finansal İstihbarat (4-Agent Intelligence Hub), TEFAS Fonları, Canlı BIST/ABD/Kripto/Emtia analizi, Enflasyon üstü getiri radarı ve Portföy Backtest motoru." />
     
     <!-- PWA Manifest & Theme -->
