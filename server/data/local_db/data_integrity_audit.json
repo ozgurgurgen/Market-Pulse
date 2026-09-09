@@ -1,173 +1,369 @@
 {
-  "integrity_1788668024337_a415u": {
+  "integrity_1788952484887_3zb56": {
     "field": "price",
-    "value": 4476.6,
+    "value": 0,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.337Z",
+    "fetched_at": "2026-09-09T11:14:44.887Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.337Z",
-    "updatedAt": 1788668024578
+    "timestamp": "2026-09-09T11:14:44.887Z",
+    "updatedAt": 1788952484887
   },
-  "integrity_1788668024579_d8ivv": {
+  "integrity_1788952484888_pg6uj": {
     "field": "price",
-    "value": 0.0001,
+    "value": 23.44,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.579Z",
+    "fetched_at": "2026-09-09T11:14:44.888Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.579Z",
-    "updatedAt": 1788668024579
+    "timestamp": "2026-09-09T11:14:44.888Z",
+    "updatedAt": 1788952484888
   },
-  "integrity_1788668024580_503dh": {
+  "integrity_1788952484888_n09l7": {
     "field": "price",
-    "value": 21.6,
+    "value": 9.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.580Z",
+    "fetched_at": "2026-09-09T11:14:44.888Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.580Z",
-    "updatedAt": 1788668024580
+    "timestamp": "2026-09-09T11:14:44.888Z",
+    "updatedAt": 1788952484888
   },
-  "integrity_1788668024580_bteok": {
+  "integrity_1788952484888_bccxw": {
     "field": "price",
-    "value": 39.2,
+    "value": 2.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.580Z",
+    "fetched_at": "2026-09-09T11:14:44.888Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.580Z",
-    "updatedAt": 1788668024580
+    "timestamp": "2026-09-09T11:14:44.888Z",
+    "updatedAt": 1788952484888
   },
-  "integrity_1788668024580_bq5kz": {
+  "integrity_1788952484888_cd4rk": {
     "field": "price",
-    "value": 63.4,
+    "value": 7.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.580Z",
+    "fetched_at": "2026-09-09T11:14:44.888Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.580Z",
-    "updatedAt": 1788668024580
+    "timestamp": "2026-09-09T11:14:44.888Z",
+    "updatedAt": 1788952484888
   },
-  "integrity_1788668024581_sdnrw": {
+  "integrity_1788952484888_4komy": {
     "field": "price",
-    "value": 6.8,
+    "value": 64,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.581Z",
+    "fetched_at": "2026-09-09T11:14:44.888Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.581Z",
-    "updatedAt": 1788668024581
+    "timestamp": "2026-09-09T11:14:44.888Z",
+    "updatedAt": 1788952484888
   },
-  "integrity_1788668024581_xp3rr": {
+  "integrity_1788952484889_nzhh4": {
     "field": "price",
-    "value": 22,
+    "value": 189.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.581Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.581Z",
-    "updatedAt": 1788668024581
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024582_2orls": {
+  "integrity_1788952484889_wgmis": {
     "field": "price",
-    "value": 12.8,
+    "value": 420,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.582Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.582Z",
-    "updatedAt": 1788668024582
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024583_xk432": {
+  "integrity_1788952484889_90my3": {
     "field": "price",
-    "value": 194.4,
+    "value": 64,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.583Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.583Z",
-    "updatedAt": 1788668024583
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024584_8e4ry": {
+  "integrity_1788952484889_u4mgz": {
     "field": "price",
-    "value": 174,
+    "value": 108,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.584Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.584Z",
-    "updatedAt": 1788668024584
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024585_q1f3t": {
+  "integrity_1788952484889_w340a": {
     "field": "price",
-    "value": 512,
+    "value": 62,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.585Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.585Z",
-    "updatedAt": 1788668024585
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024585_lwu01": {
+  "integrity_1788952484889_bzsmx": {
     "field": "price",
-    "value": 320,
+    "value": 178.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.585Z",
+    "fetched_at": "2026-09-09T11:14:44.889Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.585Z",
-    "updatedAt": 1788668024585
+    "timestamp": "2026-09-09T11:14:44.889Z",
+    "updatedAt": 1788952484889
   },
-  "integrity_1788668024588_wjriq": {
+  "integrity_1788952484890_knbew": {
+    "field": "price",
+    "value": 22.8,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:44.890Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:44.890Z",
+    "updatedAt": 1788952484890
+  },
+  "integrity_1788952495299_4q56s": {
+    "field": "price",
+    "value": 6.5963,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495299_jv6u9": {
+    "field": "price",
+    "value": 0.3809,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495299_dlpj8": {
+    "field": "price",
+    "value": 0.1174,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495299_nbtg8": {
+    "field": "price",
+    "value": 278,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495299_wf62e": {
+    "field": "price",
+    "value": 34.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495299_r73g7": {
+    "field": "price",
+    "value": 323.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.299Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.299Z",
+    "updatedAt": 1788952495299
+  },
+  "integrity_1788952495300_gry5m": {
+    "field": "price",
+    "value": 7.64,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495300_ko7i1": {
+    "field": "price",
+    "value": 72.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495300_4f530": {
+    "field": "price",
+    "value": 345,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495300_fjv3i": {
+    "field": "price",
+    "value": 54,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495300_feloy": {
+    "field": "price",
+    "value": 108,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495300_4u28c": {
+    "field": "price",
+    "value": 72,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.300Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.300Z",
+    "updatedAt": 1788952495300
+  },
+  "integrity_1788952495301_9oszu": {
+    "field": "price",
+    "value": 215,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:14:55.301Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
+  },
+  "integrity_1788952495301_cpdzn": {
     "field": "price",
     "value": 68,
     "validation_status": "single_source",
@@ -175,657 +371,545 @@
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.588Z",
+    "fetched_at": "2026-09-09T11:14:55.301Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.588Z",
-    "updatedAt": 1788668024588
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
   },
-  "integrity_1788668024589_jtbhe": {
+  "integrity_1788952495301_96w9l": {
     "field": "price",
-    "value": 42,
+    "value": 43.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.589Z",
+    "fetched_at": "2026-09-09T11:14:55.301Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.589Z",
-    "updatedAt": 1788668024589
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
   },
-  "integrity_1788668024589_u4pe4": {
+  "integrity_1788952495301_uk0vq": {
     "field": "price",
-    "value": 148,
+    "value": 178,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.589Z",
+    "fetched_at": "2026-09-09T11:14:55.301Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.589Z",
-    "updatedAt": 1788668024589
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
   },
-  "integrity_1788668024590_k1ph6": {
+  "integrity_1788952495301_s9fek": {
     "field": "price",
-    "value": 58.7,
+    "value": 91.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.590Z",
+    "fetched_at": "2026-09-09T11:14:55.301Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.590Z",
-    "updatedAt": 1788668024590
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
   },
-  "integrity_1788668024698_pyd86": {
+  "integrity_1788952495301_ns94y": {
     "field": "price",
-    "value": 0.38,
+    "value": 48.6,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.698Z",
+    "fetched_at": "2026-09-09T11:14:55.301Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.698Z",
-    "updatedAt": 1788668024698
+    "timestamp": "2026-09-09T11:14:55.301Z",
+    "updatedAt": 1788952495301
   },
-  "integrity_1788668024699_1z17e": {
+  "integrity_1788952510206_z34ez": {
     "field": "price",
-    "value": 96.5,
+    "value": 0,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.699Z",
+    "fetched_at": "2026-09-09T11:15:10.206Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.699Z",
-    "updatedAt": 1788668024699
+    "timestamp": "2026-09-09T11:15:10.206Z",
+    "updatedAt": 1788952510206
   },
-  "integrity_1788668024699_1xaan": {
+  "integrity_1788952510206_3ayae": {
     "field": "price",
-    "value": 184,
+    "value": 0.0102,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.699Z",
+    "fetched_at": "2026-09-09T11:15:10.206Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.699Z",
-    "updatedAt": 1788668024699
+    "timestamp": "2026-09-09T11:15:10.206Z",
+    "updatedAt": 1788952510206
   },
-  "integrity_1788668024700_zgqxj": {
+  "integrity_1788952510206_0u210": {
     "field": "price",
-    "value": 16.4,
+    "value": 82.15,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.700Z",
+    "fetched_at": "2026-09-09T11:15:10.206Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.700Z",
-    "updatedAt": 1788668024700
+    "timestamp": "2026-09-09T11:15:10.206Z",
+    "updatedAt": 1788952510206
   },
-  "integrity_1788668024701_pdzld": {
+  "integrity_1788952510206_dl3su": {
     "field": "price",
-    "value": 512,
+    "value": 23.1,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.701Z",
+    "fetched_at": "2026-09-09T11:15:10.206Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.701Z",
-    "updatedAt": 1788668024701
+    "timestamp": "2026-09-09T11:15:10.206Z",
+    "updatedAt": 1788952510206
   },
-  "integrity_1788668024701_y8iuj": {
+  "integrity_1788952510206_orzty": {
     "field": "price",
-    "value": 21.5,
+    "value": 13.14,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.701Z",
+    "fetched_at": "2026-09-09T11:15:10.206Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.701Z",
-    "updatedAt": 1788668024701
+    "timestamp": "2026-09-09T11:15:10.206Z",
+    "updatedAt": 1788952510206
   },
-  "integrity_1788668024701_12m6w": {
+  "integrity_1788952510207_6d5nd": {
     "field": "price",
-    "value": 108,
+    "value": 269.12,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.701Z",
+    "fetched_at": "2026-09-09T11:15:10.207Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.701Z",
-    "updatedAt": 1788668024701
+    "timestamp": "2026-09-09T11:15:10.207Z",
+    "updatedAt": 1788952510207
   },
-  "integrity_1788668024702_h4azz": {
+  "integrity_1788952510208_br01o": {
     "field": "price",
-    "value": 19.8,
+    "value": 44.34,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.702Z",
+    "fetched_at": "2026-09-09T11:15:10.208Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.702Z",
-    "updatedAt": 1788668024702
+    "timestamp": "2026-09-09T11:15:10.208Z",
+    "updatedAt": 1788952510208
   },
-  "integrity_1788668024703_h9fd2": {
+  "integrity_1788952510208_r8yzw": {
     "field": "price",
-    "value": 8.68,
+    "value": 61.02,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.703Z",
+    "fetched_at": "2026-09-09T11:15:10.208Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.703Z",
-    "updatedAt": 1788668024703
+    "timestamp": "2026-09-09T11:15:10.208Z",
+    "updatedAt": 1788952510208
   },
-  "integrity_1788668024761_r8mw9": {
+  "integrity_1788952510208_gakyr": {
     "field": "price",
-    "value": 0.2216,
+    "value": 287.67,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.761Z",
+    "fetched_at": "2026-09-09T11:15:10.208Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.761Z",
-    "updatedAt": 1788668024761
+    "timestamp": "2026-09-09T11:15:10.208Z",
+    "updatedAt": 1788952510208
   },
-  "integrity_1788668024762_g4ot8": {
+  "integrity_1788952510208_1w6yn": {
     "field": "price",
-    "value": 0.2397,
+    "value": 134.2,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.762Z",
+    "fetched_at": "2026-09-09T11:15:10.208Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.762Z",
-    "updatedAt": 1788668024762
+    "timestamp": "2026-09-09T11:15:10.208Z",
+    "updatedAt": 1788952510208
   },
-  "integrity_1788668024762_gz720": {
+  "integrity_1788952510208_fvzs1": {
     "field": "price",
-    "value": 0.0237,
+    "value": 32.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.762Z",
+    "fetched_at": "2026-09-09T11:15:10.208Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.762Z",
-    "updatedAt": 1788668024762
+    "timestamp": "2026-09-09T11:15:10.208Z",
+    "updatedAt": 1788952510208
   },
-  "integrity_1788668024762_o5mz7": {
+  "integrity_1788952525214_6oslx": {
     "field": "price",
-    "value": 0.0111,
+    "value": 749.11,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.762Z",
+    "fetched_at": "2026-09-09T11:15:25.214Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.762Z",
-    "updatedAt": 1788668024762
+    "timestamp": "2026-09-09T11:15:25.214Z",
+    "updatedAt": 1788952525214
   },
-  "integrity_1788668024763_129r8": {
+  "integrity_1788952525215_7bwtt": {
     "field": "price",
-    "value": 0.1129,
+    "value": 0.0102,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.763Z",
+    "fetched_at": "2026-09-09T11:15:25.215Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.763Z",
-    "updatedAt": 1788668024763
+    "timestamp": "2026-09-09T11:15:25.215Z",
+    "updatedAt": 1788952525215
   },
-  "integrity_1788668024763_9q5k2": {
+  "integrity_1788952525217_2a7z9": {
     "field": "price",
-    "value": 11.2,
+    "value": 12.44,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.763Z",
+    "fetched_at": "2026-09-09T11:15:25.217Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.763Z",
-    "updatedAt": 1788668024763
+    "timestamp": "2026-09-09T11:15:25.217Z",
+    "updatedAt": 1788952525217
   },
-  "integrity_1788668024763_mkbr9": {
+  "integrity_1788952525219_id9ir": {
     "field": "price",
-    "value": 10.8,
+    "value": 26,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.763Z",
+    "fetched_at": "2026-09-09T11:15:25.219Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.763Z",
-    "updatedAt": 1788668024763
+    "timestamp": "2026-09-09T11:15:25.219Z",
+    "updatedAt": 1788952525219
   },
-  "integrity_1788668024764_7xzjp": {
+  "integrity_1788952525219_wlkgr": {
     "field": "price",
-    "value": 4.9,
+    "value": 34.1,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.764Z",
+    "fetched_at": "2026-09-09T11:15:25.219Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.764Z",
-    "updatedAt": 1788668024764
+    "timestamp": "2026-09-09T11:15:25.219Z",
+    "updatedAt": 1788952525219
   },
-  "integrity_1788668024764_1pee9": {
+  "integrity_1788952525219_lwheg": {
     "field": "price",
-    "value": 2.45,
+    "value": 148.46,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.764Z",
+    "fetched_at": "2026-09-09T11:15:25.219Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.764Z",
-    "updatedAt": 1788668024764
+    "timestamp": "2026-09-09T11:15:25.219Z",
+    "updatedAt": 1788952525219
   },
-  "integrity_1788668024764_2jzre": {
+  "integrity_1788952525219_i40ew": {
     "field": "price",
-    "value": 34,
+    "value": 318.93,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.764Z",
+    "fetched_at": "2026-09-09T11:15:25.219Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.764Z",
-    "updatedAt": 1788668024764
+    "timestamp": "2026-09-09T11:15:25.219Z",
+    "updatedAt": 1788952525219
   },
-  "integrity_1788668024765_13nbg": {
+  "integrity_1788952525220_shl91": {
     "field": "price",
-    "value": 21,
+    "value": 320.42,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.765Z",
+    "fetched_at": "2026-09-09T11:15:25.220Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.765Z",
-    "updatedAt": 1788668024765
+    "timestamp": "2026-09-09T11:15:25.220Z",
+    "updatedAt": 1788952525220
   },
-  "integrity_1788668024765_cmi5g": {
+  "integrity_1788952525220_8yptg": {
     "field": "price",
-    "value": 158,
+    "value": 53.18,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.765Z",
+    "fetched_at": "2026-09-09T11:15:25.220Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.765Z",
-    "updatedAt": 1788668024765
+    "timestamp": "2026-09-09T11:15:25.220Z",
+    "updatedAt": 1788952525220
   },
-  "integrity_1788668024765_k9jw5": {
+  "integrity_1788952525220_zgz3i": {
     "field": "price",
-    "value": 54,
+    "value": 556.67,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.765Z",
+    "fetched_at": "2026-09-09T11:15:25.220Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.765Z",
-    "updatedAt": 1788668024765
+    "timestamp": "2026-09-09T11:15:25.220Z",
+    "updatedAt": 1788952525220
   },
-  "integrity_1788668024765_1gq81": {
+  "integrity_1788952525220_be5g1": {
     "field": "price",
-    "value": 375,
+    "value": 91.13,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.765Z",
+    "fetched_at": "2026-09-09T11:15:25.220Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.765Z",
-    "updatedAt": 1788668024765
+    "timestamp": "2026-09-09T11:15:25.220Z",
+    "updatedAt": 1788952525220
   },
-  "integrity_1788668024766_uvrim": {
+  "integrity_1788952525221_2mq1j": {
     "field": "price",
-    "value": 82,
+    "value": 82.6,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.766Z",
+    "fetched_at": "2026-09-09T11:15:25.221Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.766Z",
-    "updatedAt": 1788668024766
+    "timestamp": "2026-09-09T11:15:25.221Z",
+    "updatedAt": 1788952525221
   },
-  "integrity_1788668024766_u24yl": {
+  "integrity_1788952525222_owx9x": {
     "field": "price",
-    "value": 108,
+    "value": 24.86,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.766Z",
+    "fetched_at": "2026-09-09T11:15:25.222Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.766Z",
-    "updatedAt": 1788668024766
+    "timestamp": "2026-09-09T11:15:25.222Z",
+    "updatedAt": 1788952525222
   },
-  "integrity_1788668024767_z2gk4": {
+  "integrity_1788952525223_c6htv": {
     "field": "price",
-    "value": 54,
+    "value": 80.46,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.767Z",
+    "fetched_at": "2026-09-09T11:15:25.223Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.767Z",
-    "updatedAt": 1788668024767
+    "timestamp": "2026-09-09T11:15:25.223Z",
+    "updatedAt": 1788952525223
   },
-  "integrity_1788668024767_ygb81": {
+  "integrity_1788952540395_omxdq": {
     "field": "price",
-    "value": 138.5,
+    "value": 153.46,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.767Z",
+    "fetched_at": "2026-09-09T11:15:40.395Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.767Z",
-    "updatedAt": 1788668024767
+    "timestamp": "2026-09-09T11:15:40.395Z",
+    "updatedAt": 1788952540395
   },
-  "integrity_1788668024767_rxxh3": {
+  "integrity_1788952540395_vaqmh": {
     "field": "price",
-    "value": 268.3,
+    "value": 22.72,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.767Z",
+    "fetched_at": "2026-09-09T11:15:40.395Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.767Z",
-    "updatedAt": 1788668024767
+    "timestamp": "2026-09-09T11:15:40.395Z",
+    "updatedAt": 1788952540395
   },
-  "integrity_1788668024768_00s97": {
+  "integrity_1788952540395_o80wr": {
     "field": "price",
-    "value": 118.6,
+    "value": 113.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.768Z",
+    "fetched_at": "2026-09-09T11:15:40.395Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.768Z",
-    "updatedAt": 1788668024768
+    "timestamp": "2026-09-09T11:15:40.395Z",
+    "updatedAt": 1788952540395
   },
-  "integrity_1788668024768_jnn8j": {
+  "integrity_1788952540395_zc0vd": {
     "field": "price",
-    "value": 52.4,
+    "value": 12.27,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.768Z",
+    "fetched_at": "2026-09-09T11:15:40.395Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.768Z",
-    "updatedAt": 1788668024768
+    "timestamp": "2026-09-09T11:15:40.395Z",
+    "updatedAt": 1788952540395
   },
-  "integrity_1788668024768_6pubz": {
+  "integrity_1788952540396_k3cqx": {
     "field": "price",
-    "value": 11.4,
+    "value": 16.28,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.768Z",
+    "fetched_at": "2026-09-09T11:15:40.396Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.768Z",
-    "updatedAt": 1788668024768
+    "timestamp": "2026-09-09T11:15:40.396Z",
+    "updatedAt": 1788952540396
   },
-  "integrity_1788668024769_b4jic": {
+  "integrity_1788952540397_64kk0": {
     "field": "price",
-    "value": 58.05,
+    "value": 138.45,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.769Z",
+    "fetched_at": "2026-09-09T11:15:40.397Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.769Z",
-    "updatedAt": 1788668024769
+    "timestamp": "2026-09-09T11:15:40.397Z",
+    "updatedAt": 1788952540397
   },
-  "integrity_1788668024892_hshem": {
+  "integrity_1788952540397_ii7rp": {
     "field": "price",
-    "value": 5472.03,
+    "value": 26.33,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.892Z",
+    "fetched_at": "2026-09-09T11:15:40.397Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.892Z",
-    "updatedAt": 1788668024892
+    "timestamp": "2026-09-09T11:15:40.397Z",
+    "updatedAt": 1788952540397
   },
-  "integrity_1788668024892_aymdb": {
+  "integrity_1788952540397_r1ty5": {
     "field": "price",
-    "value": 0.0019,
+    "value": 186.28,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.892Z",
+    "fetched_at": "2026-09-09T11:15:40.397Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.892Z",
-    "updatedAt": 1788668024892
+    "timestamp": "2026-09-09T11:15:40.397Z",
+    "updatedAt": 1788952540397
   },
-  "integrity_1788668024893_n0kug": {
+  "integrity_1788952540397_nlion": {
     "field": "price",
-    "value": 0.0003,
+    "value": 301.88,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.893Z",
+    "fetched_at": "2026-09-09T11:15:40.397Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.893Z",
-    "updatedAt": 1788668024893
+    "timestamp": "2026-09-09T11:15:40.397Z",
+    "updatedAt": 1788952540397
   },
-  "integrity_1788668024893_2n9n7": {
-    "field": "price",
-    "value": 13.6,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.893Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.893Z",
-    "updatedAt": 1788668024893
-  },
-  "integrity_1788668024894_qrb6h": {
-    "field": "price",
-    "value": 1.85,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.894Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.894Z",
-    "updatedAt": 1788668024894
-  },
-  "integrity_1788668024894_wmsuj": {
-    "field": "price",
-    "value": 28,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.894Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.894Z",
-    "updatedAt": 1788668024894
-  },
-  "integrity_1788668024894_dwzoh": {
-    "field": "price",
-    "value": 42,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.894Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.894Z",
-    "updatedAt": 1788668024894
-  },
-  "integrity_1788668024895_wzbal": {
-    "field": "price",
-    "value": 16.5,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.895Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.895Z",
-    "updatedAt": 1788668024895
-  },
-  "integrity_1788668024895_43fm9": {
-    "field": "price",
-    "value": 24,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.895Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.895Z",
-    "updatedAt": 1788668024895
-  },
-  "integrity_1788668024896_9z6fi": {
-    "field": "price",
-    "value": 1210,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.896Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.896Z",
-    "updatedAt": 1788668024896
-  },
-  "integrity_1788668024896_izq1e": {
-    "field": "price",
-    "value": 104,
-    "validation_status": "single_source",
-    "sources": [
-      "yahoo_finance"
-    ],
-    "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.896Z",
-    "compared_against": [],
-    "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.896Z",
-    "updatedAt": 1788668024896
-  },
-  "integrity_1788668024897_at0xn": {
+  "integrity_1788952540397_j2mjf": {
     "field": "price",
     "value": 38,
     "validation_status": "single_source",
@@ -833,573 +917,937 @@
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.897Z",
+    "fetched_at": "2026-09-09T11:15:40.397Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.897Z",
-    "updatedAt": 1788668024897
+    "timestamp": "2026-09-09T11:15:40.397Z",
+    "updatedAt": 1788952540397
   },
-  "integrity_1788668024897_4pyfp": {
+  "integrity_1788952540398_b5a7q": {
     "field": "price",
-    "value": 34,
+    "value": 47.47,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.897Z",
+    "fetched_at": "2026-09-09T11:15:40.398Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.897Z",
-    "updatedAt": 1788668024897
+    "timestamp": "2026-09-09T11:15:40.398Z",
+    "updatedAt": 1788952540398
   },
-  "integrity_1788668024897_2er9s": {
+  "integrity_1788952540399_gw3tv": {
     "field": "price",
-    "value": 118,
+    "value": 85.47,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.897Z",
+    "fetched_at": "2026-09-09T11:15:40.399Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.897Z",
-    "updatedAt": 1788668024898
+    "timestamp": "2026-09-09T11:15:40.399Z",
+    "updatedAt": 1788952540399
   },
-  "integrity_1788668024898_ne3s4": {
+  "integrity_1788952540400_ckky7": {
     "field": "price",
-    "value": 455.5,
+    "value": 79.12,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.898Z",
+    "fetched_at": "2026-09-09T11:15:40.400Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.898Z",
-    "updatedAt": 1788668024898
+    "timestamp": "2026-09-09T11:15:40.400Z",
+    "updatedAt": 1788952540400
   },
-  "integrity_1788668024898_hft4z": {
+  "integrity_1788952540400_wr0mz": {
     "field": "price",
-    "value": 73.6,
+    "value": 34.71,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:13:44.898Z",
+    "fetched_at": "2026-09-09T11:15:40.400Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:13:44.898Z",
-    "updatedAt": 1788668024898
+    "timestamp": "2026-09-09T11:15:40.400Z",
+    "updatedAt": 1788952540400
   },
-  "integrity_1788668043488_ndwhz": {
+  "integrity_1788952555243_eyphu": {
     "field": "price",
-    "value": 62.5,
+    "value": 401.94,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.488Z",
+    "fetched_at": "2026-09-09T11:15:55.243Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.488Z",
-    "updatedAt": 1788668043488
+    "timestamp": "2026-09-09T11:15:55.243Z",
+    "updatedAt": 1788952555243
   },
-  "integrity_1788668043489_kyx6s": {
+  "integrity_1788952555244_sq1zw": {
     "field": "price",
-    "value": 11.87,
+    "value": 85.89,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.489Z",
+    "fetched_at": "2026-09-09T11:15:55.244Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.489Z",
-    "updatedAt": 1788668043489
+    "timestamp": "2026-09-09T11:15:55.244Z",
+    "updatedAt": 1788952555244
   },
-  "integrity_1788668043489_kc1v4": {
+  "integrity_1788952555244_erldo": {
     "field": "price",
-    "value": 1.65,
+    "value": 161.94,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.489Z",
+    "fetched_at": "2026-09-09T11:15:55.244Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.489Z",
-    "updatedAt": 1788668043489
+    "timestamp": "2026-09-09T11:15:55.244Z",
+    "updatedAt": 1788952555244
   },
-  "integrity_1788668043490_3ln6h": {
+  "integrity_1788952555244_cabii": {
     "field": "price",
-    "value": 174.33,
+    "value": 129.57,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.490Z",
+    "fetched_at": "2026-09-09T11:15:55.244Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.490Z",
-    "updatedAt": 1788668043490
+    "timestamp": "2026-09-09T11:15:55.244Z",
+    "updatedAt": 1788952555244
   },
-  "integrity_1788668043491_hcc7p": {
+  "integrity_1788952555244_ttsw1": {
     "field": "price",
-    "value": 158,
+    "value": 208.56,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.491Z",
+    "fetched_at": "2026-09-09T11:15:55.244Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.491Z",
-    "updatedAt": 1788668043491
+    "timestamp": "2026-09-09T11:15:55.244Z",
+    "updatedAt": 1788952555244
   },
-  "integrity_1788668043491_9pqxt": {
+  "integrity_1788952555246_thn26": {
     "field": "price",
-    "value": 142,
+    "value": 157.47,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.491Z",
+    "fetched_at": "2026-09-09T11:15:55.246Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.491Z",
-    "updatedAt": 1788668043491
+    "timestamp": "2026-09-09T11:15:55.246Z",
+    "updatedAt": 1788952555246
   },
-  "integrity_1788668043492_k8349": {
+  "integrity_1788952570318_wokg5": {
     "field": "price",
-    "value": 29.5,
+    "value": 18.09,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.492Z",
+    "fetched_at": "2026-09-09T11:16:10.318Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.492Z",
-    "updatedAt": 1788668043492
+    "timestamp": "2026-09-09T11:16:10.318Z",
+    "updatedAt": 1788952570318
   },
-  "integrity_1788668043492_3fa6j": {
+  "integrity_1788952570318_x4aeg": {
     "field": "price",
-    "value": 118.6,
+    "value": 0,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.492Z",
+    "fetched_at": "2026-09-09T11:16:10.318Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.492Z",
-    "updatedAt": 1788668043492
+    "timestamp": "2026-09-09T11:16:10.318Z",
+    "updatedAt": 1788952570318
   },
-  "integrity_1788668043493_8czmh": {
+  "integrity_1788952570321_ffmom": {
     "field": "price",
-    "value": 58.4,
+    "value": 136.52,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:03.493Z",
+    "fetched_at": "2026-09-09T11:16:10.321Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:03.493Z",
-    "updatedAt": 1788668043493
+    "timestamp": "2026-09-09T11:16:10.321Z",
+    "updatedAt": 1788952570321
   },
-  "integrity_1788668056151_vur1d": {
+  "integrity_1788952570321_g8blp": {
     "field": "price",
-    "value": 6.09,
+    "value": 109.42,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.151Z",
+    "fetched_at": "2026-09-09T11:16:10.321Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.151Z",
-    "updatedAt": 1788668056151
+    "timestamp": "2026-09-09T11:16:10.321Z",
+    "updatedAt": 1788952570321
   },
-  "integrity_1788668056152_k99hq": {
+  "integrity_1788952570321_a3942": {
     "field": "price",
-    "value": 2.9,
+    "value": 66.26,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.152Z",
+    "fetched_at": "2026-09-09T11:16:10.321Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.152Z",
-    "updatedAt": 1788668056152
+    "timestamp": "2026-09-09T11:16:10.321Z",
+    "updatedAt": 1788952570321
   },
-  "integrity_1788668056152_0hvtu": {
+  "integrity_1788952570321_gsqq4": {
     "field": "price",
-    "value": 77,
+    "value": 124.89,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.152Z",
+    "fetched_at": "2026-09-09T11:16:10.321Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.152Z",
-    "updatedAt": 1788668056152
+    "timestamp": "2026-09-09T11:16:10.321Z",
+    "updatedAt": 1788952570321
   },
-  "integrity_1788668056153_x7ath": {
+  "integrity_1788952585254_zoyk9": {
     "field": "price",
-    "value": 1122.29,
+    "value": 6.5963,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.153Z",
+    "fetched_at": "2026-09-09T11:16:25.254Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.153Z",
-    "updatedAt": 1788668056153
+    "timestamp": "2026-09-09T11:16:25.254Z",
+    "updatedAt": 1788952585254
   },
-  "integrity_1788668056153_etoll": {
+  "integrity_1788952585254_yxblz": {
     "field": "price",
-    "value": 87.89,
+    "value": 0.6969,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.153Z",
+    "fetched_at": "2026-09-09T11:16:25.254Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.153Z",
-    "updatedAt": 1788668056153
+    "timestamp": "2026-09-09T11:16:25.254Z",
+    "updatedAt": 1788952585254
   },
-  "integrity_1788668056154_91zg7": {
+  "integrity_1788952585254_cmbiu": {
     "field": "price",
-    "value": 9.325,
+    "value": 0.0069,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.154Z",
+    "fetched_at": "2026-09-09T11:16:25.254Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.154Z",
-    "updatedAt": 1788668056154
+    "timestamp": "2026-09-09T11:16:25.254Z",
+    "updatedAt": 1788952585254
   },
-  "integrity_1788668056154_ui7a8": {
+  "integrity_1788952585254_nng4r": {
     "field": "price",
-    "value": 44.67,
+    "value": 117.7,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.154Z",
+    "fetched_at": "2026-09-09T11:16:25.254Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.154Z",
-    "updatedAt": 1788668056154
+    "timestamp": "2026-09-09T11:16:25.254Z",
+    "updatedAt": 1788952585254
   },
-  "integrity_1788668056155_0hfwt": {
+  "integrity_1788952585254_jm3g7": {
     "field": "price",
-    "value": 68.46,
+    "value": 5.93,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.155Z",
+    "fetched_at": "2026-09-09T11:16:25.254Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.155Z",
-    "updatedAt": 1788668056155
+    "timestamp": "2026-09-09T11:16:25.254Z",
+    "updatedAt": 1788952585254
   },
-  "integrity_1788668056155_lqj6t": {
+  "integrity_1788952585255_qpn2t": {
     "field": "price",
-    "value": 188.39,
+    "value": 1.07,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.155Z",
+    "fetched_at": "2026-09-09T11:16:25.255Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.155Z",
-    "updatedAt": 1788668056155
+    "timestamp": "2026-09-09T11:16:25.255Z",
+    "updatedAt": 1788952585255
   },
-  "integrity_1788668056155_zg5at": {
+  "integrity_1788952585255_xvimz": {
     "field": "price",
-    "value": 932.26,
+    "value": 1.9,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.155Z",
+    "fetched_at": "2026-09-09T11:16:25.255Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.155Z",
-    "updatedAt": 1788668056155
+    "timestamp": "2026-09-09T11:16:25.255Z",
+    "updatedAt": 1788952585255
   },
-  "integrity_1788668056156_kti4x": {
+  "integrity_1788952585256_gj8mr": {
     "field": "price",
-    "value": 86.35,
+    "value": 8.21,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.156Z",
+    "fetched_at": "2026-09-09T11:16:25.256Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.156Z",
-    "updatedAt": 1788668056156
+    "timestamp": "2026-09-09T11:16:25.256Z",
+    "updatedAt": 1788952585256
   },
-  "integrity_1788668056156_wbyq7": {
+  "integrity_1788952585256_d0qxd": {
     "field": "price",
-    "value": 82.21,
+    "value": 138.45,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:16.156Z",
+    "fetched_at": "2026-09-09T11:16:25.256Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:16.156Z",
-    "updatedAt": 1788668056156
+    "timestamp": "2026-09-09T11:16:25.256Z",
+    "updatedAt": 1788952585256
   },
-  "integrity_1788668068381_6kahx": {
+  "integrity_1788952585256_y7i1f": {
     "field": "price",
-    "value": 1.4782,
+    "value": 232.09,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.381Z",
+    "fetched_at": "2026-09-09T11:16:25.256Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.381Z",
-    "updatedAt": 1788668068381
+    "timestamp": "2026-09-09T11:16:25.256Z",
+    "updatedAt": 1788952585256
   },
-  "integrity_1788668068384_bcvzn": {
+  "integrity_1788952585256_u8mwt": {
     "field": "price",
-    "value": 7.83,
+    "value": 556.67,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.384Z",
+    "fetched_at": "2026-09-09T11:16:25.256Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.384Z",
-    "updatedAt": 1788668068384
+    "timestamp": "2026-09-09T11:16:25.256Z",
+    "updatedAt": 1788952585256
   },
-  "integrity_1788668068386_2hyze": {
+  "integrity_1788952585257_q3cm3": {
     "field": "price",
-    "value": 619.5,
+    "value": 78.96,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.386Z",
+    "fetched_at": "2026-09-09T11:16:25.257Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.386Z",
-    "updatedAt": 1788668068386
+    "timestamp": "2026-09-09T11:16:25.257Z",
+    "updatedAt": 1788952585257
   },
-  "integrity_1788668068387_n233b": {
+  "integrity_1788952585258_lsao1": {
     "field": "price",
-    "value": 62.68,
+    "value": 36.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.387Z",
+    "fetched_at": "2026-09-09T11:16:25.258Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.387Z",
-    "updatedAt": 1788668068387
+    "timestamp": "2026-09-09T11:16:25.258Z",
+    "updatedAt": 1788952585258
   },
-  "integrity_1788668068387_tx0gm": {
+  "integrity_1788952585258_gkax5": {
     "field": "price",
-    "value": 94.17,
+    "value": 104.71,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.387Z",
+    "fetched_at": "2026-09-09T11:16:25.258Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.387Z",
-    "updatedAt": 1788668068387
+    "timestamp": "2026-09-09T11:16:25.258Z",
+    "updatedAt": 1788952585258
   },
-  "integrity_1788668068388_8tgli": {
+  "integrity_1788952585258_0knz6": {
     "field": "price",
-    "value": 49.41,
+    "value": 75.11,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.388Z",
+    "fetched_at": "2026-09-09T11:16:25.258Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.388Z",
-    "updatedAt": 1788668068388
+    "timestamp": "2026-09-09T11:16:25.258Z",
+    "updatedAt": 1788952585258
   },
-  "integrity_1788668068388_m41tc": {
+  "integrity_1788952585259_fjj60": {
     "field": "price",
-    "value": 87.89,
+    "value": 419.05,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.388Z",
+    "fetched_at": "2026-09-09T11:16:25.259Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.388Z",
-    "updatedAt": 1788668068388
+    "timestamp": "2026-09-09T11:16:25.259Z",
+    "updatedAt": 1788952585259
   },
-  "integrity_1788668068388_pw10d": {
+  "integrity_1788952585259_cctps": {
     "field": "price",
-    "value": 43.82,
+    "value": 181.97,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.388Z",
+    "fetched_at": "2026-09-09T11:16:25.259Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.388Z",
-    "updatedAt": 1788668068388
+    "timestamp": "2026-09-09T11:16:25.259Z",
+    "updatedAt": 1788952585259
   },
-  "integrity_1788668068389_ksjme": {
+  "integrity_1788952600340_h2odb": {
     "field": "price",
-    "value": 104.96,
+    "value": 0.0818,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.389Z",
+    "fetched_at": "2026-09-09T11:16:40.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.389Z",
-    "updatedAt": 1788668068389
+    "timestamp": "2026-09-09T11:16:40.340Z",
+    "updatedAt": 1788952600340
   },
-  "integrity_1788668068390_go9wy": {
+  "integrity_1788952600340_5z2wf": {
     "field": "price",
-    "value": 369.35,
+    "value": 0.0102,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.390Z",
+    "fetched_at": "2026-09-09T11:16:40.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.390Z",
-    "updatedAt": 1788668068390
+    "timestamp": "2026-09-09T11:16:40.340Z",
+    "updatedAt": 1788952600340
   },
-  "integrity_1788668068391_vf5p7": {
+  "integrity_1788952600340_7qhc1": {
     "field": "price",
-    "value": 72.73,
+    "value": 8.95,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.391Z",
+    "fetched_at": "2026-09-09T11:16:40.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.391Z",
-    "updatedAt": 1788668068391
+    "timestamp": "2026-09-09T11:16:40.340Z",
+    "updatedAt": 1788952600340
   },
-  "integrity_1788668068392_kqek4": {
+  "integrity_1788952600340_v4zbp": {
     "field": "price",
-    "value": 41.7,
+    "value": 1.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.392Z",
+    "fetched_at": "2026-09-09T11:16:40.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.392Z",
-    "updatedAt": 1788668068392
+    "timestamp": "2026-09-09T11:16:40.340Z",
+    "updatedAt": 1788952600341
   },
-  "integrity_1788668068395_hgyuf": {
+  "integrity_1788952600341_j9dsc": {
     "field": "price",
-    "value": 24.46,
+    "value": 82.55,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.395Z",
+    "fetched_at": "2026-09-09T11:16:40.341Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.395Z",
-    "updatedAt": 1788668068395
+    "timestamp": "2026-09-09T11:16:40.341Z",
+    "updatedAt": 1788952600341
   },
-  "integrity_1788668068395_hnk46": {
+  "integrity_1788952600342_r22nj": {
     "field": "price",
-    "value": 27.45,
+    "value": 22.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:28.395Z",
+    "fetched_at": "2026-09-09T11:16:40.342Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:28.395Z",
-    "updatedAt": 1788668068395
+    "timestamp": "2026-09-09T11:16:40.342Z",
+    "updatedAt": 1788952600342
   },
-  "integrity_1788668073338_haip4": {
+  "integrity_1788952600342_3fdey": {
     "field": "price",
-    "value": 35787.08,
+    "value": 20.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.338Z",
+    "fetched_at": "2026-09-09T11:16:40.342Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.338Z",
-    "updatedAt": 1788668073338
+    "timestamp": "2026-09-09T11:16:40.342Z",
+    "updatedAt": 1788952600342
   },
-  "integrity_1788668073339_cmvgy": {
+  "integrity_1788952600342_ks7f5": {
+    "field": "price",
+    "value": 78,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.342Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.342Z",
+    "updatedAt": 1788952600342
+  },
+  "integrity_1788952600342_d256q": {
+    "field": "price",
+    "value": 101.69,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.342Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.342Z",
+    "updatedAt": 1788952600342
+  },
+  "integrity_1788952600342_8ldru": {
+    "field": "price",
+    "value": 254.07,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.342Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.342Z",
+    "updatedAt": 1788952600342
+  },
+  "integrity_1788952600344_679h4": {
+    "field": "price",
+    "value": 293.33,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.344Z",
+    "updatedAt": 1788952600344
+  },
+  "integrity_1788952600344_w7cv7": {
+    "field": "price",
+    "value": 64,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.344Z",
+    "updatedAt": 1788952600344
+  },
+  "integrity_1788952600344_psxpc": {
+    "field": "price",
+    "value": 56.51,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.344Z",
+    "updatedAt": 1788952600344
+  },
+  "integrity_1788952600344_xqu18": {
+    "field": "price",
+    "value": 356.58,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.344Z",
+    "updatedAt": 1788952600344
+  },
+  "integrity_1788952600344_r514b": {
+    "field": "price",
+    "value": 124.4,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.344Z",
+    "updatedAt": 1788952600344
+  },
+  "integrity_1788952600345_5ssno": {
+    "field": "price",
+    "value": 45.62,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.345Z",
+    "updatedAt": 1788952600345
+  },
+  "integrity_1788952600345_tctra": {
+    "field": "price",
+    "value": 32.8,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.345Z",
+    "updatedAt": 1788952600345
+  },
+  "integrity_1788952600345_suae6": {
+    "field": "price",
+    "value": 36.46,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:40.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:40.345Z",
+    "updatedAt": 1788952600345
+  },
+  "integrity_1788952615409_xi6qv": {
+    "field": "price",
+    "value": 35.78,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.409Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.409Z",
+    "updatedAt": 1788952615409
+  },
+  "integrity_1788952615409_ovsz8": {
+    "field": "price",
+    "value": 1725,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.409Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.409Z",
+    "updatedAt": 1788952615409
+  },
+  "integrity_1788952615410_lklzx": {
+    "field": "price",
+    "value": 278.11,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.410Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.410Z",
+    "updatedAt": 1788952615410
+  },
+  "integrity_1788952615410_3596g": {
+    "field": "price",
+    "value": 49,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.410Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.410Z",
+    "updatedAt": 1788952615410
+  },
+  "integrity_1788952615411_l8x7w": {
+    "field": "price",
+    "value": 51.74,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_2sd41": {
+    "field": "price",
+    "value": 119.64,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_vvvfq": {
+    "field": "price",
+    "value": 61.02,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_xp8j3": {
+    "field": "price",
+    "value": 138.49,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_n62ky": {
+    "field": "price",
+    "value": 22.07,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_8sgk6": {
+    "field": "price",
+    "value": 75.11,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_4qk0p": {
+    "field": "price",
+    "value": 139.97,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615411_u52m4": {
+    "field": "price",
+    "value": 100.48,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.411Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.411Z",
+    "updatedAt": 1788952615411
+  },
+  "integrity_1788952615412_yoen2": {
+    "field": "price",
+    "value": 167.13,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.412Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.412Z",
+    "updatedAt": 1788952615412
+  },
+  "integrity_1788952615412_u36al": {
+    "field": "price",
+    "value": 174.42,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.412Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.412Z",
+    "updatedAt": 1788952615412
+  },
+  "integrity_1788952615412_1p5fr": {
+    "field": "price",
+    "value": 61.49,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:16:55.412Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:16:55.412Z",
+    "updatedAt": 1788952615412
+  },
+  "integrity_1788952647340_u50e8": {
     "field": "price",
     "value": 0.2182,
     "validation_status": "single_source",
@@ -1407,55 +1855,209 @@
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.339Z",
+    "fetched_at": "2026-09-09T11:17:27.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.339Z",
-    "updatedAt": 1788668073339
+    "timestamp": "2026-09-09T11:17:27.340Z",
+    "updatedAt": 1788952647340
   },
-  "integrity_1788668073339_9vdig": {
+  "integrity_1788952647340_syw8f": {
     "field": "price",
-    "value": 0.0005,
+    "value": 0.0004,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.339Z",
+    "fetched_at": "2026-09-09T11:17:27.340Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.339Z",
-    "updatedAt": 1788668073339
+    "timestamp": "2026-09-09T11:17:27.340Z",
+    "updatedAt": 1788952647340
   },
-  "integrity_1788668073339_3hw80": {
+  "integrity_1788952647341_b7pfn": {
     "field": "price",
-    "value": 388.5,
+    "value": 717.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.339Z",
+    "fetched_at": "2026-09-09T11:17:27.341Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.339Z",
-    "updatedAt": 1788668073339
+    "timestamp": "2026-09-09T11:17:27.341Z",
+    "updatedAt": 1788952647341
   },
-  "integrity_1788668073341_onasl": {
+  "integrity_1788952647342_3cu0m": {
     "field": "price",
-    "value": 3.98,
+    "value": 60.55,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.341Z",
+    "fetched_at": "2026-09-09T11:17:27.342Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.341Z",
-    "updatedAt": 1788668073341
+    "timestamp": "2026-09-09T11:17:27.342Z",
+    "updatedAt": 1788952647342
   },
-  "integrity_1788668073341_s4q75": {
+  "integrity_1788952647343_uj2op": {
+    "field": "price",
+    "value": 66.05,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.343Z",
+    "updatedAt": 1788952647343
+  },
+  "integrity_1788952647343_p4zag": {
+    "field": "price",
+    "value": 38,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.343Z",
+    "updatedAt": 1788952647343
+  },
+  "integrity_1788952647343_5lwn1": {
+    "field": "price",
+    "value": 23.87,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.343Z",
+    "updatedAt": 1788952647343
+  },
+  "integrity_1788952647345_29e42": {
+    "field": "price",
+    "value": 397.77,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.345Z",
+    "updatedAt": 1788952647345
+  },
+  "integrity_1788952647345_rv61d": {
+    "field": "price",
+    "value": 32.3,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.345Z",
+    "updatedAt": 1788952647345
+  },
+  "integrity_1788952647345_l0phl": {
+    "field": "price",
+    "value": 105.52,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.345Z",
+    "updatedAt": 1788952647345
+  },
+  "integrity_1788952647345_kfx9l": {
+    "field": "price",
+    "value": 157.47,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.345Z",
+    "updatedAt": 1788952647345
+  },
+  "integrity_1788952647345_ym48l": {
+    "field": "price",
+    "value": 82.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.345Z",
+    "updatedAt": 1788952647345
+  },
+  "integrity_1788952647346_caolb": {
+    "field": "price",
+    "value": 110.13,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.346Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.346Z",
+    "updatedAt": 1788952647346
+  },
+  "integrity_1788952647346_2gild": {
+    "field": "price",
+    "value": 83.7,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:17:27.346Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:17:27.346Z",
+    "updatedAt": 1788952647346
+  },
+  "integrity_1788952685687_imk3s": {
+    "field": "price",
+    "value": 0,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:05.687Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:05.687Z",
+    "updatedAt": 1788952685689
+  },
+  "integrity_1788952685691_qpsre": {
     "field": "price",
     "value": 138,
     "validation_status": "single_source",
@@ -1463,181 +2065,1231 @@
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.341Z",
+    "fetched_at": "2026-09-09T11:18:05.691Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.341Z",
-    "updatedAt": 1788668073341
+    "timestamp": "2026-09-09T11:18:05.691Z",
+    "updatedAt": 1788952685691
   },
-  "integrity_1788668073342_nrl65": {
+  "integrity_1788952685691_yh5z8": {
     "field": "price",
-    "value": 4.43,
+    "value": 174,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.342Z",
+    "fetched_at": "2026-09-09T11:18:05.691Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.342Z",
-    "updatedAt": 1788668073342
+    "timestamp": "2026-09-09T11:18:05.691Z",
+    "updatedAt": 1788952685691
   },
-  "integrity_1788668073342_5qnhc": {
+  "integrity_1788952685691_2v4p1": {
     "field": "price",
-    "value": 354.08,
+    "value": 295,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.342Z",
+    "fetched_at": "2026-09-09T11:18:05.691Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.342Z",
-    "updatedAt": 1788668073342
+    "timestamp": "2026-09-09T11:18:05.691Z",
+    "updatedAt": 1788952685691
   },
-  "integrity_1788668073342_kz6oz": {
+  "integrity_1788952685692_ohv9t": {
     "field": "price",
-    "value": 146.44,
+    "value": 84,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.342Z",
+    "fetched_at": "2026-09-09T11:18:05.692Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.342Z",
-    "updatedAt": 1788668073342
+    "timestamp": "2026-09-09T11:18:05.692Z",
+    "updatedAt": 1788952685692
   },
-  "integrity_1788668073343_9iuue": {
+  "integrity_1788952685692_hb7ql": {
     "field": "price",
-    "value": 477.57,
+    "value": 68,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.343Z",
+    "fetched_at": "2026-09-09T11:18:05.692Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.343Z",
-    "updatedAt": 1788668073343
+    "timestamp": "2026-09-09T11:18:05.692Z",
+    "updatedAt": 1788952685692
   },
-  "integrity_1788668073343_e0dkt": {
+  "integrity_1788952685692_i74cg": {
     "field": "price",
-    "value": 174.33,
+    "value": 178,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.343Z",
+    "fetched_at": "2026-09-09T11:18:05.692Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.343Z",
-    "updatedAt": 1788668073343
+    "timestamp": "2026-09-09T11:18:05.692Z",
+    "updatedAt": 1788952685692
   },
-  "integrity_1788668073344_eok8o": {
+  "integrity_1788952685693_8nnpl": {
     "field": "price",
-    "value": 255.09,
+    "value": 158,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.344Z",
+    "fetched_at": "2026-09-09T11:18:05.693Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.344Z",
-    "updatedAt": 1788668073344
+    "timestamp": "2026-09-09T11:18:05.693Z",
+    "updatedAt": 1788952685693
   },
-  "integrity_1788668073346_dgrzj": {
+  "integrity_1788952685694_qq5d7": {
     "field": "price",
-    "value": 770.19,
+    "value": 78.6,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.346Z",
+    "fetched_at": "2026-09-09T11:18:05.694Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.346Z",
-    "updatedAt": 1788668073346
+    "timestamp": "2026-09-09T11:18:05.694Z",
+    "updatedAt": 1788952685694
   },
-  "integrity_1788668073347_qh6fm": {
+  "integrity_1788952685694_aakcf": {
     "field": "price",
-    "value": 718.96,
+    "value": 64.2,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.347Z",
+    "fetched_at": "2026-09-09T11:18:05.694Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.347Z",
-    "updatedAt": 1788668073347
+    "timestamp": "2026-09-09T11:18:05.694Z",
+    "updatedAt": 1788952685694
   },
-  "integrity_1788668073347_u9fj0": {
+  "integrity_1788952685694_fepzn": {
     "field": "price",
-    "value": 53.63,
+    "value": 48.2,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.347Z",
+    "fetched_at": "2026-09-09T11:18:05.694Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.347Z",
-    "updatedAt": 1788668073347
+    "timestamp": "2026-09-09T11:18:05.694Z",
+    "updatedAt": 1788952685694
   },
-  "integrity_1788668073348_h2vhe": {
+  "integrity_1788952685694_gelz3": {
     "field": "price",
-    "value": 34.25,
+    "value": 34.6,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:33.348Z",
+    "fetched_at": "2026-09-09T11:18:05.694Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:33.348Z",
-    "updatedAt": 1788668073348
+    "timestamp": "2026-09-09T11:18:05.694Z",
+    "updatedAt": 1788952685694
   },
-  "integrity_1788668086579_phzsy": {
+  "integrity_1788952685695_u0ucr": {
     "field": "price",
-    "value": 0.1654,
+    "value": 26.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.579Z",
+    "fetched_at": "2026-09-09T11:18:05.695Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.579Z",
-    "updatedAt": 1788668086579
+    "timestamp": "2026-09-09T11:18:05.695Z",
+    "updatedAt": 1788952685695
   },
-  "integrity_1788668086580_zulyg": {
+  "integrity_1788952690229_qe7bd": {
     "field": "price",
-    "value": 0.0401,
+    "value": 0.8029,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.580Z",
+    "fetched_at": "2026-09-09T11:18:10.229Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.580Z",
-    "updatedAt": 1788668086580
+    "timestamp": "2026-09-09T11:18:10.229Z",
+    "updatedAt": 1788952690229
   },
-  "integrity_1788668086580_arqls": {
+  "integrity_1788952690229_xjs6u": {
+    "field": "price",
+    "value": 0.0042,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.229Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.229Z",
+    "updatedAt": 1788952690229
+  },
+  "integrity_1788952690230_yf2uu": {
+    "field": "price",
+    "value": 100.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.230Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.230Z",
+    "updatedAt": 1788952690230
+  },
+  "integrity_1788952690230_6hapn": {
+    "field": "price",
+    "value": 13.33,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.230Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.230Z",
+    "updatedAt": 1788952690230
+  },
+  "integrity_1788952690230_f7vyp": {
+    "field": "price",
+    "value": 4.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.230Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.230Z",
+    "updatedAt": 1788952690230
+  },
+  "integrity_1788952690231_ekcm9": {
+    "field": "price",
+    "value": 585,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_nqo8y": {
+    "field": "price",
+    "value": 1210,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_msekw": {
+    "field": "price",
+    "value": 54,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_h1bh1": {
+    "field": "price",
+    "value": 18.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_jmc84": {
+    "field": "price",
+    "value": 154,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_9edhw": {
+    "field": "price",
+    "value": 34,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690231_xbhxq": {
+    "field": "price",
+    "value": 485,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.231Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.231Z",
+    "updatedAt": 1788952690231
+  },
+  "integrity_1788952690232_87t7m": {
+    "field": "price",
+    "value": 98,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.232Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.232Z",
+    "updatedAt": 1788952690232
+  },
+  "integrity_1788952690232_oj4tu": {
+    "field": "price",
+    "value": 78.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.232Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.232Z",
+    "updatedAt": 1788952690232
+  },
+  "integrity_1788952690232_5drub": {
+    "field": "price",
+    "value": 64.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.232Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.232Z",
+    "updatedAt": 1788952690232
+  },
+  "integrity_1788952690232_ofw2b": {
+    "field": "price",
+    "value": 46.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:10.232Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:10.232Z",
+    "updatedAt": 1788952690232
+  },
+  "integrity_1788952693343_k431j": {
+    "field": "price",
+    "value": 0.1807,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.343Z",
+    "updatedAt": 1788952693343
+  },
+  "integrity_1788952693343_lrnys": {
+    "field": "price",
+    "value": 136.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.343Z",
+    "updatedAt": 1788952693343
+  },
+  "integrity_1788952693343_g0g6b": {
+    "field": "price",
+    "value": 74.9,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.343Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.343Z",
+    "updatedAt": 1788952693343
+  },
+  "integrity_1788952693344_yq6l1": {
+    "field": "price",
+    "value": 51.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.344Z",
+    "updatedAt": 1788952693344
+  },
+  "integrity_1788952693344_zewxj": {
+    "field": "price",
+    "value": 595,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.344Z",
+    "updatedAt": 1788952693344
+  },
+  "integrity_1788952693344_k9gxh": {
+    "field": "price",
+    "value": 122,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.344Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.344Z",
+    "updatedAt": 1788952693344
+  },
+  "integrity_1788952693345_wfmv5": {
+    "field": "price",
+    "value": 375,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.345Z",
+    "updatedAt": 1788952693345
+  },
+  "integrity_1788952693345_d7j8a": {
+    "field": "price",
+    "value": 44,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.345Z",
+    "updatedAt": 1788952693345
+  },
+  "integrity_1788952693345_jhqdp": {
+    "field": "price",
+    "value": 62,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.345Z",
+    "updatedAt": 1788952693345
+  },
+  "integrity_1788952693345_4ouj0": {
+    "field": "price",
+    "value": 114.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.345Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.345Z",
+    "updatedAt": 1788952693345
+  },
+  "integrity_1788952693346_e46mx": {
+    "field": "price",
+    "value": 72.8,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.346Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.346Z",
+    "updatedAt": 1788952693346
+  },
+  "integrity_1788952693346_ovv8d": {
+    "field": "price",
+    "value": 48.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.346Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.346Z",
+    "updatedAt": 1788952693346
+  },
+  "integrity_1788952693435_1n8cb": {
+    "field": "price",
+    "value": 0.0392,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.435Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.435Z",
+    "updatedAt": 1788952693435
+  },
+  "integrity_1788952693435_s9y0q": {
+    "field": "price",
+    "value": 0.5788,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.435Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.435Z",
+    "updatedAt": 1788952693435
+  },
+  "integrity_1788952693435_gd1l8": {
+    "field": "price",
+    "value": 0.2308,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.435Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.435Z",
+    "updatedAt": 1788952693435
+  },
+  "integrity_1788952693436_hmk0n": {
+    "field": "price",
+    "value": 11200,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.436Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.436Z",
+    "updatedAt": 1788952693436
+  },
+  "integrity_1788952693436_sn2u2": {
+    "field": "price",
+    "value": 68,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.436Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.436Z",
+    "updatedAt": 1788952693436
+  },
+  "integrity_1788952693436_m1tha": {
+    "field": "price",
+    "value": 4.9,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.436Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.436Z",
+    "updatedAt": 1788952693436
+  },
+  "integrity_1788952693436_8o8cn": {
+    "field": "price",
+    "value": 74,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.436Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.436Z",
+    "updatedAt": 1788952693436
+  },
+  "integrity_1788952693437_0enxm": {
+    "field": "price",
+    "value": 480,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.437Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.437Z",
+    "updatedAt": 1788952693437
+  },
+  "integrity_1788952693437_tqy5z": {
+    "field": "price",
+    "value": 285,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.437Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.437Z",
+    "updatedAt": 1788952693437
+  },
+  "integrity_1788952693437_2l0yd": {
+    "field": "price",
+    "value": 485,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.437Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.437Z",
+    "updatedAt": 1788952693437
+  },
+  "integrity_1788952693437_a7hc9": {
+    "field": "price",
+    "value": 62,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.437Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.437Z",
+    "updatedAt": 1788952693437
+  },
+  "integrity_1788952693438_c3jol": {
+    "field": "price",
+    "value": 104,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.438Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.438Z",
+    "updatedAt": 1788952693438
+  },
+  "integrity_1788952693438_pizaq": {
+    "field": "price",
+    "value": 228,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.438Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.438Z",
+    "updatedAt": 1788952693438
+  },
+  "integrity_1788952693438_u1xtt": {
+    "field": "price",
+    "value": 218,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.438Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.438Z",
+    "updatedAt": 1788952693438
+  },
+  "integrity_1788952693438_upiuu": {
+    "field": "price",
+    "value": 31.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:13.438Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:13.438Z",
+    "updatedAt": 1788952693438
+  },
+  "integrity_1788952694161_hncmd": {
+    "field": "price",
+    "value": 6.251,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.161Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.161Z",
+    "updatedAt": 1788952694161
+  },
+  "integrity_1788952694161_gjevm": {
+    "field": "price",
+    "value": 2.277,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.161Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.161Z",
+    "updatedAt": 1788952694161
+  },
+  "integrity_1788952694161_fyzo8": {
+    "field": "price",
+    "value": 12.69,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.161Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.161Z",
+    "updatedAt": 1788952694161
+  },
+  "integrity_1788952694162_zei6s": {
+    "field": "price",
+    "value": 342,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.162Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.162Z",
+    "updatedAt": 1788952694162
+  },
+  "integrity_1788952694162_2it3z": {
+    "field": "price",
+    "value": 186,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.162Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.162Z",
+    "updatedAt": 1788952694162
+  },
+  "integrity_1788952694162_anb4q": {
+    "field": "price",
+    "value": 185,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.162Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.162Z",
+    "updatedAt": 1788952694162
+  },
+  "integrity_1788952694163_no98l": {
+    "field": "price",
+    "value": 335,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.163Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.163Z",
+    "updatedAt": 1788952694163
+  },
+  "integrity_1788952694163_ki5bk": {
+    "field": "price",
+    "value": 88,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.163Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.163Z",
+    "updatedAt": 1788952694163
+  },
+  "integrity_1788952694163_69t25": {
+    "field": "price",
+    "value": 58,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.163Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.163Z",
+    "updatedAt": 1788952694163
+  },
+  "integrity_1788952694164_qi0nw": {
+    "field": "price",
+    "value": 14.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.164Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.164Z",
+    "updatedAt": 1788952694164
+  },
+  "integrity_1788952694164_li596": {
+    "field": "price",
+    "value": 23.5,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.164Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.164Z",
+    "updatedAt": 1788952694164
+  },
+  "integrity_1788952694164_vih1n": {
+    "field": "price",
+    "value": 96.8,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.164Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.164Z",
+    "updatedAt": 1788952694164
+  },
+  "integrity_1788952694164_uv8z8": {
+    "field": "price",
+    "value": 94.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.164Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.164Z",
+    "updatedAt": 1788952694164
+  },
+  "integrity_1788952694590_gc0b7": {
+    "field": "price",
+    "value": 0.1313,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_3z2qb": {
+    "field": "price",
+    "value": 67.79,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_h1j1m": {
+    "field": "price",
+    "value": 2.0608,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_bv46x": {
+    "field": "price",
+    "value": 0.0573,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_jn5vf": {
+    "field": "price",
+    "value": 2.9248,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_5t242": {
+    "field": "price",
+    "value": 14.12,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_2qcwq": {
+    "field": "price",
+    "value": 19.42,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694590_qsmbk": {
+    "field": "price",
+    "value": 28.56,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.590Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.590Z",
+    "updatedAt": 1788952694590
+  },
+  "integrity_1788952694591_o03ma": {
+    "field": "price",
+    "value": 16.8,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.591Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.591Z",
+    "updatedAt": 1788952694591
+  },
+  "integrity_1788952694591_asmhc": {
+    "field": "price",
+    "value": 392,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.591Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.591Z",
+    "updatedAt": 1788952694591
+  },
+  "integrity_1788952694591_gz65m": {
+    "field": "price",
+    "value": 114,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.591Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.591Z",
+    "updatedAt": 1788952694591
+  },
+  "integrity_1788952694591_kebpj": {
+    "field": "price",
+    "value": 62,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.591Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.591Z",
+    "updatedAt": 1788952694591
+  },
+  "integrity_1788952694592_9rodb": {
+    "field": "price",
+    "value": 138,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952694592_75df3": {
+    "field": "price",
+    "value": 345,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952694592_i0asb": {
+    "field": "price",
+    "value": 58.7,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952694592_77gp9": {
+    "field": "price",
+    "value": 100.6,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952694592_ziwaf": {
+    "field": "price",
+    "value": 46.2,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952694592_b0iak": {
+    "field": "price",
+    "value": 96.4,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:14.592Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:14.592Z",
+    "updatedAt": 1788952694592
+  },
+  "integrity_1788952697419_7pcmy": {
+    "field": "price",
+    "value": 0.2316,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:17.419Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:17.419Z",
+    "updatedAt": 1788952697419
+  },
+  "integrity_1788952697419_kpgle": {
+    "field": "price",
+    "value": 4.38,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:17.419Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:17.419Z",
+    "updatedAt": 1788952697419
+  },
+  "integrity_1788952697419_21ovz": {
     "field": "price",
     "value": 0.0003,
     "validation_status": "single_source",
@@ -1645,654 +3297,906 @@
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.580Z",
+    "fetched_at": "2026-09-09T11:18:17.419Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.580Z",
-    "updatedAt": 1788668086580
+    "timestamp": "2026-09-09T11:18:17.419Z",
+    "updatedAt": 1788952697419
   },
-  "integrity_1788668086581_cc3is": {
+  "integrity_1788952697420_ogfyy": {
     "field": "price",
-    "value": 0.0133,
+    "value": 490,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.581Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.581Z",
-    "updatedAt": 1788668086581
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086581_3s50m": {
+  "integrity_1788952697420_7m6l4": {
     "field": "price",
-    "value": 131.4,
+    "value": 242,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.581Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.581Z",
-    "updatedAt": 1788668086581
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086582_zgp28": {
+  "integrity_1788952697420_6a93j": {
     "field": "price",
-    "value": 4.65,
+    "value": 295,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.582Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.582Z",
-    "updatedAt": 1788668086582
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086582_gny05": {
+  "integrity_1788952697420_rt6ij": {
     "field": "price",
-    "value": 100.7,
+    "value": 39.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.582Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.582Z",
-    "updatedAt": 1788668086582
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086583_xtn7i": {
+  "integrity_1788952697420_jsmul": {
     "field": "price",
-    "value": 14.8,
+    "value": 84,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.583Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.583Z",
-    "updatedAt": 1788668086583
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086584_e030d": {
+  "integrity_1788952697420_ix1kf": {
     "field": "price",
-    "value": 3.03,
+    "value": 84,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.584Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.584Z",
-    "updatedAt": 1788668086584
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086586_5jhvm": {
+  "integrity_1788952697420_4opuh": {
     "field": "price",
-    "value": 341.59,
+    "value": 340,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.586Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.586Z",
-    "updatedAt": 1788668086586
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086586_aaj6b": {
+  "integrity_1788952697420_jt5up": {
     "field": "price",
-    "value": 239.84,
+    "value": 42,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.586Z",
+    "fetched_at": "2026-09-09T11:18:17.420Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.586Z",
-    "updatedAt": 1788668086586
+    "timestamp": "2026-09-09T11:18:17.420Z",
+    "updatedAt": 1788952697420
   },
-  "integrity_1788668086587_3v3uq": {
+  "integrity_1788952697421_3ozvz": {
     "field": "price",
-    "value": 468.05,
+    "value": 92.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.587Z",
+    "fetched_at": "2026-09-09T11:18:17.421Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.587Z",
-    "updatedAt": 1788668086587
+    "timestamp": "2026-09-09T11:18:17.421Z",
+    "updatedAt": 1788952697421
   },
-  "integrity_1788668086587_yss8n": {
+  "integrity_1788952697421_t5n9c": {
     "field": "price",
-    "value": 38.94,
+    "value": 81.6,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.587Z",
+    "fetched_at": "2026-09-09T11:18:17.421Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.587Z",
-    "updatedAt": 1788668086587
+    "timestamp": "2026-09-09T11:18:17.421Z",
+    "updatedAt": 1788952697421
   },
-  "integrity_1788668086588_8eeq0": {
+  "integrity_1788952697421_7xans": {
     "field": "price",
-    "value": 29.68,
+    "value": 3.98,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.588Z",
+    "fetched_at": "2026-09-09T11:18:17.421Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.588Z",
-    "updatedAt": 1788668086588
+    "timestamp": "2026-09-09T11:18:17.421Z",
+    "updatedAt": 1788952697421
   },
-  "integrity_1788668086588_vnqk4": {
+  "integrity_1788952708614_rtixu": {
     "field": "price",
-    "value": 31.4,
+    "value": 0.0902,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.588Z",
+    "fetched_at": "2026-09-09T11:18:28.614Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.588Z",
-    "updatedAt": 1788668086588
+    "timestamp": "2026-09-09T11:18:28.614Z",
+    "updatedAt": 1788952708614
   },
-  "integrity_1788668086589_sosrr": {
+  "integrity_1788952708615_5tn4h": {
     "field": "price",
-    "value": 163.81,
+    "value": 0.0044,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:14:46.589Z",
+    "fetched_at": "2026-09-09T11:18:28.615Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:14:46.589Z",
-    "updatedAt": 1788668086589
+    "timestamp": "2026-09-09T11:18:28.615Z",
+    "updatedAt": 1788952708615
   },
-  "integrity_1788668100459_i9kxt": {
+  "integrity_1788952708615_cisbz": {
     "field": "price",
-    "value": 0.186,
+    "value": 20.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.459Z",
+    "fetched_at": "2026-09-09T11:18:28.615Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.459Z",
-    "updatedAt": 1788668100459
+    "timestamp": "2026-09-09T11:18:28.615Z",
+    "updatedAt": 1788952708615
   },
-  "integrity_1788668100460_g5m6e": {
+  "integrity_1788952708616_clxve": {
     "field": "price",
-    "value": 0.3955,
+    "value": 9.65,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.460Z",
+    "fetched_at": "2026-09-09T11:18:28.616Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.460Z",
-    "updatedAt": 1788668100460
+    "timestamp": "2026-09-09T11:18:28.616Z",
+    "updatedAt": 1788952708616
   },
-  "integrity_1788668100460_dtnbu": {
+  "integrity_1788952708616_kvouf": {
     "field": "price",
-    "value": 0.1763,
+    "value": 128,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.460Z",
+    "fetched_at": "2026-09-09T11:18:28.616Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.460Z",
-    "updatedAt": 1788668100460
+    "timestamp": "2026-09-09T11:18:28.616Z",
+    "updatedAt": 1788952708616
   },
-  "integrity_1788668100461_kzc0d": {
+  "integrity_1788952708617_3xi0f": {
     "field": "price",
-    "value": 0.3987,
+    "value": 78.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.461Z",
+    "fetched_at": "2026-09-09T11:18:28.617Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.461Z",
-    "updatedAt": 1788668100461
+    "timestamp": "2026-09-09T11:18:28.617Z",
+    "updatedAt": 1788952708617
   },
-  "integrity_1788668100461_4d25q": {
+  "integrity_1788952708617_71ejv": {
     "field": "price",
-    "value": 74.7,
+    "value": 61.45,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.461Z",
+    "fetched_at": "2026-09-09T11:18:28.617Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.461Z",
-    "updatedAt": 1788668100461
+    "timestamp": "2026-09-09T11:18:28.617Z",
+    "updatedAt": 1788952708617
   },
-  "integrity_1788668100462_tw63s": {
+  "integrity_1788952723591_8isgq": {
     "field": "price",
-    "value": 70.55,
+    "value": 1.1645,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.462Z",
+    "fetched_at": "2026-09-09T11:18:43.591Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.462Z",
-    "updatedAt": 1788668100462
+    "timestamp": "2026-09-09T11:18:43.591Z",
+    "updatedAt": 1788952723591
   },
-  "integrity_1788668100462_7ei7u": {
+  "integrity_1788952723592_eiula": {
     "field": "price",
-    "value": 18.15,
+    "value": 0.0363,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.462Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.462Z",
-    "updatedAt": 1788668100462
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100463_6rq1k": {
+  "integrity_1788952723592_cngrv": {
     "field": "price",
-    "value": 138,
+    "value": 5767.5,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.463Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.463Z",
-    "updatedAt": 1788668100463
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100463_k9akr": {
+  "integrity_1788952723592_5uxsu": {
     "field": "price",
-    "value": 4.43,
+    "value": 6.69,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.463Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.463Z",
-    "updatedAt": 1788668100463
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100464_n06z0": {
+  "integrity_1788952723592_n62y6": {
     "field": "price",
-    "value": 366.7,
+    "value": 10.26,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.464Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.464Z",
-    "updatedAt": 1788668100464
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100464_pvjvr": {
+  "integrity_1788952723592_ne9a9": {
     "field": "price",
-    "value": 213.1,
+    "value": 60.4,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.464Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.464Z",
-    "updatedAt": 1788668100464
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100465_kvl7k": {
+  "integrity_1788952723592_x6cet": {
     "field": "price",
-    "value": 184.06,
+    "value": 379.75,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.465Z",
+    "fetched_at": "2026-09-09T11:18:43.592Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.465Z",
-    "updatedAt": 1788668100465
+    "timestamp": "2026-09-09T11:18:43.592Z",
+    "updatedAt": 1788952723592
   },
-  "integrity_1788668100466_wvpb0": {
+  "integrity_1788952723593_hmjkw": {
     "field": "price",
-    "value": 147.85,
+    "value": 90.15,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.466Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.466Z",
-    "updatedAt": 1788668100466
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668100466_2br8m": {
+  "integrity_1788952723593_8ti2v": {
     "field": "price",
-    "value": 89.9,
+    "value": 493.95,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.466Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.466Z",
-    "updatedAt": 1788668100466
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668100467_va5ev": {
+  "integrity_1788952723593_a86ow": {
     "field": "price",
-    "value": 460.72,
+    "value": 148.46,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.467Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.467Z",
-    "updatedAt": 1788668100467
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668100467_tcto5": {
+  "integrity_1788952723593_9rv9a": {
     "field": "price",
-    "value": 256.45,
+    "value": 88.99,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.467Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.467Z",
-    "updatedAt": 1788668100467
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668100468_cd3pl": {
+  "integrity_1788952723593_356h4": {
     "field": "price",
-    "value": 406.77,
+    "value": 43.15,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:00.468Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:00.468Z",
-    "updatedAt": 1788668100468
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668115461_xcfbb": {
+  "integrity_1788952723593_bo6lf": {
     "field": "price",
-    "value": 0.0002,
+    "value": 78.27,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.461Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.461Z",
-    "updatedAt": 1788668115461
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668115462_qgs17": {
+  "integrity_1788952723593_047km": {
     "field": "price",
-    "value": 0.0563,
+    "value": 47.95,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.462Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.462Z",
-    "updatedAt": 1788668115462
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668115462_oujqy": {
+  "integrity_1788952723593_41e2k": {
     "field": "price",
-    "value": 0.0107,
+    "value": 58.82,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.462Z",
+    "fetched_at": "2026-09-09T11:18:43.593Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.462Z",
-    "updatedAt": 1788668115462
+    "timestamp": "2026-09-09T11:18:43.593Z",
+    "updatedAt": 1788952723593
   },
-  "integrity_1788668115463_wuaj8": {
+  "integrity_1788952723594_oc9ru": {
     "field": "price",
-    "value": 43.52,
+    "value": 225.66,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.463Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.463Z",
-    "updatedAt": 1788668115463
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115464_v0ee2": {
+  "integrity_1788952723594_1e2dj": {
     "field": "price",
-    "value": 5.12,
+    "value": 320.42,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.464Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.464Z",
-    "updatedAt": 1788668115464
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115464_ck7a1": {
+  "integrity_1788952723594_z1wfe": {
     "field": "price",
-    "value": 24.34,
+    "value": 69.97,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.464Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.464Z",
-    "updatedAt": 1788668115464
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115465_g106h": {
+  "integrity_1788952723594_8r21z": {
     "field": "price",
-    "value": 30.3,
+    "value": 51.74,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.465Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.465Z",
-    "updatedAt": 1788668115465
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115467_1paeb": {
+  "integrity_1788952723594_t0til": {
     "field": "price",
-    "value": 145.19,
+    "value": 175.58,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.467Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.467Z",
-    "updatedAt": 1788668115467
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115468_8glua": {
+  "integrity_1788952723594_dsprt": {
     "field": "price",
-    "value": 181.94,
+    "value": 48.35,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.468Z",
+    "fetched_at": "2026-09-09T11:18:43.594Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.468Z",
-    "updatedAt": 1788668115468
+    "timestamp": "2026-09-09T11:18:43.594Z",
+    "updatedAt": 1788952723594
   },
-  "integrity_1788668115469_cos5b": {
+  "integrity_1788952739172_yect2": {
     "field": "price",
-    "value": 390.47,
+    "value": 2484.85,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.469Z",
+    "fetched_at": "2026-09-09T11:18:59.172Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.469Z",
-    "updatedAt": 1788668115469
+    "timestamp": "2026-09-09T11:18:59.172Z",
+    "updatedAt": 1788952739172
   },
-  "integrity_1788668115470_5zvon": {
+  "integrity_1788952739174_qzdhk": {
     "field": "price",
-    "value": 198.76,
+    "value": 2.11,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.470Z",
+    "fetched_at": "2026-09-09T11:18:59.174Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.470Z",
-    "updatedAt": 1788668115470
+    "timestamp": "2026-09-09T11:18:59.174Z",
+    "updatedAt": 1788952739174
   },
-  "integrity_1788668115470_rk7ya": {
+  "integrity_1788952739176_3rqdh": {
     "field": "price",
-    "value": 242.06,
+    "value": 23.8,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.470Z",
+    "fetched_at": "2026-09-09T11:18:59.176Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.470Z",
-    "updatedAt": 1788668115470
+    "timestamp": "2026-09-09T11:18:59.176Z",
+    "updatedAt": 1788952739176
   },
-  "integrity_1788668115471_9joff": {
+  "integrity_1788952739177_14b4o": {
     "field": "price",
-    "value": 172.88,
+    "value": 217.78,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.471Z",
+    "fetched_at": "2026-09-09T11:18:59.177Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.471Z",
-    "updatedAt": 1788668115471
+    "timestamp": "2026-09-09T11:18:59.177Z",
+    "updatedAt": 1788952739177
   },
-  "integrity_1788668115472_o3128": {
+  "integrity_1788952739177_olmbu": {
     "field": "price",
-    "value": 50.76,
+    "value": 314.13,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.472Z",
+    "fetched_at": "2026-09-09T11:18:59.177Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.472Z",
-    "updatedAt": 1788668115472
+    "timestamp": "2026-09-09T11:18:59.177Z",
+    "updatedAt": 1788952739177
   },
-  "integrity_1788668115473_mvs59": {
+  "integrity_1788952739177_4hos7": {
     "field": "price",
-    "value": 70.8,
+    "value": 21.79,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.473Z",
+    "fetched_at": "2026-09-09T11:18:59.177Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.473Z",
-    "updatedAt": 1788668115473
+    "timestamp": "2026-09-09T11:18:59.177Z",
+    "updatedAt": 1788952739177
   },
-  "integrity_1788668115474_btz6v": {
+  "integrity_1788952739179_v7ktq": {
     "field": "price",
-    "value": 119.95,
+    "value": 108.23,
     "validation_status": "single_source",
     "sources": [
       "yahoo_finance"
     ],
     "confidence": 0.5,
-    "fetched_at": "2026-09-06T04:15:15.474Z",
+    "fetched_at": "2026-09-09T11:18:59.179Z",
     "compared_against": [],
     "reviewed_by": null,
-    "timestamp": "2026-09-06T04:15:15.474Z",
-    "updatedAt": 1788668115474
+    "timestamp": "2026-09-09T11:18:59.179Z",
+    "updatedAt": 1788952739179
+  },
+  "integrity_1788952739179_zafvc": {
+    "field": "price",
+    "value": 14,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:59.179Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:59.179Z",
+    "updatedAt": 1788952739179
+  },
+  "integrity_1788952739179_ycfol": {
+    "field": "price",
+    "value": 75.38,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:59.179Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:59.179Z",
+    "updatedAt": 1788952739179
+  },
+  "integrity_1788952739180_hixzt": {
+    "field": "price",
+    "value": 240.31,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:59.180Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:59.180Z",
+    "updatedAt": 1788952739180
+  },
+  "integrity_1788952739180_l4oqw": {
+    "field": "price",
+    "value": 237.25,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:59.180Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:59.180Z",
+    "updatedAt": 1788952739180
+  },
+  "integrity_1788952739182_9ls3r": {
+    "field": "price",
+    "value": 95.93,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:18:59.182Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:18:59.182Z",
+    "updatedAt": 1788952739182
+  },
+  "integrity_1788952754572_9cmsh": {
+    "field": "price",
+    "value": 1860.9,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.572Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.572Z",
+    "updatedAt": 1788952754572
+  },
+  "integrity_1788952754572_ajumz": {
+    "field": "price",
+    "value": 424,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.572Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.572Z",
+    "updatedAt": 1788952754572
+  },
+  "integrity_1788952754573_gbtip": {
+    "field": "price",
+    "value": 1738,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.573Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.573Z",
+    "updatedAt": 1788952754573
+  },
+  "integrity_1788952754573_rnhbw": {
+    "field": "price",
+    "value": 4.77,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.573Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.573Z",
+    "updatedAt": 1788952754573
+  },
+  "integrity_1788952754574_x1wty": {
+    "field": "price",
+    "value": 2.28,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.574Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.574Z",
+    "updatedAt": 1788952754574
+  },
+  "integrity_1788952754574_gojzh": {
+    "field": "price",
+    "value": 368.16,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.574Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.574Z",
+    "updatedAt": 1788952754574
+  },
+  "integrity_1788952754575_cojmj": {
+    "field": "price",
+    "value": 88.36,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.575Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.575Z",
+    "updatedAt": 1788952754575
+  },
+  "integrity_1788952754575_s3mit": {
+    "field": "price",
+    "value": 21.79,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.575Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.575Z",
+    "updatedAt": 1788952754575
+  },
+  "integrity_1788952754575_an22u": {
+    "field": "price",
+    "value": 284.3,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.575Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.575Z",
+    "updatedAt": 1788952754575
+  },
+  "integrity_1788952754575_hcr6k": {
+    "field": "price",
+    "value": 189.13,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.575Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.575Z",
+    "updatedAt": 1788952754575
+  },
+  "integrity_1788952754576_qejr4": {
+    "field": "price",
+    "value": 108.81,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.576Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.576Z",
+    "updatedAt": 1788952754576
+  },
+  "integrity_1788952754577_1nh0z": {
+    "field": "price",
+    "value": 38.67,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.577Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.577Z",
+    "updatedAt": 1788952754577
+  },
+  "integrity_1788952754577_oxbyg": {
+    "field": "price",
+    "value": 69.45,
+    "validation_status": "single_source",
+    "sources": [
+      "yahoo_finance"
+    ],
+    "confidence": 0.5,
+    "fetched_at": "2026-09-09T11:19:14.577Z",
+    "compared_against": [],
+    "reviewed_by": null,
+    "timestamp": "2026-09-09T11:19:14.577Z",
+    "updatedAt": 1788952754577
   }
 }

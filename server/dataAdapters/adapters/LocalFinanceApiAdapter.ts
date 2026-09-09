@@ -77,34 +77,46 @@ export class LocalFinanceApiAdapter {
    */
   async safeFetch(endpoint: string, options: RequestInit = {}): Promise<any | null> {
     if (!this.isConfigured()) return null;
-    try {
-      const controller = new AbortController();
-      // Cloudflare Tunnel tünel gecikmelerini karşılamak için 8000ms zaman aşımı
-      const timeoutId = setTimeout(() => controller.abort(), 8000);
-      
-      const apiKey = this.getApiKey();
-      const defaultHeaders: Record<string, string> = {
-        'Accept': 'application/json, text/plain, */*',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 MarketPulse-Cloudflare/1.0',
-        ...this.customHeaders,
-        ...(options.headers as Record<string, string> || {})
-      };
-      if (apiKey) {
-        defaultHeaders['X-API-Key'] = apiKey;
-        defaultHeaders['Authorization'] = `Bearer ${apiKey}`;
-      }
 
-      const response = await fetch(`${this.getBaseUrl()}${endpoint}`, {
-        ...options,
-        signal: controller.signal,
-        headers: defaultHeaders,
-      });
-      clearTimeout(timeoutId);
-      if (!response.ok) return null;
-      return await response.json();
-    } catch {
-      return null;
+    const baseUrl = this.getBaseUrl();
+    const urlsToTry = [baseUrl];
+    if (baseUrl.includes('localhost')) {
+      urlsToTry.push(baseUrl.replace('localhost', '127.0.0.1'));
+    } else if (baseUrl.includes('127.0.0.1')) {
+      urlsToTry.push(baseUrl.replace('127.0.0.1', 'localhost'));
     }
+
+    const apiKey = this.getApiKey();
+    const defaultHeaders: Record<string, string> = {
+      'Accept': 'application/json, text/plain, */*',
+      'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 MarketPulse-Cloudflare/1.0',
+      ...this.customHeaders,
+      ...(options.headers as Record<string, string> || {})
+    };
+    if (apiKey) {
+      defaultHeaders['X-API-Key'] = apiKey;
+      defaultHeaders['Authorization'] = `Bearer ${apiKey}`;
+    }
+
+    for (const currentBaseUrl of urlsToTry) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+        const response = await fetch(`${currentBaseUrl}${endpoint}`, {
+          ...options,
+          signal: controller.signal,
+          headers: defaultHeaders,
+        });
+        clearTimeout(timeoutId);
+        if (response.ok) {
+          return await response.json();
+        }
+      } catch {
+        // Continue to fallback url if first attempt failed
+      }
+    }
+    return null;
   }
 
   // ==========================================

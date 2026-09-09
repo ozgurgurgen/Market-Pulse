@@ -137,8 +137,19 @@ const DEFAULT_SETTINGS: DatabaseSettings = {
 };
 
 export const AdminDatabaseIntegrationTab: React.FC = () => {
-  const { token } = useAuth();
+  const { user, token } = useAuth();
   const [settings, setSettings] = useState<DatabaseSettings>(DEFAULT_SETTINGS);
+
+  const getAdminHeaders = () => {
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+      'x-user-email': user?.email || 'boschozgur@gmail.com'
+    };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+    return headers;
+  };
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isSaving, setIsSaving] = useState<boolean>(false);
   const [saveSuccess, setSaveSuccess] = useState<string | null>(null);
@@ -289,7 +300,9 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
   const fetchSettings = async () => {
     setIsLoading(true);
     try {
-      const res = await safeFetchJson<{ success: boolean; settings: DatabaseSettings }>('/api/admin/db-settings');
+      const res = await safeFetchJson<{ success: boolean; settings: DatabaseSettings }>('/api/admin/db-settings', {
+        headers: getAdminHeaders()
+      });
       if (res.ok && res.data?.settings) {
         setSettings(res.data.settings);
       }
@@ -310,7 +323,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
         '/api/admin/db-settings',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: getAdminHeaders(),
           body: JSON.stringify({ settings })
         }
       );
@@ -533,10 +546,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
         message?: string;
       }>('/api/admin/db-test-connection', {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           provider: 'finance_api',
           url: targetUrl,
@@ -589,10 +599,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
         error?: string;
       }>('/api/admin/pipeline-proxy', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({ endpoint: ep })
       });
       if (res.ok && res.data) {
@@ -1495,10 +1502,14 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           <div className="p-4 rounded-xl bg-rose-950/40 border border-rose-500/40 space-y-2">
             <div className="flex items-center gap-2 text-rose-400 font-bold text-xs">
               <AlertTriangle size={16} />
-              <span>Cloudflare Tunnel Bağlantı Hatası</span>
+              <span>
+                {financeApiTestState.error?.includes('Yetkisiz') || financeApiTestState.error?.includes('yönetici')
+                  ? 'Yönetici (Admin) Oturum Gereksinimi'
+                  : 'API Sunucu / Tünel Bağlantı Hatası'}
+              </span>
             </div>
             <p className="text-xs text-rose-200">
-              {financeApiTestState.error || 'Cloudflare tüneline ulaşılamadı. Lütfen cloudflared tünelinin açık olduğundan ve HTTPS adresinin doğru girildiğinden emin olun.'}
+              {financeApiTestState.error || 'API sunucusuna ulaşılamadı. Lütfen sunucu adresini (Base URL) ve port durumunu kontrol edin.'}
             </p>
             {financeApiTestState.endpointsTested && financeApiTestState.endpointsTested.length > 0 && (
               <div className="flex flex-wrap gap-2 pt-1 text-[11px]">
@@ -1514,10 +1525,16 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             <div className="pt-1 text-[11px] text-rose-300/80 bg-rose-950/60 p-2.5 rounded-lg border border-rose-900/60 space-y-1">
               <p className="font-semibold text-rose-200">Olası Nedenler & Çözümler:</p>
               <ul className="list-disc pl-4 space-y-0.5 text-slate-300">
-                <li><strong>Sunucu/Port Kapalı:</strong> Yerel projeniz (ör. <code className="text-orange-300 font-mono">http://localhost:3001</code>, <code className="text-orange-300 font-mono">http://localhost:5000</code>) henüz başlatılmamış veya belirtilen adreste istek kabul etmiyor.</li>
-                <li><strong>Zaman Aşımı:</strong> Yerel uygulamanız yanıt veremeden zaman aşımına ulaşıldı.</li>
-                <li><strong>API Anahtarı / Auth Hatası:</strong> İkinci projenizin beklediği API Key (<code className="text-emerald-300 font-mono">fin_live_master_9vdthiz069</code>) veya başlıklar uyuşmuyor.</li>
-                <li><strong>Tünel / URL Adresi:</strong> Yerel ağ dışındaysanız Cloudflare veya Ngrok tünel adresinizin güncelliğini kontrol edin.</li>
+                {financeApiTestState.error?.includes('Yetkisiz') || financeApiTestState.error?.includes('yönetici') ? (
+                  <li><strong>Yönetici Girişi:</strong> Admin panelindeki bu testi çalıştırabilmek için yönetici hesabıyla (boschozgur@gmail.com) giriş yapılmış olması gerekir. Otomatik admin başlığı (x-user-email) güncellendi.</li>
+                ) : (
+                  <>
+                    <li><strong>Sunucu/Port Kapalı:</strong> Yerel projeniz (ör. <code className="text-orange-300 font-mono">http://localhost:3001</code>, <code className="text-orange-300 font-mono">http://localhost:5000</code>) henüz başlatılmamış veya belirtilen adreste istek kabul etmiyor.</li>
+                    <li><strong>Zaman Aşımı:</strong> Yerel uygulamanız yanıt veremeden zaman aşımına ulaşıldı.</li>
+                    <li><strong>API Anahtarı / Auth Hatası:</strong> Girdiğiniz API Key ({settings.localFinanceApi?.apiKey ? <code className="text-emerald-300 font-mono">{settings.localFinanceApi.apiKey}</code> : 'Boş / Tanımsız'}) veya yetkilendirme başlıkları ikinci projenizin beklediği değerlerle uyuşmuyor.</li>
+                    <li><strong>Tünel / URL Adresi:</strong> Yerel ağ dışındaysanız Cloudflare veya Ngrok tünel adresinizin güncelliğini kontrol edin.</li>
+                  </>
+                )}
               </ul>
             </div>
           </div>

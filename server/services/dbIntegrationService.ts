@@ -1055,6 +1055,32 @@ export async function testFinanceApiConnection(
   if (cfId) reqHeaders['CF-Access-Client-Id'] = cfId.trim();
   if (cfSecret) reqHeaders['CF-Access-Client-Secret'] = cfSecret.trim();
 
+  const urlsToTry = [targetUrl];
+  if (targetUrl.includes('localhost')) {
+    urlsToTry.push(targetUrl.replace('localhost', '127.0.0.1'));
+  } else if (targetUrl.includes('127.0.0.1')) {
+    urlsToTry.push(targetUrl.replace('127.0.0.1', 'localhost'));
+  }
+
+  const fetchEndpoint = async (endpointPath: string, timeoutMs: number = 6000): Promise<Response> => {
+    let lastError: any = null;
+    for (const urlBase of urlsToTry) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), timeoutMs);
+        const res = await fetch(`${urlBase}${endpointPath}`, {
+          signal: controller.signal,
+          headers: reqHeaders
+        });
+        clearTimeout(timer);
+        return res;
+      } catch (err) {
+        lastError = err;
+      }
+    }
+    throw lastError || new Error('Bağlantı hatası');
+  };
+
   const startTime = Date.now();
   const endpointsTested: { endpoint: string; ok: boolean; count?: number; error?: string }[] = [];
   let fundsCount = 0;
@@ -1064,13 +1090,7 @@ export async function testFinanceApiConnection(
 
   // 1. Test /api/v1/bist/stocks?limit=5 (Canlı BIST Hisseleri)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
-    const res = await fetch(`${targetUrl}/api/v1/bist/stocks?limit=5`, {
-      signal: controller.signal,
-      headers: reqHeaders
-    });
-    clearTimeout(timer);
+    const res = await fetchEndpoint('/api/v1/bist/stocks?limit=5');
     if (res.ok) {
       const data = await res.json();
       const count = Array.isArray(data?.data) ? data.data.length : (Array.isArray(data) ? data.length : 0);
@@ -1089,13 +1109,7 @@ export async function testFinanceApiConnection(
 
   // 2. Test /api/export/funds?limit=5 (TEFAS fonları)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
-    const res = await fetch(`${targetUrl}/api/export/funds?limit=5`, {
-      signal: controller.signal,
-      headers: reqHeaders
-    });
-    clearTimeout(timer);
+    const res = await fetchEndpoint('/api/export/funds?limit=5');
     if (res.ok) {
       const data = await res.json();
       const count = Array.isArray(data) ? data.length : (Array.isArray(data?.funds) ? data.funds.length : 0);
@@ -1112,15 +1126,9 @@ export async function testFinanceApiConnection(
     });
   }
 
-  // 2. Test /api/export/bulk?tables=disclosures&limit_per_table=5 (KAP bildirimleri)
+  // 3. Test /api/export/bulk?tables=disclosures&limit_per_table=5 (KAP bildirimleri)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 6000);
-    const res = await fetch(`${targetUrl}/api/export/bulk?tables=disclosures&limit_per_table=5`, {
-      signal: controller.signal,
-      headers: reqHeaders
-    });
-    clearTimeout(timer);
+    const res = await fetchEndpoint('/api/export/bulk?tables=disclosures&limit_per_table=5');
     if (res.ok) {
       const data = await res.json();
       const count = Array.isArray(data?.disclosures) ? data.disclosures.length : (Array.isArray(data) ? data.length : 0);
@@ -1137,15 +1145,9 @@ export async function testFinanceApiConnection(
     });
   }
 
-  // 3. Test /api/export/companies?limit=5 (BIST şirketleri)
+  // 4. Test /api/export/companies?limit=5 (BIST şirketleri)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(`${targetUrl}/api/export/companies?limit=5`, {
-      signal: controller.signal,
-      headers: reqHeaders
-    });
-    clearTimeout(timer);
+    const res = await fetchEndpoint('/api/export/companies?limit=5', 5000);
     if (res.ok) {
       const data = await res.json();
       const count = Array.isArray(data) ? data.length : 0;
@@ -1162,15 +1164,9 @@ export async function testFinanceApiConnection(
     });
   }
 
-  // 4. Test /api/export/schema (Veritabanı Şeması)
+  // 5. Test /api/export/schema (Veritabanı Şeması)
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 5000);
-    const res = await fetch(`${targetUrl}/api/export/schema`, {
-      signal: controller.signal,
-      headers: reqHeaders
-    });
-    clearTimeout(timer);
+    const res = await fetchEndpoint('/api/export/schema', 5000);
     if (res.ok) {
       const data = await res.json();
       const count = data?.tables ? Object.keys(data.tables).length : (Array.isArray(data) ? data.length : (data ? Object.keys(data).length : 0));
