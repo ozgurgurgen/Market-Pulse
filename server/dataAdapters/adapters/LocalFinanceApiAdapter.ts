@@ -47,13 +47,13 @@ export class LocalFinanceApiAdapter {
         if (local?.localFinanceApi?.baseUrl) {
           this.baseUrl = local.localFinanceApi.baseUrl.trim().replace(/\/+$/, '');
         } else {
-          this.baseUrl = 'https://bobby-layout-circles-reform.trycloudflare.com';
+          this.baseUrl = 'http://127.0.0.1:3001';
         }
         if (local?.localFinanceApi?.dataModules) {
           this.dataModules = { ...DEFAULT_DATA_MODULES, ...local.localFinanceApi.dataModules };
         }
       } catch {
-        this.baseUrl = 'https://bobby-layout-circles-reform.trycloudflare.com';
+        this.baseUrl = 'http://127.0.0.1:3001';
       }
     }
   }
@@ -93,7 +93,7 @@ export class LocalFinanceApiAdapter {
         }
       } catch {}
     }
-    return this.baseUrl || 'https://bobby-layout-circles-reform.trycloudflare.com';
+    return this.baseUrl || 'http://127.0.0.1:3001';
   }
 
   isConfigured(): boolean {
@@ -122,17 +122,22 @@ export class LocalFinanceApiAdapter {
 
   /**
    * Güvenli ve zaman aşımlı (timeout) HTTP istek yardımcısı
-   * Cloudflare Tunnel ve ters vekil sunucular (WAF / bot koruması) için optimize edilmiştir.
+   * IPv4 (127.0.0.1) öncelikli bağlantı ve tünel koruması.
    */
   async safeFetch(endpoint: string, options: RequestInit = {}): Promise<any | null> {
     if (!this.isConfigured()) return null;
 
     const baseUrl = this.getBaseUrl();
-    const urlsToTry = [baseUrl];
+    const urlsToTry: string[] = [];
     if (baseUrl.includes('localhost')) {
+      // Prioritize IPv4 127.0.0.1 FIRST for Node.js 18+ localhost IPv6 dual-stack
       urlsToTry.push(baseUrl.replace('localhost', '127.0.0.1'));
+      urlsToTry.push(baseUrl);
     } else if (baseUrl.includes('127.0.0.1')) {
+      urlsToTry.push(baseUrl);
       urlsToTry.push(baseUrl.replace('127.0.0.1', 'localhost'));
+    } else {
+      urlsToTry.push(baseUrl);
     }
 
     const apiKey = this.getApiKey();

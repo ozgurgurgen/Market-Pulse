@@ -38,9 +38,6 @@ export class ErrorBoundary extends Component<Props, State> {
       this.props.onReset();
     }
     this.setState({ hasError: false, error: null, errorInfo: null });
-    if (!this.props.inline) {
-      window.location.reload();
-    }
   };
 
   public render() {
