@@ -1221,6 +1221,19 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 ...prev,
                 localFinanceApi: {
                   ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  baseUrl: 'http://localhost:3001'
+                }
+              }))}
+              className="px-2.5 py-1 text-[11px] font-mono bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/60 text-emerald-200 rounded-lg transition-all font-bold cursor-pointer"
+            >
+              http://localhost:3001
+            </button>
+            <button
+              type="button"
+              onClick={() => setSettings(prev => ({
+                ...prev,
+                localFinanceApi: {
+                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
                   baseUrl: 'http://localhost:5000'
                 }
               }))}
@@ -1489,9 +1502,10 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             <div className="pt-1 text-[11px] text-rose-300/80 bg-rose-950/60 p-2.5 rounded-lg border border-rose-900/60 space-y-1">
               <p className="font-semibold text-rose-200">Olası Nedenler & Çözümler:</p>
               <ul className="list-disc pl-4 space-y-0.5 text-slate-300">
-                <li><strong>Error 521 (Web Server is Down):</strong> Yerel Python (FastAPI/Flask) veya Node.js uygulamanız 8000 portunda henüz başlatılmamış.</li>
-                <li><strong>Error 524 (Timeout):</strong> Yerel uygulamanız istekleri çok geç yanıtlıyor.</li>
-                <li><strong>URL Hatası:</strong> Cloudflare tüneli yeniden başlatıldığında yeni bir <code className="text-orange-300 font-mono">trycloudflare.com</code> adresi üretmiş olabilir; yeni adresi girin.</li>
+                <li><strong>Sunucu/Port Kapalı:</strong> Yerel projeniz (ör. <code className="text-orange-300 font-mono">http://localhost:3001</code>, <code className="text-orange-300 font-mono">http://localhost:5000</code>) henüz başlatılmamış veya belirtilen adreste istek kabul etmiyor.</li>
+                <li><strong>Zaman Aşımı:</strong> Yerel uygulamanız yanıt veremeden zaman aşımına ulaşıldı.</li>
+                <li><strong>API Anahtarı / Auth Hatası:</strong> İkinci projenizin beklediği API Key (<code className="text-emerald-300 font-mono">fin_live_master_9vdthiz069</code>) veya başlıklar uyuşmuyor.</li>
+                <li><strong>Tünel / URL Adresi:</strong> Yerel ağ dışındaysanız Cloudflare veya Ngrok tünel adresinizin güncelliğini kontrol edin.</li>
               </ul>
             </div>
           </div>

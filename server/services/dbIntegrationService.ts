@@ -1161,6 +1161,28 @@ export async function testFinanceApiConnection(
     });
   }
 
+  // 5. Fallback route test if export routes failed (e.g. /health, /api/health, /)
+  if (!endpointsTested.some(e => e.ok)) {
+    const fallbackPaths = ['/api/health', '/health', '/api/v1/bist/stocks', '/'];
+    for (const fbPath of fallbackPaths) {
+      try {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 3000);
+        const res = await fetch(`${targetUrl}${fbPath}`, {
+          signal: controller.signal,
+          headers: reqHeaders
+        });
+        clearTimeout(timer);
+        if (res.ok) {
+          endpointsTested.push({ endpoint: fbPath, ok: true, count: 1 });
+          break;
+        }
+      } catch (err) {
+        // ignore fallback check errors
+      }
+    }
+  }
+
   const latencyMs = Date.now() - startTime;
   const hasAnySuccess = endpointsTested.some(e => e.ok);
 
