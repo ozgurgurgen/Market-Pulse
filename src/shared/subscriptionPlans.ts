@@ -16,10 +16,14 @@ export interface UserUsage {
   aiReportsThisPeriod: number;
   lastResetDate: string; // YYYY-MM-DD format for daily tracking
   lastWeeklyResetDate?: string; // YYYY-MM-DD or week number
+  creditsUsedThisMonth?: number;
+  creditsRemaining?: number;
+  lastCreditResetMonth?: string;
 }
 
 export interface SubscriptionPlanLimits {
   dailyAnalysisQueries: number; // 3 or -1 (unlimited)
+  monthlyAiCredits: number; // Aylık Yapay Zeka & Ajan Kredisi (ör. 50, 500, 2500, 10000, -1 = sınırsız)
   ratioDepth: RatioDepth; // 'basic' (F/K, PD/DD) or 'full' (all 18+ ratios)
   backtestMaxYears: number; // 1, 5, or -1 (unlimited)
   backtestMultiAsset: boolean;
@@ -39,6 +43,32 @@ export interface SubscriptionPlanLimits {
   earlyAccess: boolean;
 }
 
+export interface CreditCostRules {
+  chatQuery: number; // e.g., 1 credit
+  deepResearch: number; // e.g., 3 credits
+  multiAgentReport: number; // e.g., 5 credits
+  whatIfSimulator: number; // e.g., 2 credits
+}
+
+export const DEFAULT_CREDIT_COSTS: CreditCostRules = {
+  chatQuery: 1,
+  deepResearch: 3,
+  multiAgentReport: 5,
+  whatIfSimulator: 2,
+};
+
+export interface CouponCode {
+  code: string; // e.g. "BORSA2026"
+  discountType: 'percentage' | 'fixed_try';
+  discountValue: number; // 20 for 20% or 100 for 100 TL
+  applicableTiers?: SubscriptionTier[]; // ['starter', 'pro', 'premium']
+  maxUses: number; // -1 for unlimited
+  usedCount: number;
+  expiresAt: string | null;
+  isActive: boolean;
+  description?: string;
+}
+
 export interface SubscriptionPlanConfig {
   id: SubscriptionTier;
   name: string;
@@ -47,6 +77,9 @@ export interface SubscriptionPlanConfig {
   description: string;
   priceMonthlyTRY: number;
   priceAnnualTRY: number;
+  discountActive?: boolean;
+  discountPercent?: number; // e.g. 20 (%)
+  discountBadge?: string; // e.g. "Lansmana Özel %20 İndirim"
   isPopular?: boolean;
   limits: SubscriptionPlanLimits;
   featureBullets: {
@@ -80,8 +113,11 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     description: 'Piyasa verilerini ve temel analizleri keşfetmek isteyen bireysel yatırımcılar için.',
     priceMonthlyTRY: 0,
     priceAnnualTRY: 0,
+    discountActive: false,
+    discountPercent: 0,
     limits: {
       dailyAnalysisQueries: 3,
+      monthlyAiCredits: 50,
       ratioDepth: 'basic',
       backtestMaxYears: 1,
       backtestMultiAsset: false,
@@ -101,6 +137,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
       earlyAccess: false,
     },
     featureBullets: [
+      { title: 'Aylık 50 Yapay Zeka & Ajan Kredisi', included: true, highlight: true },
       { title: 'Günde 3 Hisse / Fon Analizi', included: true },
       { title: 'Temel Rasyolar (F/K, PD/DD)', included: true },
       { title: '1 Yıllık Tekil Backtest', included: true },
@@ -123,8 +160,12 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     description: 'Bilinçli kararlar almak ve portföyünü aktif büyütmek isteyen yatırımcılar için.',
     priceMonthlyTRY: 299,
     priceAnnualTRY: 2990,
+    discountActive: true,
+    discountPercent: 15,
+    discountBadge: 'Lansmana Özel %15 İndirim',
     limits: {
       dailyAnalysisQueries: -1, // Unlimited
+      monthlyAiCredits: 500,
       ratioDepth: 'full',
       backtestMaxYears: 5,
       backtestMultiAsset: true,
@@ -144,6 +185,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
       earlyAccess: false,
     },
     featureBullets: [
+      { title: 'Aylık 500 Yapay Zeka & Ajan Kredisi', included: true, highlight: true },
       { title: 'Sınırsız Günlük Analiz Sorgusu', included: true, highlight: true },
       { title: 'Tüm Gelişmiş Finansal Rasyolar', included: true },
       { title: '5 Yıla Kadar Çoklu Varlık Backtest', included: true },
@@ -166,8 +208,12 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     description: 'Profesyonel traderlar, fon takipçileri ve derin değerleme arayanlar için tam cephane.',
     priceMonthlyTRY: 699,
     priceAnnualTRY: 6990,
+    discountActive: true,
+    discountPercent: 20,
+    discountBadge: 'Lansmana Özel %20 İndirim',
     limits: {
       dailyAnalysisQueries: -1,
+      monthlyAiCredits: 2500,
       ratioDepth: 'full',
       backtestMaxYears: -1,
       backtestMultiAsset: true,
@@ -187,6 +233,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
       earlyAccess: false,
     },
     featureBullets: [
+      { title: 'Aylık 2.500 Yapay Zeka & Ajan Kredisi', included: true, highlight: true },
       { title: 'Sınırsız Günlük Analiz & AI Raporları', included: true, highlight: true },
       { title: 'Halka Arz (IPO) Takvim & Derin İstihbarat', included: true, highlight: true },
       { title: 'What-If Dinamik Değerleme Simülatörü', included: true, highlight: true },
@@ -207,8 +254,12 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     description: 'Çoklu portföy yöneten, en yüksek işlem önceliği ve erken erişim isteyen üst düzey yatırımcılar.',
     priceMonthlyTRY: 1299,
     priceAnnualTRY: 12990,
+    discountActive: true,
+    discountPercent: 25,
+    discountBadge: 'VIP %25 İndirim',
     limits: {
       dailyAnalysisQueries: -1,
+      monthlyAiCredits: 10000,
       ratioDepth: 'full',
       backtestMaxYears: -1,
       backtestMultiAsset: true,
@@ -228,6 +279,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
       earlyAccess: true,
     },
     featureBullets: [
+      { title: 'Aylık 10.000 Yapay Zeka & VIP Ajan Kredisi', included: true, highlight: true },
       { title: 'Pro Paketindeki Tüm Özellikler + Halka Arz Modülü', included: true },
       { title: 'Çoklu Portföy Yönetimi (Ayrı Fon, Hisse, Emtia Hesapları)', included: true, highlight: true },
       { title: 'Öncelikli AI Model Kuyruğu & En Düşük Gecikme', included: true, highlight: true },
@@ -244,8 +296,11 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     description: 'Sistem Yöneticisi hesabı. Herhangi bir pakete veya kota sınırlandırmasına tabi değildir.',
     priceMonthlyTRY: 0,
     priceAnnualTRY: 0,
+    discountActive: false,
+    discountPercent: 0,
     limits: {
       dailyAnalysisQueries: -1,
+      monthlyAiCredits: -1, // Unlimited
       ratioDepth: 'full',
       backtestMaxYears: -1,
       backtestMultiAsset: true,
@@ -266,6 +321,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlanConfig
     },
     featureBullets: [
       { title: 'Pakete Tabi Değil (Sınırsız Yönetici Yetkisi)', included: true, highlight: true },
+      { title: 'Sınırsız AI & Ajan Kredisi', included: true, highlight: true },
       { title: 'Sınırsız Hisse & Fon Analizi', included: true },
       { title: 'Sınırsız AI Karne ve İstihbarat', included: true },
       { title: 'What-If Simülatörü ve IPO Radarı Açık', included: true },

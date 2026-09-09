@@ -4,7 +4,12 @@ import {
   getDynamicSubscriptionPlans, 
   updateDynamicSubscriptionPlans,
   getDynamicAiSettings,
-  updateDynamicAiSettings
+  updateDynamicAiSettings,
+  getCreditCostRules,
+  updateCreditCostRules,
+  getCoupons,
+  saveCoupon,
+  deleteCoupon
 } from '../services/adminConfigService';
 import { 
   updateUserSubscription, 
@@ -125,6 +130,90 @@ adminRouter.post('/ai-settings', async (req: Request, res: Response) => {
     const adminEmail = req.user.email || 'admin@marketpulse.local';
 
     const result = await updateDynamicAiSettings(settingsData, adminUid, adminEmail);
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 5. GET /api/admin/credit-costs
+ */
+adminRouter.get('/credit-costs', async (req: Request, res: Response) => {
+  try {
+    const creditCosts = await getCreditCostRules();
+    return res.json({ success: true, creditCosts });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 6. POST /api/admin/credit-costs
+ */
+adminRouter.post('/credit-costs', async (req: Request, res: Response) => {
+  try {
+    const { costs } = req.body;
+    if (!costs || typeof costs !== 'object') {
+      return res.status(400).json({ error: 'Geçersiz kredi maliyeti verisi.' });
+    }
+
+    const adminUid = req.user.uid;
+    const adminEmail = req.user.email || 'admin@marketpulse.local';
+
+    const result = await updateCreditCostRules(costs, adminUid, adminEmail);
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 7. GET /api/admin/coupons
+ */
+adminRouter.get('/coupons', async (req: Request, res: Response) => {
+  try {
+    const coupons = await getCoupons();
+    return res.json({ success: true, coupons });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 8. POST /api/admin/coupons
+ */
+adminRouter.post('/coupons', async (req: Request, res: Response) => {
+  try {
+    const { coupon } = req.body;
+    if (!coupon || !coupon.code || !coupon.discountValue) {
+      return res.status(400).json({ error: 'Eksik veya geçersiz kupon verisi.' });
+    }
+
+    const adminUid = req.user.uid;
+    const adminEmail = req.user.email || 'admin@marketpulse.local';
+
+    const result = await saveCoupon(coupon, adminUid, adminEmail);
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 9. DELETE /api/admin/coupons/:code
+ */
+adminRouter.delete('/coupons/:code', async (req: Request, res: Response) => {
+  try {
+    const { code } = req.params;
+    if (!code) {
+      return res.status(400).json({ error: 'Kupon kodu gereklidir.' });
+    }
+
+    const adminUid = req.user.uid;
+    const adminEmail = req.user.email || 'admin@marketpulse.local';
+
+    const result = await deleteCoupon(code, adminUid, adminEmail);
     return res.json(result);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });

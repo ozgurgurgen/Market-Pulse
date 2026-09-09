@@ -14,6 +14,7 @@ import { BacktestSection } from './components/BacktestSection';
 import { MarketOverview } from './components/MarketOverview';
 import { StockAnalysisModal } from './components/StockAnalysisModal';
 import { AIChatAdvisor } from './components/AIChatAdvisor';
+import { FloatingAIAdvisor } from './components/FloatingAIAdvisor';
 import { WatchlistManager } from './components/WatchlistManager';
 import { AdminPanel } from './components/AdminPanel';
 import { MarketNewsSection } from './components/MarketNewsSection';
@@ -608,6 +609,7 @@ function MainApp() {
             modelConfig={modelConfig} 
             onSaveConfig={handleSaveModelConfig}
             onNavigateToPricing={() => setActiveTab('pricing')}
+            onNavigateToTab={(tab) => setActiveTab(tab as any)}
             onOpenModelSettings={() => setIsModelModalOpen(true)}
           />
         )}
@@ -682,6 +684,12 @@ function MainApp() {
         onClose={() => setIsModelModalOpen(false)}
         config={modelConfig}
         onSaveConfig={handleSaveModelConfig}
+      />
+
+      {/* Global Floating AI Advisor Widget */}
+      <FloatingAIAdvisor 
+        modelConfig={modelConfig} 
+        onNavigateToFullChat={() => setActiveTab('chat')} 
       />
 
       {/* Global Footer */}

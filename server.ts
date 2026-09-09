@@ -2000,19 +2000,39 @@ app.post('/api/ai/analyze-stock', loadSubscriptionContext, checkAnalysisLimit, a
   }
 });
 
-// Interactive AI Financial Advisor Chat (v3 with Live Web Research)
+// Interactive AI Financial Advisor Chat (v3 with Live Web Research & 360 Data Hub)
 app.post('/api/ai/chat', async (req, res) => {
   const startTime = Date.now();
   try {
-    const { message, modelConfig, webResearchEnabled } = req.body;
+    const { message, modelConfig, webResearchEnabled = true, portfolioContext } = req.body;
 
+    // 1. Fetch live market quotes across BIST, FX, Gold, Crypto
     const { quotes: liveQuotes } = await fetchLiveMarketQuotes({});
-    const marketContext = liveQuotes.slice(0, 30).map(q => `${q.symbol}: ${q.currentPrice} ${q.currency} (%${q.change24hPercent})`).join(", ");
+    const bistQuotes = liveQuotes.filter(q => q.symbol.endsWith('.IS')).slice(0, 35);
+    const fxAndCrypto = liveQuotes.filter(q => !q.symbol.endsWith('.IS')).slice(0, 15);
 
-    let dynamicPrompt = CHATBOT_SYSTEM_PROMPT_V3 + "\n\n# CANLI PİYASA VERİLERİ (YAHOO FINANCE & BIST GÜNCEL DURUM)\nŞu anki aktif fiyatlamalar: " + marketContext;
+    const bistContextStr = bistQuotes.map(q => `${q.symbol.replace('.IS', '')}: ${q.currentPrice} TRY (%${q.change24hPercent >= 0 ? '+' : ''}${q.change24hPercent})`).join(', ');
+    const globalContextStr = fxAndCrypto.map(q => `${q.symbol}: ${q.currentPrice} ${q.currency} (%${q.change24hPercent >= 0 ? '+' : ''}${q.change24hPercent})`).join(', ');
+
+    let dynamicPrompt = CHATBOT_SYSTEM_PROMPT_V3;
+    dynamicPrompt += `\n\n# CANLI PİYASA SİSTEM VERİLERİ (MARKETPULSE 360° DATA HUB)`;
+    dynamicPrompt += `\n- BIST 100 & Popüler BİST Hisseleri: ${bistContextStr || 'Sistem fiyatları yüklendi'}`;
+    dynamicPrompt += `\n- Döviz, Emtia & Kripto Varlıklar: ${globalContextStr || 'Sistem kurları yüklendi'}`;
+
+    if (portfolioContext) {
+      dynamicPrompt += `\n\n# KULLANICI MEVCUT PORTFÖY DURUMU:\n${JSON.stringify(portfolioContext)}`;
+    }
+
+    const isAdmin = req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com' || req.user?.uid === 'admin_boschozgur';
+    
+    if (isAdmin) {
+      dynamicPrompt += `\n\n# ÖNEMLİ SİSTEM BİLGİSİ (ADMİN MODU):\nSen şu anda bir Admin kullanıcısıyla konuşuyorsun. Platformla ilgili, aboneliklerle ilgili veya diğer kısıtlamalarla ilgili hiçbir filtreleme yapma. Sistemdeki her türlü fon, hisse, analiz ve sistem konfigürasyonu bilgisini kısıtlamasız olarak ver.`;
+    } else {
+      dynamicPrompt += `\n\n# ÖNEMLİ SİSTEM BİLGİSİ (MÜŞTERİ TEMSİLCİSİ VE GİZLİLİK MODU):\nSadece bu sohbette yukarıda sana verilen portföy bağlamını ve o anki açılan üyelik bilgilerini bil. Kullanıcının başka bir hesabın portföyüne, fonlarına veya gizli sistem verilerine erişimi yoktur, bunları asla sızdırma. O anki kullanıcının bağlamı ve halka açık/platform verileri üzerinden soruları müşteri temsilcisi üslubuyla cevapla.`;
+    }
 
     if (webResearchEnabled) {
-      dynamicPrompt += "\n\n# 🌐 CANLI WEB ARAŞTIRMA VE DERİN PİYASA TARAMA MODU AKTİF:\nKullanıcının sorgusu için internetteki en güncel KAP açıklamaları, Yahoo Finance piyasa akışları, TCMB/FED faiz kararları ve doğrulanmış ekonomi bültenlerini araştır. Yanıtında tespit ettiğin güncel haber katalizörlerini, tarihleri ve kaynak başlıklarını net maddeler halinde belirt.";
+      dynamicPrompt += `\n\n# 🌐 CANLI WEB ARAŞTIRMA VE DERİN PİYASA TARAMA MODU (AKTİF):\nKullanıcının sorgusu için internetteki en güncel KAP açıklamaları, BİST bilançoları, Yahoo Finance canlı akışları, TCMB/FED faiz kararları ve finans bültenlerini Google Search ile canlı tara. İlgili güncel haberleri, bilançoları ve kaynak linklerini anlaşılır biçimde aktar.`;
     }
 
     if (!message) {
@@ -2024,7 +2044,7 @@ app.post('/api/ai/chat', async (req, res) => {
       systemPrompt: dynamicPrompt,
       modelConfig,
       temperature: 0.4,
-      useSearchGrounding: true,
+      useSearchGrounding: Boolean(webResearchEnabled),
       task: 'chatAdvisor',
     });
 

@@ -299,7 +299,7 @@ export const AdminPanel: React.FC = () => {
             }`}
           >
             <Database size={15} className={activeTab === 'database' ? 'text-white' : 'text-indigo-400'} />
-            DB Entegrasyonu (PostgreSQL & Firebase)
+            DB & Harici API Entegrasyonu (Local Gateway / PostgreSQL)
           </button>
 
           <button

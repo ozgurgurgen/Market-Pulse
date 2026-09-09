@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Crown, 
   Save, 
@@ -12,13 +12,22 @@ import {
   Plus,
   Trash2,
   ShieldCheck,
-  Layers
+  Layers,
+  Coins,
+  Ticket,
+  Percent,
+  Tag,
+  ToggleLeft,
+  ToggleRight
 } from 'lucide-react';
 import { 
   SubscriptionTier, 
   SubscriptionPlanConfig, 
   SubscriptionPlanLimits,
-  SUBSCRIPTION_PLANS 
+  SUBSCRIPTION_PLANS,
+  CreditCostRules,
+  DEFAULT_CREDIT_COSTS,
+  CouponCode
 } from '../../shared/subscriptionPlans';
 import { safeFetchJson } from '../../utils/apiClient';
 
@@ -37,6 +46,24 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
   const [saveStatus, setSaveStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
   const [newBulletText, setNewBulletText] = useState('');
 
+  // Credit Costs state
+  const [creditCosts, setCreditCosts] = useState<CreditCostRules>(DEFAULT_CREDIT_COSTS);
+  const [isSavingCosts, setIsSavingCosts] = useState(false);
+
+  // Coupons state
+  const [coupons, setCoupons] = useState<CouponCode[]>([]);
+  const [isCouponsLoading, setIsCouponsLoading] = useState(false);
+  const [isAddCouponModalOpen, setIsAddCouponModalOpen] = useState(false);
+  const [newCoupon, setNewCoupon] = useState<Partial<CouponCode>>({
+    code: '',
+    discountType: 'percentage',
+    discountValue: 20,
+    applicableTiers: ['starter', 'pro', 'premium'],
+    maxUses: 100,
+    isActive: true,
+    description: ''
+  });
+
   // Add New Plan state
   const [isAddPlanModalOpen, setIsAddPlanPlanModalOpen] = useState(false);
   const [newPlanId, setNewPlanId] = useState('');
@@ -44,6 +71,137 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
   const [newPlanPriceMonthly, setNewPlanPriceMonthly] = useState<number>(499);
   const [newPlanPriceAnnual, setNewPlanPriceAnnual] = useState<number>(4990);
   const [newPlanDesc, setNewPlanDesc] = useState('');
+
+  // Load Credit Costs & Coupons on Mount
+  useEffect(() => {
+    fetchCreditCosts();
+    fetchCoupons();
+  }, []);
+
+  const fetchCreditCosts = async () => {
+    try {
+      const res = await safeFetchJson<{ success: boolean; creditCosts: CreditCostRules }>('/api/admin/credit-costs');
+      if (res.ok && res.data?.creditCosts) {
+        setCreditCosts(res.data.creditCosts);
+      }
+    } catch (err) {
+      console.warn('Failed to load credit costs:', err);
+    }
+  };
+
+  const fetchCoupons = async () => {
+    setIsCouponsLoading(true);
+    try {
+      const res = await safeFetchJson<{ success: boolean; coupons: CouponCode[] }>('/api/admin/coupons');
+      if (res.ok && res.data?.coupons) {
+        setCoupons(res.data.coupons);
+      }
+    } catch (err) {
+      console.warn('Failed to load coupons:', err);
+    } finally {
+      setIsCouponsLoading(false);
+    }
+  };
+
+  const handleSaveCreditCosts = async () => {
+    setIsSavingCosts(true);
+    try {
+      const res = await safeFetchJson<{ success: boolean }>('/api/admin/credit-costs', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ costs: creditCosts })
+      });
+      if (res.ok && res.data?.success) {
+        setSaveStatus({ type: 'success', message: 'Yapay Zeka Kredi maliyet kuralları başarıyla kaydedildi.' });
+      } else {
+        setSaveStatus({ type: 'error', message: 'Kredi maliyetleri kaydedilemedi.' });
+      }
+    } catch (err: any) {
+      setSaveStatus({ type: 'error', message: 'Kredi maliyetleri kaydetme hatası: ' + err.message });
+    } finally {
+      setIsSavingCosts(false);
+      setTimeout(() => setSaveStatus(null), 5000);
+    }
+  };
+
+  const handleSaveCouponSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newCoupon.code?.trim() || !newCoupon.discountValue) {
+      alert('Lütfen kupon kodu ve indirim değerini doldurunuz.');
+      return;
+    }
+
+    const couponPayload: CouponCode = {
+      code: newCoupon.code.trim().toUpperCase(),
+      discountType: newCoupon.discountType || 'percentage',
+      discountValue: Number(newCoupon.discountValue) || 10,
+      applicableTiers: newCoupon.applicableTiers || ['starter', 'pro', 'premium'],
+      maxUses: Number(newCoupon.maxUses) ?? -1,
+      usedCount: newCoupon.usedCount || 0,
+      expiresAt: newCoupon.expiresAt || null,
+      isActive: newCoupon.isActive ?? true,
+      description: newCoupon.description || ''
+    };
+
+    try {
+      const res = await safeFetchJson<{ success: boolean; error?: string }>('/api/admin/coupons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coupon: couponPayload })
+      });
+
+      if (res.ok && res.data?.success) {
+        setSaveStatus({ type: 'success', message: `"${couponPayload.code}" indirim kuponu başarıyla kaydedildi.` });
+        setIsAddCouponModalOpen(false);
+        setNewCoupon({
+          code: '',
+          discountType: 'percentage',
+          discountValue: 20,
+          applicableTiers: ['starter', 'pro', 'premium'],
+          maxUses: 100,
+          isActive: true,
+          description: ''
+        });
+        fetchCoupons();
+      } else {
+        alert(res.data?.error || 'Kupon kaydedilemedi.');
+      }
+    } catch (err: any) {
+      alert('Hata: ' + err.message);
+    }
+  };
+
+  const handleDeleteCoupon = async (code: string) => {
+    if (!window.confirm(`"${code}" kuponunu silmek istediğinize emin misiniz?`)) return;
+    try {
+      const res = await safeFetchJson<{ success: boolean }>(
+        `/api/admin/coupons/${encodeURIComponent(code)}`,
+        { method: 'DELETE' }
+      );
+      if (res.ok) {
+        setCoupons(prev => prev.filter(c => c.code !== code));
+        setSaveStatus({ type: 'success', message: `"${code}" kuponu başarıyla silindi.` });
+      }
+    } catch (err: any) {
+      alert('Kupon silinemedi: ' + err.message);
+    }
+  };
+
+  const handleToggleCouponActive = async (coupon: CouponCode) => {
+    const updated = { ...coupon, isActive: !coupon.isActive };
+    try {
+      const res = await safeFetchJson<{ success: boolean }>('/api/admin/coupons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ coupon: updated })
+      });
+      if (res.ok) {
+        setCoupons(prev => prev.map(c => c.code === coupon.code ? updated : c));
+      }
+    } catch (err) {
+      console.warn('Failed to toggle coupon active:', err);
+    }
+  };
 
   const handleAddNewPlanSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -67,6 +225,7 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
       priceAnnualTRY: Number(newPlanPriceAnnual) || 0,
       limits: {
         dailyAnalysisQueries: -1,
+        monthlyAiCredits: 1000,
         ratioDepth: 'full',
         backtestMaxYears: -1,
         backtestMultiAsset: true,
@@ -355,6 +514,51 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
               </div>
             </div>
 
+            {/* Campaign Discount Configuration */}
+            <div className="p-3 bg-slate-900/90 border border-purple-900/40 rounded-lg space-y-2.5">
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-bold text-purple-300 flex items-center gap-1">
+                  <Percent size={12} />
+                  Kampanya İndirimi
+                </span>
+                <label className="flex items-center gap-1.5 cursor-pointer text-[11px] text-slate-300">
+                  <input
+                    type="checkbox"
+                    checked={currentPlan.discountActive ?? false}
+                    onChange={(e) => handleFieldChange('discountActive', e.target.checked)}
+                    className="w-3.5 h-3.5 accent-purple-500 rounded"
+                  />
+                  İndirim Aktif
+                </label>
+              </div>
+
+              {currentPlan.discountActive && (
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <div>
+                    <label className="text-[10px] text-slate-400 block mb-0.5">İndirim Oranı (%)</label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="99"
+                      value={currentPlan.discountPercent ?? 20}
+                      onChange={(e) => handleFieldChange('discountPercent', Number(e.target.value) || 0)}
+                      className="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-700 rounded text-xs text-white font-mono"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-[10px] text-slate-400 block mb-0.5">İndirim Etiketi</label>
+                    <input
+                      type="text"
+                      value={currentPlan.discountBadge ?? ''}
+                      onChange={(e) => handleFieldChange('discountBadge', e.target.value)}
+                      placeholder="%20 İNDİRİM"
+                      className="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-700 rounded text-xs text-white"
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+
             <div>
               <label className="text-[11px] font-semibold text-slate-400 block mb-1">Rasyo ve Teknik Derinlik</label>
               <select
@@ -374,6 +578,44 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
               <Zap size={14} className="text-amber-400" />
               Kullanım Kotaları ve Limitler
             </h4>
+
+            {/* AI Monthly Credits Limit */}
+            <div className="space-y-2 p-3 bg-purple-950/30 border border-purple-800/40 rounded-lg">
+              <div className="flex items-center justify-between">
+                <label className="text-[11px] font-bold text-purple-300 flex items-center gap-1">
+                  <Coins size={12} className="text-amber-400" />
+                  Aylık AI & Ajan Kredi Limiti
+                </label>
+                <button
+                  type="button"
+                  onClick={() => handleLimitChange(
+                    'monthlyAiCredits',
+                    (currentPlan.limits.monthlyAiCredits ?? 50) === -1 ? 1000 : -1
+                  )}
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded cursor-pointer ${
+                    (currentPlan.limits.monthlyAiCredits ?? 50) === -1
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-black'
+                      : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                  }`}
+                >
+                  {(currentPlan.limits.monthlyAiCredits ?? 50) === -1 ? 'Sınırsız (Aktif)' : 'Sınırsız Yap'}
+                </button>
+              </div>
+              {(currentPlan.limits.monthlyAiCredits ?? 50) !== -1 && (
+                <input
+                  type="number"
+                  min="0"
+                  max="1000000"
+                  value={currentPlan.limits.monthlyAiCredits ?? 50}
+                  onChange={(e) => handleLimitChange('monthlyAiCredits', Math.max(0, Number(e.target.value) || 0))}
+                  className="w-full px-3 py-2 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono font-bold"
+                  placeholder="Aylık Toplam Kredi Sayısı"
+                />
+              )}
+              <p className="text-[10px] text-slate-400">
+                Kullanıcılar sohbet, otonom ajan, derin araştırma ve simülasyonlarda bu kredileri harcar.
+              </p>
+            </div>
 
             {/* Daily Queries Limit */}
             <div className="space-y-2">
@@ -605,6 +847,286 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
         </div>
 
       </div>
+
+      {/* Global AI Credit Cost Rules Management */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Coins size={16} className="text-amber-400" />
+              Yapay Zeka & Ajan Kredi Harcama Maliyetleri
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Her bir yapay zeka işleminde kullanıcının bakiyesinden düşülecek kredi miktarını belirleyin.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleSaveCreditCosts}
+            disabled={isSavingCosts}
+            className="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black rounded-xl shadow-lg shadow-amber-500/20 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            {isSavingCosts ? <RefreshCw className="animate-spin" size={14} /> : <Save size={14} />}
+            Kredi Maliyetlerini Kaydet
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-1.5">
+            <label className="text-[11px] font-semibold text-slate-300 block">Sohbet & Borsa Sorusu</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                value={creditCosts.chatQuery}
+                onChange={(e) => setCreditCosts(prev => ({ ...prev, chatQuery: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono font-bold"
+              />
+              <span className="text-xs text-amber-400 font-mono shrink-0">Kredi</span>
+            </div>
+            <span className="text-[10px] text-slate-500 block">Standart sohbet ve analiz sorusu</span>
+          </div>
+
+          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-1.5">
+            <label className="text-[11px] font-semibold text-slate-300 block">Derin Ajan Araştırması</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                value={creditCosts.deepResearch}
+                onChange={(e) => setCreditCosts(prev => ({ ...prev, deepResearch: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono font-bold"
+              />
+              <span className="text-xs text-amber-400 font-mono shrink-0">Kredi</span>
+            </div>
+            <span className="text-[10px] text-slate-500 block">Canlı web taramalı derin borsa araştırması</span>
+          </div>
+
+          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-1.5">
+            <label className="text-[11px] font-semibold text-slate-300 block">Çoklu Ajan Raporu (Multi-Agent)</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                value={creditCosts.multiAgentReport}
+                onChange={(e) => setCreditCosts(prev => ({ ...prev, multiAgentReport: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono font-bold"
+              />
+              <span className="text-xs text-amber-400 font-mono shrink-0">Kredi</span>
+            </div>
+            <span className="text-[10px] text-slate-500 block">Makro, Temel, Teknik ortak kurul karnesi</span>
+          </div>
+
+          <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-xl space-y-1.5">
+            <label className="text-[11px] font-semibold text-slate-300 block">What-If Simülasyonu</label>
+            <div className="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                value={creditCosts.whatIfSimulator}
+                onChange={(e) => setCreditCosts(prev => ({ ...prev, whatIfSimulator: Math.max(1, Number(e.target.value) || 1) }))}
+                className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-lg text-xs text-white font-mono font-bold"
+              />
+              <span className="text-xs text-amber-400 font-mono shrink-0">Kredi</span>
+            </div>
+            <span className="text-[10px] text-slate-500 block">Senaryo analizi ve portföy şok testi</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Promosyon & İndirim Kuponları Yönetimi */}
+      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div>
+            <h3 className="text-sm font-bold text-white flex items-center gap-2">
+              <Ticket size={16} className="text-purple-400" />
+              Promosyon ve İndirim Kuponu Yönetimi
+            </h3>
+            <p className="text-xs text-slate-400 mt-0.5">
+              Kullanıcıların satın alma ve paket yükseltme ekranında kullanabileceği promosyon kodlarını yönetin.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setIsAddCouponModalOpen(true)}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold rounded-xl shadow-lg shadow-purple-600/20 transition-colors flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <Plus size={14} /> Yeni İndirim Kuponu
+          </button>
+        </div>
+
+        {isCouponsLoading ? (
+          <div className="p-8 text-center text-slate-400 text-xs flex items-center justify-center gap-2">
+            <RefreshCw className="animate-spin" size={14} /> Kuponlar yükleniyor...
+          </div>
+        ) : coupons.length === 0 ? (
+          <div className="p-8 text-center text-slate-500 text-xs bg-slate-950/40 rounded-xl border border-dashed border-slate-800">
+            Henüz tanımlanmış bir indirim kuponu bulunmuyor. Yeni bir kupon eklemek için yukarıdaki butona tıklayın.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {coupons.map((coupon) => (
+              <div
+                key={coupon.code}
+                className={`p-4 rounded-xl border text-xs space-y-2 transition-all ${
+                  coupon.isActive
+                    ? 'bg-slate-950/80 border-slate-800 hover:border-slate-700'
+                    : 'bg-slate-950/40 border-slate-800/60 opacity-60'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="font-mono font-black text-sm text-purple-300 bg-purple-950/50 px-2.5 py-1 rounded-md border border-purple-800/50">
+                    {coupon.code}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleCouponActive(coupon)}
+                      title={coupon.isActive ? 'Kuponu Pasifleştir' : 'Kuponu Aktifleştir'}
+                      className="text-slate-400 hover:text-white transition-colors cursor-pointer"
+                    >
+                      {coupon.isActive ? (
+                        <ToggleRight size={20} className="text-emerald-400" />
+                      ) : (
+                        <ToggleLeft size={20} className="text-slate-600" />
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCoupon(coupon.code)}
+                      title="Kuponu Sil"
+                      className="p-1 text-slate-500 hover:text-rose-400 transition-colors cursor-pointer"
+                    >
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </div>
+
+                <p className="text-slate-300 font-medium">
+                  {coupon.description || 'Promosyon İndirim Kodu'}
+                </p>
+
+                <div className="grid grid-cols-2 gap-2 pt-1 text-[11px] font-mono text-slate-400 border-t border-slate-850">
+                  <div>
+                    İndirim: <span className="text-emerald-400 font-bold">
+                      {coupon.discountType === 'percentage' ? `%${coupon.discountValue}` : `${coupon.discountValue} ₺`}
+                    </span>
+                  </div>
+                  <div>
+                    Kullanım: <span className="text-white font-bold">{coupon.usedCount}</span> / {coupon.maxUses === -1 ? 'Sınırsız' : coupon.maxUses}
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
+                  <span>Geçerli Paketler: {coupon.applicableTiers.join(', ').toUpperCase()}</span>
+                  <span className={`font-bold ${coupon.isActive ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {coupon.isActive ? 'Aktif' : 'Pasif'}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Add New Coupon Modal */}
+      {isAddCouponModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-700 rounded-3xl w-full max-w-md p-6 shadow-2xl space-y-5 relative animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                <Ticket className="text-purple-400" size={18} />
+                Yeni İndirim Kuponu Tanımla
+              </h3>
+              <button 
+                type="button" 
+                onClick={() => setIsAddCouponModalOpen(false)}
+                className="text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveCouponSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Kupon Kodu *</label>
+                <input
+                  type="text"
+                  required
+                  value={newCoupon.code || ''}
+                  onChange={(e) => setNewCoupon(prev => ({ ...prev, code: e.target.value.toUpperCase() }))}
+                  placeholder="örn: BORSA2026, BAHAR30"
+                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-xs text-purple-300 font-mono font-bold focus:outline-none focus:border-purple-500 uppercase"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs font-semibold text-slate-300 block mb-1">İndirim Tipi</label>
+                  <select
+                    value={newCoupon.discountType}
+                    onChange={(e) => setNewCoupon(prev => ({ ...prev, discountType: e.target.value as any }))}
+                    className="w-full px-3 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                  >
+                    <option value="percentage">Yüzde (%) İndirim</option>
+                    <option value="fixed_try">Sabit Tutar (TL) İndirimi</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-slate-300 block mb-1">İndirim Değeri *</label>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    value={newCoupon.discountValue || ''}
+                    onChange={(e) => setNewCoupon(prev => ({ ...prev, discountValue: Number(e.target.value) }))}
+                    placeholder={newCoupon.discountType === 'percentage' ? '% (örn: 25)' : 'TL (örn: 100)'}
+                    className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Maksimum Kullanım Limiti (-1 = Sınırsız)</label>
+                <input
+                  type="number"
+                  value={newCoupon.maxUses}
+                  onChange={(e) => setNewCoupon(prev => ({ ...prev, maxUses: Number(e.target.value) }))}
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white font-mono"
+                />
+              </div>
+
+              <div>
+                <label className="text-xs font-semibold text-slate-300 block mb-1">Açıklama</label>
+                <input
+                  type="text"
+                  value={newCoupon.description || ''}
+                  onChange={(e) => setNewCoupon(prev => ({ ...prev, description: e.target.value }))}
+                  placeholder="Kupon kampanyasının kısa özeti..."
+                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-white"
+                />
+              </div>
+
+              <div className="flex gap-3 pt-3 border-t border-slate-800">
+                <button
+                  type="button"
+                  onClick={() => setIsAddCouponModalOpen(false)}
+                  className="flex-1 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition-colors cursor-pointer"
+                >
+                  İptal
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-black rounded-xl shadow-lg shadow-purple-600/25 transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                >
+                  <Ticket size={14} />
+                  Kuponu Kaydet
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Add New Plan Modal */}
       {isAddPlanModalOpen && (

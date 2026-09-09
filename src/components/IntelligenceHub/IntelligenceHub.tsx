@@ -7,6 +7,7 @@ import { SentimentPanel } from './SentimentPanel';
 import { TechnicalPanel } from './TechnicalPanel';
 import { OrchestratorSummaryPanel } from './OrchestratorSummaryPanel';
 import { TelegramStatusPanel } from './TelegramStatusPanel';
+import { AgentHealthMonitor } from './AgentHealthMonitor';
 import { IntelligenceReportData } from '../../types';
 import { safeFetchJson } from '../../utils/apiClient';
 
@@ -167,7 +168,10 @@ export const IntelligenceHub: React.FC<IntelligenceHubProps> = ({
       {/* 2. Kaynak Sağlık Durumu & Rate Limit Bilgilendirme Bannerı */}
       <SourceHealthBanner />
 
-      {/* 3. Arama ve Hızlı Filtre Barı */}
+      {/* 3. Aktif Finansal Ajanlar Sağlık & Konsol Paneli (Agent Health Monitor) */}
+      <AgentHealthMonitor />
+
+      {/* 4. Arama ve Hızlı Filtre Barı */}
       <IntelligenceSearchBar
         currentTicker={ticker}
         onSearchTicker={handleSearchTicker}

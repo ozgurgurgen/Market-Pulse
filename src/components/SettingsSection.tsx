@@ -27,7 +27,8 @@ import {
   MessageSquare,
   PieChart,
   Target,
-  Compass
+  Compass,
+  ShieldAlert
 } from 'lucide-react';
 import { AIModelConfig, AIProviderType, AITaskType, AITaskRouteConfig } from '../types';
 import { useAuth } from '../contexts/AuthContext';
@@ -40,6 +41,7 @@ interface SettingsSectionProps {
   modelConfig: AIModelConfig;
   onSaveConfig: (newConfig: AIModelConfig) => void;
   onNavigateToPricing?: () => void;
+  onNavigateToTab?: (tab: string) => void;
   onOpenModelSettings?: () => void;
 }
 
@@ -47,6 +49,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   modelConfig,
   onSaveConfig,
   onNavigateToPricing,
+  onNavigateToTab,
   onOpenModelSettings,
 }) => {
   const { user, userData, logout } = useAuth();
@@ -103,6 +106,54 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   const [isResettingPassword, setIsResettingPassword] = useState(false);
   const [passwordResetSent, setPasswordResetSent] = useState(false);
   const [profileMsg, setProfileMsg] = useState<string | null>(null);
+
+  // Local Finance API Gateway States
+  const [localFinanceEnabled, setLocalFinanceEnabled] = useState<boolean>(false);
+  const [isLoadingFinanceSettings, setIsLoadingFinanceSettings] = useState<boolean>(false);
+  const [financeApiMsg, setFinanceApiMsg] = useState<string | null>(null);
+
+  React.useEffect(() => {
+    const fetchDbSettings = async () => {
+      try {
+        const res = await safeFetchJson<{ settings: any }>('/api/admin/db-settings');
+        if (res.data?.settings?.localFinanceApi) {
+          setLocalFinanceEnabled(!!res.data.settings.localFinanceApi.enabled);
+        }
+      } catch (err) {
+        // Silently handle
+      }
+    };
+    fetchDbSettings();
+  }, []);
+
+  const handleToggleLocalFinanceApi = async () => {
+    setIsLoadingFinanceSettings(true);
+    setFinanceApiMsg(null);
+    const targetStatus = !localFinanceEnabled;
+    try {
+      const res = await safeFetchJson<{ settings: any }>('/api/admin/db-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          localFinanceApi: {
+            enabled: targetStatus
+          }
+        })
+      });
+      if (res.ok) {
+        setLocalFinanceEnabled(targetStatus);
+        setFinanceApiMsg(
+          targetStatus
+            ? 'Harici Finans API Gateway (Port 3001) etkinleştirildi. Sunucunuzun açık olduğundan emin olun.'
+            : 'Dahili yerel veri motoruna geçildi. Sistem dahili veritabanı ile kesintisiz çalışıyor.'
+        );
+      }
+    } catch (err: any) {
+      setFinanceApiMsg('Ayar güncellenirken bir hata oluştu.');
+    } finally {
+      setIsLoadingFinanceSettings(false);
+    }
+  };
 
   // Save State
   const [isSaving, setIsSaving] = useState(false);
@@ -455,6 +506,68 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                   <LogOut size={14} />
                   Oturumu Kapat
                 </button>
+              </div>
+            </div>
+
+            {/* Harici API Gateway / Dahili Veri Motoru Modu Card */}
+            <div className="bg-slate-950/80 border border-orange-500/30 rounded-2xl p-5 space-y-4 shadow-xl relative overflow-hidden md:col-span-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 rounded-xl bg-orange-500/10 text-orange-400 border border-orange-500/20">
+                    <Server size={20} className={localFinanceEnabled ? 'animate-pulse text-orange-400' : 'text-slate-400'} />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                      Finans Veri Akışı & API Gateway Modu
+                      <span className={`px-2 py-0.5 text-[10px] font-bold rounded-full border ${
+                        localFinanceEnabled 
+                          ? 'bg-orange-500/10 text-orange-400 border-orange-500/30' 
+                          : 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30'
+                      }`}>
+                        {localFinanceEnabled ? 'HARİCİ API (Port 3001)' : 'DAHİLİ MOTOR (Etkin)'}
+                      </span>
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-0.5">
+                      {localFinanceEnabled 
+                        ? 'Sistem ikincil finans sunucunuzdan (localhost:3001 veya tünel) veri çekmeye çalışıyor.' 
+                        : 'Sistem dahili Yahoo Finance + TEFAS / KAP veri motoru ile sorunsuz ve kesintisiz çalışıyor.'}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleToggleLocalFinanceApi}
+                  disabled={isLoadingFinanceSettings}
+                  className={`px-4 py-2 text-xs font-bold rounded-xl transition-all flex items-center gap-2 cursor-pointer shadow-md shrink-0 ${
+                    localFinanceEnabled
+                      ? 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-emerald-950/40'
+                      : 'bg-slate-800 hover:bg-slate-700 text-orange-300 border border-slate-700'
+                  }`}
+                >
+                  <RefreshCw size={13} className={isLoadingFinanceSettings ? 'animate-spin' : ''} />
+                  {localFinanceEnabled ? 'Dahili Veri Motoruna Geç (Harici API Devre Dışı)' : 'Harici API Gateway\'i Etkinleştir'}
+                </button>
+              </div>
+
+              {financeApiMsg && (
+                <div className="p-3 rounded-xl bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs flex items-center gap-2">
+                  <CheckCircle2 size={15} />
+                  <span>{financeApiMsg}</span>
+                </div>
+              )}
+
+              <div className="flex flex-wrap items-center justify-between gap-2 text-[11px] text-slate-400 pt-1">
+                <span>Port, tünel veya API Key detaylarını yönetmek için:</span>
+                {onNavigateToTab && (
+                  <button
+                    type="button"
+                    onClick={() => onNavigateToTab('admin')}
+                    className="px-2.5 py-1 bg-slate-900 hover:bg-slate-800 text-purple-300 font-semibold rounded-lg border border-slate-700 transition-all cursor-pointer flex items-center gap-1"
+                  >
+                    <ShieldAlert size={12} /> Yönetim Konsolu (DB & API Entegrasyonu) Sayfasına Git
+                  </button>
+                )}
               </div>
             </div>
 

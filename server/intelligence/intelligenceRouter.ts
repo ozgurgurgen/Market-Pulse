@@ -7,6 +7,7 @@ import { telegramService } from './telegramService';
 import { cacheService } from '../services/cacheService';
 import { rateLimiter } from '../services/rateLimiter';
 import { healthMonitor } from '../services/healthMonitor';
+import { agentHealthService } from '../services/agentHealthService';
 import { API_ACCESS_LIST, getAccessibleSources, getInaccessibleSources } from '../config/apiAccess';
 import { SOURCE_WEIGHTS } from '../config/constants';
 
@@ -181,6 +182,34 @@ intelligenceRouter.post('/telegram/test', async (_req: Request, res: Response) =
   try {
     const result = await telegramService.sendTestMessage();
     return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * GET /api/intelligence/agents/health
+ * Tum aktif finansal ajanlarin (MarketAgent, FundAgent, MacroAgent, PortfolioAgent)
+ * anlik durumunu, performans verilerini ve son calisma loglarini dondurur.
+ */
+intelligenceRouter.get('/agents/health', (_req: Request, res: Response) => {
+  try {
+    const healthSummary = agentHealthService.getSummary();
+    return res.json({ success: true, ...healthSummary });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * POST /api/intelligence/agents/refresh
+ * Ajanlarin saglik durumunu ve diagnostic testini manuel tetikler.
+ */
+intelligenceRouter.post('/agents/refresh', (req: Request, res: Response) => {
+  try {
+    const { agentId } = req.body || {};
+    const updatedSummary = agentHealthService.triggerDiagnostic(agentId);
+    return res.json({ success: true, ...updatedSummary });
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message });
   }

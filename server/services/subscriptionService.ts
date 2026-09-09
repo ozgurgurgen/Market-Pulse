@@ -272,6 +272,9 @@ export async function resetUserUsage(uid: string): Promise<UserUsage> {
   const cleanUsage: UserUsage = {
     analysisQueriesToday: 0,
     aiReportsThisPeriod: 0,
+    creditsUsedThisMonth: 0,
+    creditsRemaining: 0,
+    lastCreditResetMonth: getCurrentMonthString(),
     lastResetDate: getTodayDateString(),
     lastWeeklyResetDate: getTodayDateString()
   };
@@ -286,4 +289,76 @@ export async function resetUserUsage(uid: string): Promise<UserUsage> {
     });
   }
   return cleanUsage;
+}
+
+export function getCurrentMonthString(): string {
+  return new Date().toISOString().slice(0, 7); // "2026-09"
+}
+
+export async function deductUserCredits(
+  uid: string,
+  amount: number,
+  featureName: string
+): Promise<{
+  allowed: boolean;
+  creditsRemaining: number;
+  creditsLimit: number;
+  creditsUsedThisMonth: number;
+  error?: string;
+}> {
+  const { subscription, usage, plan } = await getUserSubscriptionAndUsage(uid);
+  const currentMonth = getCurrentMonthString();
+  const limit = plan.limits.monthlyAiCredits ?? 50;
+
+  let usedThisMonth = usage.creditsUsedThisMonth || 0;
+  if (usage.lastCreditResetMonth !== currentMonth) {
+    usedThisMonth = 0;
+  }
+
+  // Admin and unlimited plans (-1) have unlimited credits
+  if (limit === -1 || subscription.tier === 'admin') {
+    return {
+      allowed: true,
+      creditsRemaining: 999999,
+      creditsLimit: -1,
+      creditsUsedThisMonth: usedThisMonth + amount
+    };
+  }
+
+  const remaining = Math.max(0, limit - usedThisMonth);
+
+  if (remaining < amount) {
+    return {
+      allowed: false,
+      creditsRemaining: remaining,
+      creditsLimit: limit,
+      creditsUsedThisMonth: usedThisMonth,
+      error: `Aylık Yapay Zeka Krediniz yetersiz (${featureName} için ${amount} Kredi gerekli, kalanınız: ${remaining} Kredi). Lütfen paketinizi yükseltin.`
+    };
+  }
+
+  const newUsed = usedThisMonth + amount;
+  const newRemaining = Math.max(0, limit - newUsed);
+  const newUsage: UserUsage = {
+    ...usage,
+    creditsUsedThisMonth: newUsed,
+    creditsRemaining: newRemaining,
+    lastCreditResetMonth: currentMonth
+  };
+
+  subscriptionCache.set(uid, { subscription, usage: newUsage, cachedAt: Date.now() });
+
+  if (uid !== 'guest_user' && !uid.startsWith('guest-')) {
+    adminDb.collection('users').doc(uid).set({ usage: newUsage }, { merge: true }).catch(err => {
+      if (err?.code === 7 || err?.message?.includes('PERMISSION_DENIED') || err?.code === 5) return;
+      console.error('Failed to sync credits usage to DB:', err);
+    });
+  }
+
+  return {
+    allowed: true,
+    creditsRemaining: newRemaining,
+    creditsLimit: limit,
+    creditsUsedThisMonth: newUsed
+  };
 }

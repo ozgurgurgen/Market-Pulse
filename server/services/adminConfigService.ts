@@ -1,7 +1,14 @@
 import { CriticalSecurityError } from '../utils/securityErrors';
 import { adminDb } from './firebaseAdminService';
 import { serverLocalDatabase } from './serverLocalDatabase';
-import { SUBSCRIPTION_PLANS, SubscriptionPlanConfig, SubscriptionTier } from '../../src/shared/subscriptionPlans';
+import { 
+  SUBSCRIPTION_PLANS, 
+  SubscriptionPlanConfig, 
+  SubscriptionTier,
+  CreditCostRules,
+  DEFAULT_CREDIT_COSTS,
+  CouponCode
+} from '../../src/shared/subscriptionPlans';
 import { logAudit } from './auditService';
 
 export interface DynamicAiSettings {
@@ -256,4 +263,193 @@ export async function getAiModelForTier(tier?: SubscriptionTier): Promise<string
     default:
       return aiSettings.freeTierModel || 'gemini-3.7-flash';
   }
+}
+
+// ---------------------------------------------------------
+// CREDIT COSTS & COUPONS MANAGEMENT
+// ---------------------------------------------------------
+
+let cachedCreditCosts: CreditCostRules | null = null;
+let cachedCoupons: CouponCode[] | null = null;
+
+export async function getCreditCostRules(): Promise<CreditCostRules> {
+  if (cachedCreditCosts) return cachedCreditCosts;
+  try {
+    const snap = await adminDb.collection('adminConfig').doc('creditCosts').get().catch(() => null);
+    if (snap && snap.exists) {
+      cachedCreditCosts = { ...DEFAULT_CREDIT_COSTS, ...snap.data() } as CreditCostRules;
+      return cachedCreditCosts;
+    }
+  } catch (e) {}
+  cachedCreditCosts = { ...DEFAULT_CREDIT_COSTS };
+  return cachedCreditCosts;
+}
+
+export async function updateCreditCostRules(
+  newCosts: Partial<CreditCostRules>,
+  adminUid: string,
+  adminEmail: string
+): Promise<{ success: boolean }> {
+  const current = await getCreditCostRules();
+  const updated: CreditCostRules = { ...current, ...newCosts };
+  try {
+    await adminDb.collection('adminConfig').doc('creditCosts').set(updated, { merge: true });
+  } catch (e) {
+    serverLocalDatabase.upsert('adminConfig', 'creditCosts', updated);
+  }
+  cachedCreditCosts = updated;
+
+  await logAudit(
+    'UPDATE_CREDIT_COSTS',
+    adminUid,
+    `Admin (${adminEmail}) Yapay Zeka Kredi Harcama Maliyetlerini güncelledi.`
+  );
+
+  return { success: true };
+}
+
+const DEFAULT_COUPONS: CouponCode[] = [
+  {
+    code: 'BORSA2026',
+    discountType: 'percentage',
+    discountValue: 25,
+    applicableTiers: ['starter', 'pro', 'premium'],
+    maxUses: -1,
+    usedCount: 14,
+    expiresAt: null,
+    isActive: true,
+    description: '2026 Yılı Borsa Lansman %25 İndirim Kuponu'
+  },
+  {
+    code: 'WELCOME50',
+    discountType: 'fixed_try',
+    discountValue: 100,
+    applicableTiers: ['starter', 'pro', 'premium'],
+    maxUses: 100,
+    usedCount: 32,
+    expiresAt: null,
+    isActive: true,
+    description: 'Hoş Geldin 100 TL İndirim Kuponu'
+  }
+];
+
+export async function getCoupons(): Promise<CouponCode[]> {
+  if (cachedCoupons) return cachedCoupons;
+  try {
+    const snap = await adminDb.collection('adminConfig').doc('coupons').get().catch(() => null);
+    if (snap && snap.exists && snap.data()?.list) {
+      cachedCoupons = snap.data()!.list as CouponCode[];
+      return cachedCoupons;
+    }
+  } catch (e) {}
+  cachedCoupons = [...DEFAULT_COUPONS];
+  return cachedCoupons;
+}
+
+export async function saveCoupon(
+  coupon: CouponCode,
+  adminUid: string,
+  adminEmail: string
+): Promise<{ success: boolean; error?: string }> {
+  const coupons = await getCoupons();
+  const normalizedCode = coupon.code.trim().toUpperCase();
+  const index = coupons.findIndex(c => c.code.toUpperCase() === normalizedCode);
+  
+  const couponObj: CouponCode = {
+    ...coupon,
+    code: normalizedCode,
+  };
+
+  if (index >= 0) {
+    coupons[index] = couponObj;
+  } else {
+    coupons.push(couponObj);
+  }
+
+  try {
+    await adminDb.collection('adminConfig').doc('coupons').set({ list: coupons, updatedAt: new Date().toISOString() }, { merge: true });
+  } catch (e) {
+    serverLocalDatabase.upsert('adminConfig', 'coupons', { list: coupons });
+  }
+
+  cachedCoupons = coupons;
+
+  await logAudit(
+    'SAVE_COUPON',
+    adminUid,
+    `Admin (${adminEmail}) "${normalizedCode}" indirim kuponunu kaydetti/güncelledi.`
+  );
+
+  return { success: true };
+}
+
+export async function deleteCoupon(
+  code: string,
+  adminUid: string,
+  adminEmail: string
+): Promise<{ success: boolean }> {
+  let coupons = await getCoupons();
+  coupons = coupons.filter(c => c.code.toUpperCase() !== code.toUpperCase());
+  try {
+    await adminDb.collection('adminConfig').doc('coupons').set({ list: coupons, updatedAt: new Date().toISOString() }, { merge: true });
+  } catch (e) {
+    serverLocalDatabase.upsert('adminConfig', 'coupons', { list: coupons });
+  }
+  cachedCoupons = coupons;
+
+  await logAudit(
+    'DELETE_COUPON',
+    adminUid,
+    `Admin (${adminEmail}) "${code}" indirim kuponunu sildi.`
+  );
+
+  return { success: true };
+}
+
+export async function validateCoupon(
+  code: string,
+  tier: SubscriptionTier,
+  originalPriceTRY: number
+): Promise<{
+  valid: boolean;
+  coupon?: CouponCode;
+  discountedPriceTRY: number;
+  discountAmountTRY: number;
+  message?: string;
+}> {
+  const coupons = await getCoupons();
+  const coupon = coupons.find(c => c.code.toUpperCase() === code.trim().toUpperCase() && c.isActive);
+
+  if (!coupon) {
+    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Geçersiz veya süresi dolmuş indirim kodu.' };
+  }
+
+  if (coupon.expiresAt && new Date(coupon.expiresAt).getTime() < Date.now()) {
+    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Bu indirim kodunun kullanım süresi dolmuştur.' };
+  }
+
+  if (coupon.maxUses !== -1 && coupon.usedCount >= coupon.maxUses) {
+    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Bu kupon kodunun maksimum kullanım limitine ulaşılmıştır.' };
+  }
+
+  if (coupon.applicableTiers && coupon.applicableTiers.length > 0 && !coupon.applicableTiers.includes(tier)) {
+    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: `Bu indirim kodu seçtiğiniz (${tier.toUpperCase()}) paket için geçerli değildir.` };
+  }
+
+  let discountAmount = 0;
+  if (coupon.discountType === 'percentage') {
+    discountAmount = Math.round((originalPriceTRY * coupon.discountValue) / 100);
+  } else {
+    discountAmount = coupon.discountValue;
+  }
+
+  const finalPrice = Math.max(0, originalPriceTRY - discountAmount);
+
+  return {
+    valid: true,
+    coupon,
+    discountedPriceTRY: finalPrice,
+    discountAmountTRY: discountAmount,
+    message: `"%${coupon.discountType === 'percentage' ? coupon.discountValue : coupon.discountValue + ' TL'}" indirim kodu başarıyla uygulandı!`
+  };
 }

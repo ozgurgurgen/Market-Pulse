@@ -1385,7 +1385,26 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-center">
+          <div className="flex flex-wrap items-center gap-2 self-end sm:self-center">
+            {settings.localFinanceApi?.enabled && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSettings(prev => ({
+                    ...prev,
+                    localFinanceApi: {
+                      ...(prev.localFinanceApi || { baseUrl: '' }),
+                      enabled: false
+                    }
+                  }));
+                  setSaveSuccess('Dahili yerel veri motoruna geçildi. Sistem dahili veritabanı ile kesintisiz çalışıyor.');
+                }}
+                className="px-3 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl transition-all flex items-center gap-1.5 cursor-pointer shadow-md shrink-0"
+              >
+                <CheckCircle2 size={13} /> Dahili Veri Motoruna Geç
+              </button>
+            )}
+
             <button
               onClick={handleTestFinanceApi}
               disabled={financeApiTestState.loading || !settings.localFinanceApi?.baseUrl}
@@ -1534,8 +1553,55 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                 />
               </div>
               <span className="text-[11px] text-slate-400 block mt-1">
-                İkinci veri sağlayıcı projenizin çalıştığı kök adresi yapıştırın (Örn: <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">http://localhost:5000</code>).
+                İkinci veri sağlayıcı projenizin çalıştığı kök adresi yapıştırın (Örn: <code className="text-orange-300 bg-slate-950 px-1.5 py-0.5 rounded">http://localhost:3001</code>).
               </span>
+              
+              {/* Quick Presets for Base URL */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                <span className="text-[10px] text-slate-400 font-medium">Hızlı Şablonlar:</span>
+                <button
+                  type="button"
+                  onClick={() => setSettings(prev => ({
+                    ...prev,
+                    localFinanceApi: {
+                      ...(prev.localFinanceApi || { enabled: true }),
+                      baseUrl: 'http://localhost:3001',
+                      apiKey: prev.localFinanceApi?.apiKey || 'fin_live_master_2026_a8f9c2d1e4'
+                    }
+                  }))}
+                  className="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 text-orange-300 text-[10px] font-mono rounded border border-slate-700 cursor-pointer"
+                >
+                  http://localhost:3001
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSettings(prev => ({
+                    ...prev,
+                    localFinanceApi: {
+                      ...(prev.localFinanceApi || { enabled: true }),
+                      baseUrl: 'http://localhost:5000',
+                      apiKey: prev.localFinanceApi?.apiKey || 'fin_live_master_2026_a8f9c2d1e4'
+                    }
+                  }))}
+                  className="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 text-orange-300 text-[10px] font-mono rounded border border-slate-700 cursor-pointer"
+                >
+                  http://localhost:5000
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSettings(prev => ({
+                    ...prev,
+                    localFinanceApi: {
+                      ...(prev.localFinanceApi || { enabled: true }),
+                      baseUrl: 'https://bobby-layout-circles-reform.trycloudflare.com',
+                      apiKey: prev.localFinanceApi?.apiKey || 'fin_live_master_2026_a8f9c2d1e4'
+                    }
+                  }))}
+                  className="px-2 py-0.5 bg-slate-900 hover:bg-slate-800 text-sky-300 text-[10px] font-mono rounded border border-slate-700 cursor-pointer"
+                >
+                  Cloudflare Tunnel
+                </button>
+              </div>
             </div>
 
             {/* API Key (X-API-Key / Authorization) Field */}
@@ -1726,6 +1792,45 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                   </>
                 )}
               </ul>
+
+              {/* Quick Action Buttons inside Error Panel */}
+              <div className="pt-2 border-t border-rose-900/40 flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSettings(prev => ({
+                      ...prev,
+                      localFinanceApi: {
+                        ...(prev.localFinanceApi || { baseUrl: '' }),
+                        enabled: false
+                      }
+                    }));
+                    setSaveSuccess('Dahili yerel veri motoruna geçildi. Sistem dahili veritabanı ile kesintisiz çalışıyor.');
+                  }}
+                  className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs rounded-lg transition-all flex items-center gap-1.5 shadow cursor-pointer"
+                >
+                  <CheckCircle2 size={13} /> Dahili Veri Motoruna Geç (Harici Geçit Devre Dışı)
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSettings(prev => ({
+                      ...prev,
+                      localFinanceApi: {
+                        ...(prev.localFinanceApi || {}),
+                        enabled: true,
+                        baseUrl: 'http://localhost:3001',
+                        apiKey: 'fin_live_master_2026_a8f9c2d1e4'
+                      }
+                    }));
+                    handleTestFinanceApi();
+                  }}
+                  className="px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-orange-300 text-xs font-semibold rounded-lg border border-slate-700 transition-all cursor-pointer font-mono flex items-center gap-1"
+                >
+                  <RefreshCw size={12} /> http://localhost:3001 Portunu Yeniden Dene
+                </button>
+              </div>
             </div>
           </div>
         )}

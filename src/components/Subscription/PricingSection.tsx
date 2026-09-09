@@ -15,7 +15,10 @@ import {
   HelpCircle,
   CheckCircle2,
   AlertCircle,
-  MessageSquare
+  MessageSquare,
+  Ticket,
+  Percent,
+  Coins
 } from 'lucide-react';
 import { 
   SUBSCRIPTION_PLANS, 
@@ -47,7 +50,62 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     message?: string;
   }>({ loading: false });
 
+  // Coupon Code state
+  const [couponInput, setCouponInput] = useState('');
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountedPriceTRY: number;
+    discountAmountTRY: number;
+    message: string;
+  } | null>(null);
+  const [couponError, setCouponError] = useState<string | null>(null);
+  const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
+
   const tiers: SubscriptionTier[] = ['free', 'starter', 'pro', 'premium'];
+
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+
+    setIsValidatingCoupon(true);
+    setCouponError(null);
+
+    try {
+      const res = await safeFetchJson<{
+        success: boolean;
+        valid: boolean;
+        discountedPriceTRY: number;
+        discountAmountTRY: number;
+        message: string;
+      }>('/api/subscription/validate-coupon', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          code: couponInput.trim(),
+          tier: 'pro',
+          originalPriceTRY: SUBSCRIPTION_PLANS.pro.priceMonthlyTRY
+        })
+      });
+
+      if (res.ok && res.data?.valid) {
+        setAppliedCoupon({
+          code: couponInput.trim().toUpperCase(),
+          discountedPriceTRY: res.data.discountedPriceTRY,
+          discountAmountTRY: res.data.discountAmountTRY,
+          message: res.data.message
+        });
+        setCouponError(null);
+      } else {
+        setCouponError(res.data?.message || 'Geçersiz veya süresi dolmuş indirim kodu.');
+        setAppliedCoupon(null);
+      }
+    } catch (err: any) {
+      setCouponError('Kupon doğrulama hatası: ' + err.message);
+      setAppliedCoupon(null);
+    } finally {
+      setIsValidatingCoupon(false);
+    }
+  };
 
   const handleSelectPlan = async (tier: SubscriptionTier) => {
     if (tier === currentTier) return;
@@ -109,8 +167,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           Temel analizden derin yapay zeka istihbaratına ve What-If simülatörüne kadar her seviye için profesyonel araçlar.
         </p>
 
-        {/* Billing Cycle Switch */}
-        <div className="pt-3 flex items-center justify-center">
+        {/* Billing Cycle Switch & Promo Code Row */}
+        <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
           <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center shadow-inner">
             <button
               type="button"
@@ -140,7 +198,42 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
               </span>
             </button>
           </div>
+
+          {/* Coupon Code Input */}
+          <form onSubmit={handleApplyCoupon} className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 shadow-inner">
+            <div className="flex items-center gap-1.5 px-2 text-slate-400">
+              <Ticket size={14} className="text-purple-400" />
+              <input
+                type="text"
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                placeholder="İndirim Kodu Girin..."
+                className="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none font-mono font-bold w-32 uppercase"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={isValidatingCoupon || !couponInput.trim()}
+              className="px-3 py-1 bg-purple-600 hover:bg-purple-500 disabled:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0"
+            >
+              {isValidatingCoupon ? '...' : 'Uygula'}
+            </button>
+          </form>
         </div>
+
+        {/* Coupon Feedback Message */}
+        {appliedCoupon && (
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-purple-950/50 border border-purple-500/40 text-purple-300 text-xs font-medium animate-fadeIn">
+            <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
+            <span>Kupon Uygulandı (<strong>{appliedCoupon.code}</strong>): {appliedCoupon.message}</span>
+          </div>
+        )}
+        {couponError && (
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-rose-950/50 border border-rose-500/40 text-rose-300 text-xs font-medium animate-fadeIn">
+            <AlertCircle size={14} className="text-rose-400 shrink-0" />
+            <span>{couponError}</span>
+          </div>
+        )}
       </div>
 
       {/* Status banner if request submitted */}

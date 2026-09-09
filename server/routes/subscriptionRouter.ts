@@ -13,9 +13,69 @@ import {
   UserSubscription 
 } from '../../src/shared/subscriptionPlans';
 import { logAudit } from '../services/auditService';
-import { getDynamicSubscriptionPlans } from '../services/adminConfigService';
+import { 
+  getDynamicSubscriptionPlans,
+  getCreditCostRules,
+  validateCoupon 
+} from '../services/adminConfigService';
+import { deductUserCredits } from '../services/subscriptionService';
 
 export const subscriptionRouter = Router();
+
+/**
+ * GET /api/subscription/credit-costs
+ * Returns credit cost rules per AI feature
+ */
+subscriptionRouter.get('/credit-costs', async (req: Request, res: Response) => {
+  try {
+    const costs = await getCreditCostRules();
+    return res.json({ success: true, creditCosts: costs });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/subscription/validate-coupon
+ * Validates a promo coupon code and calculates discount amount
+ */
+subscriptionRouter.post('/validate-coupon', async (req: Request, res: Response) => {
+  try {
+    const { code, tier, originalPriceTRY } = req.body || {};
+    if (!code || typeof code !== 'string') {
+      return res.status(400).json({ valid: false, message: 'Lütfen geçerli bir indirim kodu giriniz.' });
+    }
+
+    const price = typeof originalPriceTRY === 'number' ? originalPriceTRY : 0;
+    const targetTier: SubscriptionTier = tier || 'pro';
+
+    const result = await validateCoupon(code, targetTier, price);
+    return res.json({ success: true, ...result });
+  } catch (error: any) {
+    return res.status(500).json({ valid: false, message: error.message });
+  }
+});
+
+/**
+ * POST /api/subscription/deduct-credits
+ * Deducts AI credits for a feature call
+ */
+subscriptionRouter.post('/deduct-credits', async (req: Request, res: Response) => {
+  try {
+    const uid = req.user?.uid || 'guest_user';
+    const { amount, featureName } = req.body || {};
+    const creditAmount = typeof amount === 'number' && amount > 0 ? amount : 1;
+    const feature = typeof featureName === 'string' ? featureName : 'AI Sorgusu';
+
+    const result = await deductUserCredits(uid, creditAmount, feature);
+    if (!result.allowed) {
+      return res.status(402).json({ success: false, ...result });
+    }
+    return res.json({ success: true, ...result });
+  } catch (error: any) {
+    return res.status(500).json({ error: error.message });
+  }
+});
 
 /**
  * GET /api/subscription/me
