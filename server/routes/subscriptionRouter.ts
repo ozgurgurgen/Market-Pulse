@@ -4,6 +4,7 @@ import {
   updateUserSubscription, 
   resetUserUsage 
 } from '../services/subscriptionService';
+import { requireAdmin } from '../middlewares/requireAdmin';
 
 import { adminDb } from '../services/firebaseAdminService';
 import { serverLocalDatabase } from '../services/serverLocalDatabase';
@@ -180,13 +181,8 @@ subscriptionRouter.post('/request-upgrade', async (req: Request, res: Response) 
  * POST /api/admin/grant-subscription
  * Admin grants or updates a user's subscription tier
  */
-subscriptionRouter.post('/grant-subscription', async (req: Request, res: Response) => {
+subscriptionRouter.post('/grant-subscription', requireAdmin, async (req: Request, res: Response) => {
   try {
-    // Check admin permission
-    if (req.userRole !== 'admin' && req.userRole !== 'superadmin') {
-      return res.status(403).json({ error: 'Yalnızca sistem yöneticileri abonelik tanımlayabilir.' });
-    }
-
     const { targetUid, tier, durationDays, note } = req.body as {
       targetUid: string;
       tier: SubscriptionTier;
@@ -225,12 +221,8 @@ subscriptionRouter.post('/grant-subscription', async (req: Request, res: Respons
  * GET /api/admin/users-subscriptions
  * Admin lists all users with their current subscriptions and usage stats
  */
-subscriptionRouter.get('/users-subscriptions', async (req: Request, res: Response) => {
+subscriptionRouter.get('/users-subscriptions', requireAdmin, async (req: Request, res: Response) => {
   try {
-    if (req.userRole !== 'admin' && req.userRole !== 'superadmin') {
-      return res.status(403).json({ error: 'Yetkisiz işlem.' });
-    }
-
     let users: any[] = [];
 
     try {
@@ -303,12 +295,8 @@ subscriptionRouter.get('/users-subscriptions', async (req: Request, res: Respons
  * POST /api/admin/reset-user-usage
  * Admin resets daily and weekly usage counters for a user
  */
-subscriptionRouter.post('/reset-user-usage', async (req: Request, res: Response) => {
+subscriptionRouter.post('/reset-user-usage', requireAdmin, async (req: Request, res: Response) => {
   try {
-    if (req.userRole !== 'admin' && req.userRole !== 'superadmin') {
-      return res.status(403).json({ error: 'Yetkisiz işlem.' });
-    }
-
     const { targetUid } = req.body;
     if (!targetUid) {
       return res.status(400).json({ error: 'targetUid is required' });

@@ -14,17 +14,17 @@
     "sector": "Lojistik & Taşımacılık",
     "source": "KAP_OFFICIAL",
     "createdAt": "2024-05-20T10:00:00.000Z",
-    "updatedAt": 1788602309947,
+    "updatedAt": 1788992149761,
     "leadBroker": "QNB Finansinvest & Tacirler Yatırım",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:29.947Z",
-      "currentPrice": 57,
+      "lastUpdated": "2026-09-09T22:15:49.761Z",
+      "currentPrice": 58.2,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 46.2,
       "month1ReturnPct": 28.5,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 3.64
+      "currentReturnPct": 5.82
     },
     "qualitative": {
       "_source": "KAP Esas Sözleşme & BIST Katılım Endeksi Kriterleri",
@@ -155,17 +155,17 @@
     "sector": "Savunma Sanayii & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2024-05-15T09:00:00.000Z",
-    "updatedAt": 1788602311496,
+    "updatedAt": 1788992149978,
     "leadBroker": "Gedik Yatırım Menkul Değerler",
     "methodLabel": "Tamamı Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.496Z",
-      "currentPrice": 58.05,
+      "lastUpdated": "2026-09-09T22:15:49.978Z",
+      "currentPrice": 60.5,
       "day1ReturnPct": 10,
       "week1ReturnPct": 61,
       "month1ReturnPct": 82.4,
       "ceilingDaysCount": 6,
-      "currentReturnPct": 17.27
+      "currentReturnPct": 22.22
     },
     "qualitative": {
       "_source": "KAP İzahname s.98",
@@ -296,17 +296,17 @@
     "sector": "Demir Çelik & Metal",
     "source": "KAP_OFFICIAL",
     "createdAt": "2024-05-01T08:00:00.000Z",
-    "updatedAt": 1788602309953,
+    "updatedAt": 1788992149796,
     "leadBroker": "İntegral Yatırım Menkul Değerler",
     "methodLabel": "Bireysele Eşit / Kurumsala Oransal",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:29.953Z",
-      "currentPrice": 3.74,
+      "lastUpdated": "2026-09-09T22:15:49.796Z",
+      "currentPrice": 3.9,
       "day1ReturnPct": 9.95,
       "week1ReturnPct": 33.1,
       "month1ReturnPct": 18.2,
       "ceilingDaysCount": 3,
-      "currentReturnPct": -81.76
+      "currentReturnPct": -80.98
     },
     "qualitative": {
       "_source": "KAP İzahname s.84",
@@ -431,17 +431,17 @@
     "sector": "Kağıt & Ambalaj",
     "source": "KAP_OFFICIAL",
     "createdAt": "2024-04-20T11:00:00.000Z",
-    "updatedAt": 1788602310215,
+    "updatedAt": 1788992148302,
     "leadBroker": "Ak Yatırım & Yapı Kredi Yatırım",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:30.215Z",
-      "currentPrice": 28.2,
+      "lastUpdated": "2026-09-09T22:15:16.818Z",
+      "currentPrice": 28.82,
       "day1ReturnPct": 9.97,
       "week1ReturnPct": 21,
       "month1ReturnPct": -4.5,
       "ceilingDaysCount": 2,
-      "currentReturnPct": -24.58
+      "currentReturnPct": -22.92
     },
     "qualitative": {
       "_source": "KAP İzahname s.72",
@@ -566,17 +566,17 @@
     "sector": "Gıda & İçecek",
     "source": "KAP_OFFICIAL",
     "createdAt": "2024-05-20T12:00:00.000Z",
-    "updatedAt": 1788602311511,
+    "updatedAt": 1788992150692,
     "leadBroker": "Deniz Yatırım Menkul Kıymetler",
     "methodLabel": "Tamamı Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.511Z",
-      "currentPrice": 455.5,
+      "lastUpdated": "2026-09-09T22:15:50.692Z",
+      "currentPrice": 475,
       "day1ReturnPct": 10,
       "week1ReturnPct": 33.1,
       "month1ReturnPct": 19.4,
       "ceilingDaysCount": 3,
-      "currentReturnPct": 1882.16
+      "currentReturnPct": 1967.01
     },
     "qualitative": {
       "_source": "KAP İzahname s.68",
@@ -701,7 +701,7 @@
     "sector": "Enerji & Yenilenebilir",
     "source": "SPK_BULLETIN",
     "createdAt": "2025-02-20T10:00:00.000Z",
-    "updatedAt": 1788602307469,
+    "updatedAt": 1788992148302,
     "leadBroker": "İş Yatırım & Garanti BBVA Yatırım",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
@@ -835,7 +835,7 @@
     "sector": "Sağlık & İlaç",
     "source": "SPK_BULLETIN",
     "createdAt": "2025-02-22T14:00:00.000Z",
-    "updatedAt": 1788602307470,
+    "updatedAt": 1788992148302,
     "leadBroker": "Halk Yatırım Menkul Değerler",
     "methodLabel": "Tamamı Eşit Dağıtım",
     "performance": {
@@ -968,17 +968,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602310451,
+    "updatedAt": 1788992150945,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:30.451Z",
-      "currentPrice": 2.64,
+      "lastUpdated": "2026-09-09T22:15:50.945Z",
+      "currentPrice": 2.86,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": -92.46
+      "currentReturnPct": -91.83
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1030,17 +1030,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602309725,
+    "updatedAt": 1788992149701,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:29.725Z",
-      "currentPrice": 312,
+      "lastUpdated": "2026-09-09T22:15:49.701Z",
+      "currentPrice": 324.5,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 791.43
+      "currentReturnPct": 827.14
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1092,17 +1092,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602310449,
+    "updatedAt": 1788992150207,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:30.449Z",
-      "currentPrice": 131.4,
+      "lastUpdated": "2026-09-09T22:15:50.207Z",
+      "currentPrice": 134.3,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 275.43
+      "currentReturnPct": 283.71
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1154,17 +1154,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602311503,
+    "updatedAt": 1788992148303,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.503Z",
-      "currentPrice": 54.35,
+      "lastUpdated": "2026-09-09T22:15:16.777Z",
+      "currentPrice": 50.2,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 55.29
+      "currentReturnPct": 43.43
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1216,17 +1216,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602309460,
+    "updatedAt": 1788992148303,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:29.460Z",
-      "currentPrice": 194.4,
+      "lastUpdated": "2026-09-09T22:15:16.332Z",
+      "currentPrice": 195.6,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 455.43
+      "currentReturnPct": 458.86
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1278,17 +1278,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602311508,
+    "updatedAt": 1788992148303,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.508Z",
-      "currentPrice": 8.68,
+      "lastUpdated": "2026-09-09T22:15:16.050Z",
+      "currentPrice": 8.94,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": -75.2
+      "currentReturnPct": -74.46
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1340,17 +1340,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602311537,
+    "updatedAt": 1788992150437,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.537Z",
-      "currentPrice": 151.5,
+      "lastUpdated": "2026-09-09T22:15:50.437Z",
+      "currentPrice": 122.9,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": 332.86
+      "currentReturnPct": 251.14
     },
     "qualitative": null,
     "marketCapTRY": 500000000,
@@ -1402,17 +1402,17 @@
     "sector": "Sanayi & Teknoloji",
     "source": "KAP_OFFICIAL",
     "createdAt": "2026-09-02T17:00:34.997Z",
-    "updatedAt": 1788602311220,
+    "updatedAt": 1788992150943,
     "leadBroker": "Konsorsiyum Lideri Aracı Kurum",
     "methodLabel": "Bireysele Eşit Dağıtım",
     "performance": {
-      "lastUpdated": "2026-09-05T09:58:31.220Z",
-      "currentPrice": 32.2,
+      "lastUpdated": "2026-09-09T22:15:50.943Z",
+      "currentPrice": 32.62,
       "day1ReturnPct": 9.98,
       "week1ReturnPct": 42.5,
       "month1ReturnPct": 28,
       "ceilingDaysCount": 4,
-      "currentReturnPct": -8
+      "currentReturnPct": -6.8
     },
     "qualitative": null,
     "marketCapTRY": 500000000,

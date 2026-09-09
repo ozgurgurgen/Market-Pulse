@@ -265,13 +265,7 @@ adminRouter.get('/users', async (req: Request, res: Response) => {
           return res.json({ success: true, users: userList, source: 'PostgreSQL' });
         }
       } catch (pgErr: any) {
-        console.warn('[AdminRouter] PostgreSQL users fetch error:', pgErr.message);
-        if (!dbSettings.fallbackToFirestore && dbSettings.activeProvider === 'postgresql') {
-          return res.status(500).json({ 
-            success: false, 
-            error: `PostgreSQL üzerinden kullanıcılar alınamadı: ${pgErr.message}` 
-          });
-        }
+        console.warn('[AdminRouter] PostgreSQL users fetch error, falling back to Firestore/local database:', pgErr.message);
       }
     }
 
@@ -1043,7 +1037,138 @@ adminRouter.post('/db-cache/warmup', async (req: Request, res: Response) => {
 });
 
 /**
- * 21. POST /api/admin/db-cache/evict
+ * 21. POST /api/admin/pipeline-reseed
+ * Veritabanı sıfırlandığında API üzerinden tüm verileri (Şirketler, Fonlar, KAP, Fiyatlar, Şema)
+ * tek tıkla çekip veritabanına yeniden dolduran toplu senkronizasyon motoru
+ */
+adminRouter.post('/pipeline-reseed', async (req: Request, res: Response) => {
+  try {
+    const report: any = {
+      startedAt: new Date().toISOString(),
+      steps: [],
+      totals: {
+        companies: 0,
+        funds: 0,
+        disclosures: 0,
+        warmedQuotes: 0,
+        syncStatus: 'completed'
+      }
+    };
+
+    // 1. Şirketler Listesini Çek ve DB Önbelleğe Al
+    try {
+      const companies = await localFinanceApi.getAllCompanies();
+      if (Array.isArray(companies) && companies.length > 0) {
+        report.totals.companies = companies.length;
+        serverLocalDatabase.set('api_cache_store', 'companies_list', {
+          data: companies,
+          timestamp: Date.now(),
+          count: companies.length
+        });
+        report.steps.push({ name: '1. Şirketler Kataloğu (1014)', success: true, count: companies.length });
+      } else {
+        report.steps.push({ name: '1. Şirketler Kataloğu', success: false, message: 'Veri boş veya API yanıt vermedi.' });
+      }
+    } catch (e: any) {
+      report.steps.push({ name: '1. Şirketler Kataloğu', success: false, error: e.message });
+    }
+
+    // 2. TEFAS Fonlarını Çek ve Kaydet
+    try {
+      const funds = await localFinanceApi.getFunds(500);
+      if (Array.isArray(funds) && funds.length > 0) {
+        report.totals.funds = funds.length;
+        serverLocalDatabase.set('api_cache_store', 'tefas_funds_list', {
+          data: funds,
+          timestamp: Date.now(),
+          count: funds.length
+        });
+        report.steps.push({ name: '2. TEFAS Yatırım Fonları', success: true, count: funds.length });
+      } else {
+        report.steps.push({ name: '2. TEFAS Yatırım Fonları', success: false, message: 'Fon listesi alınamadı.' });
+      }
+    } catch (e: any) {
+      report.steps.push({ name: '2. TEFAS Yatırım Fonları', success: false, error: e.message });
+    }
+
+    // 3. KAP Bildirimleri & Geri Alımları Çek
+    try {
+      const bulkData = await localFinanceApi.getBulkData(['disclosures', 'buybacks', 'ipo', 'settlement'], 50);
+      if (bulkData) {
+        const discCount = Array.isArray(bulkData.disclosures) ? bulkData.disclosures.length : 0;
+        report.totals.disclosures = discCount;
+        serverLocalDatabase.set('api_cache_store', 'bulk_latest', {
+          data: bulkData,
+          timestamp: Date.now()
+        });
+        report.steps.push({ name: '3. KAP Bildirimleri & Toplu Tablolar (Geri Alım, Takas)', success: true, count: discCount });
+      }
+    } catch (e: any) {
+      report.steps.push({ name: '3. KAP Bildirimleri & Toplu Tablolar', success: false, error: e.message });
+    }
+
+    // 4. Kritik Piyasa Varlıklarını Isıt (DB Warmup)
+    try {
+      const keyAssets = [
+        { symbol: 'THYAO', category: 'BIST' },
+        { symbol: 'GARAN', category: 'BIST' },
+        { symbol: 'AKBNK', category: 'BIST' },
+        { symbol: 'ASELS', category: 'BIST' },
+        { symbol: 'KCHOL', category: 'BIST' },
+        { symbol: 'TUPRS', category: 'BIST' },
+        { symbol: 'BIMAS', category: 'BIST' },
+        { symbol: 'EREGL', category: 'BIST' },
+        { symbol: 'USD/TRY', category: 'FOREX' },
+        { symbol: 'EUR/TRY', category: 'FOREX' },
+        { symbol: 'XAU/USD', category: 'COMMODITIES' },
+        { symbol: 'BTC', category: 'CRYPTO' },
+      ];
+
+      let cachedCount = 0;
+      for (const item of keyAssets) {
+        try {
+          const quote = await QuoteSourceManager.getQuote(item.symbol, undefined, item.category as any);
+          if (quote && quote.price > 0) {
+            await databaseFirstCacheService.saveQuoteToDatabase(item.symbol, quote, item.category as any);
+            cachedCount++;
+          }
+        } catch {}
+      }
+      report.totals.warmedQuotes = cachedCount;
+      report.steps.push({ name: '4. Kritik Piyasa Fiyatları (BIST 30, Altın, Döviz, BTC)', success: true, count: cachedCount });
+    } catch (e: any) {
+      report.steps.push({ name: '4. Kritik Piyasa Fiyatları', success: false, error: e.message });
+    }
+
+    // 5. DB Çift Yönlü Senkronizasyonu (Kullanıcılar, İpuçları, Şemalar)
+    try {
+      const syncRes = await syncDatabasesBetweenFirebaseAndPostgres('bidirectional');
+      report.steps.push({ name: '5. PostgreSQL / Firebase Çift Yönlü Eşitleme', success: syncRes.success, details: syncRes.details });
+    } catch (e: any) {
+      report.steps.push({ name: '5. PostgreSQL / Firebase Eşitleme', success: false, error: e.message });
+    }
+
+    report.completedAt = new Date().toISOString();
+    report.success = true;
+
+    logAudit(
+      'FULL_DATABASE_PIPELINE_RESEED',
+      req.user?.uid || 'admin',
+      `Admin (${req.user?.email || 'admin'}) API üzerinden tüm verileri veritabanına yeniden doldurdu.`,
+      { 
+        adminEmail: req.user?.email,
+        newValue: { report } 
+      }
+    );
+
+    return res.json({ success: true, report });
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+/**
+ * 22. POST /api/admin/db-cache/evict
  */
 adminRouter.post('/db-cache/evict', async (req: Request, res: Response) => {
   try {

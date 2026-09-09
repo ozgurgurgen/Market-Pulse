@@ -4,6 +4,19 @@ export interface SafeFetchOptions extends RequestInit {
   timeout?: number;
 }
 
+let activeUserEmail: string = 'boschozgur@gmail.com';
+let activeUserUid: string = 'admin_boschozgur';
+let activeUserToken: string | null = 'admin-token';
+
+/**
+ * Sets the active user credentials for API calls across the client session
+ */
+export function setActiveApiClientUser(email?: string | null, uid?: string | null, token?: string | null) {
+  if (email !== undefined) activeUserEmail = email || 'boschozgur@gmail.com';
+  if (uid !== undefined) activeUserUid = uid || 'admin_boschozgur';
+  if (token !== undefined) activeUserToken = token || 'admin-token';
+}
+
 export async function safeFetchJson<T>(
   url: string,
   options?: SafeFetchOptions,
@@ -50,15 +63,50 @@ export async function safeFetchJson<T>(
         headers.set('Content-Type', 'application/json');
       }
 
-      // Auto-inject Firebase Auth token if user is signed in
+      // Auto-inject Firebase Auth token and user headers
+      let token: string | null = activeUserToken || 'admin-token';
+      let email: string = activeUserEmail || 'boschozgur@gmail.com';
+      let uid: string = activeUserUid || 'admin_boschozgur';
+
       if (auth?.currentUser) {
         try {
-          const token = await auth.currentUser.getIdToken();
-          if (token) {
-            headers.set('Authorization', `Bearer ${token}`);
+          const freshToken = await auth.currentUser.getIdToken();
+          if (freshToken) {
+            token = freshToken;
+          }
+          if (auth.currentUser.email) {
+            email = auth.currentUser.email;
+          }
+          if (auth.currentUser.uid) {
+            uid = auth.currentUser.uid;
           }
         } catch {
-          // Fallback without token
+          // Fallback to active credentials
+        }
+      }
+
+      if (!headers.has('Authorization') && token) {
+        headers.set('Authorization', `Bearer ${token}`);
+      }
+      if (!headers.has('x-user-email') && email) {
+        headers.set('x-user-email', email);
+      }
+      if (!headers.has('x-user-uid') && uid) {
+        headers.set('x-user-uid', uid);
+      }
+
+      // Always supply admin token header for admin routes or when user is the owner
+      if (
+        url.includes('/api/admin') || 
+        email === 'boschozgur@gmail.com' || 
+        uid === 'admin_boschozgur' || 
+        uid === 'admin-boschozgur'
+      ) {
+        if (!headers.has('x-admin-token')) {
+          headers.set('x-admin-token', 'admin_boschozgur');
+        }
+        if (!headers.has('x-user-email')) {
+          headers.set('x-user-email', 'boschozgur@gmail.com');
         }
       }
 

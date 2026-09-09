@@ -8,6 +8,7 @@ import {
   DEFAULT_FREE_SUBSCRIPTION, 
   DEFAULT_FREE_USAGE 
 } from '../shared/subscriptionPlans';
+import { setActiveApiClientUser } from '../utils/apiClient';
 
 interface UserData {
   role: string;
@@ -158,7 +159,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (currentUser) {
         setGuestUser(null);
         try {
-          currentUser.getIdToken().then(tokenVal => setToken(tokenVal)).catch(() => {});
+          currentUser.getIdToken().then(tokenVal => {
+            setToken(tokenVal);
+            setActiveApiClientUser(currentUser.email, currentUser.uid, tokenVal);
+          }).catch(() => {});
+          setActiveApiClientUser(currentUser.email, currentUser.uid, null);
 
           const userRef = doc(db, 'users', currentUser.uid);
           getDoc(userRef).then(async (userSnap) => {

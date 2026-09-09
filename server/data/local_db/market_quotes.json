@@ -1,0 +1,869 @@
+{
+  "HALKB.IS": {
+    "quote": {
+      "symbol": "HALKB",
+      "rawSymbol": "HALKB.IS",
+      "name": "T. HALK BANKASI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 50.2,
+      "currency": "TRY",
+      "change24h": -0.6,
+      "changePercent": -1.18,
+      "high24h": 52.5,
+      "low24h": 49.98,
+      "volume": 82010324,
+      "marketCap": 360675868672,
+      "peRatio": 11.205358,
+      "asOf": "2026-09-09T21:06:44.117Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 50.2
+      },
+      "sparkline": [
+        50.2
+      ]
+    },
+    "expiresAt": 1789002404117,
+    "updatedAt": 1788988004117
+  },
+  "LILAK.IS": {
+    "quote": {
+      "symbol": "LILAK",
+      "rawSymbol": "LILAK.IS",
+      "name": "LILA KAGIT",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 28.82,
+      "currency": "TRY",
+      "change24h": -0.18,
+      "changePercent": -0.62,
+      "high24h": 29.4,
+      "low24h": 28.82,
+      "volume": 2052273,
+      "marketCap": 17003799552,
+      "peRatio": 21.036495,
+      "asOf": "2026-09-09T21:06:46.150Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 28.82
+      },
+      "sparkline": [
+        28.82
+      ]
+    },
+    "expiresAt": 1789002406151,
+    "updatedAt": 1788988006151
+  },
+  "KOCMT.IS": {
+    "quote": {
+      "symbol": "KOCMT",
+      "rawSymbol": "KOCMT.IS",
+      "name": "KOC METALURJI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 3.9,
+      "currency": "TRY",
+      "change24h": -0.12,
+      "changePercent": -2.99,
+      "high24h": 4.22,
+      "low24h": 3.89,
+      "volume": 69201074,
+      "marketCap": 9742391296,
+      "peRatio": 6.0937505,
+      "asOf": "2026-09-09T21:06:42.130Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 3.9
+      },
+      "sparkline": [
+        3.9
+      ]
+    },
+    "expiresAt": 1789002402131,
+    "updatedAt": 1788988002131
+  },
+  "HEKTS.IS": {
+    "quote": {
+      "symbol": "HEKTS",
+      "rawSymbol": "HEKTS.IS",
+      "name": "HEKTAS",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 2.86,
+      "currency": "TRY",
+      "change24h": -0.14,
+      "changePercent": -4.67,
+      "high24h": 3.07,
+      "low24h": 2.86,
+      "volume": 1155660966,
+      "marketCap": 24109799424,
+      "asOf": "2026-09-09T21:06:46.147Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 2.86
+      },
+      "sparkline": [
+        2.86
+      ]
+    },
+    "expiresAt": 1789002406147,
+    "updatedAt": 1788988006147
+  },
+  "TERA.IS": {
+    "quote": {
+      "symbol": "TERA",
+      "rawSymbol": "TERA.IS",
+      "name": "TERA YATIRIM MENKUL DEGERLER",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 195.6,
+      "currency": "TRY",
+      "change24h": 0.1,
+      "changePercent": 0.05,
+      "high24h": 196.9,
+      "low24h": 195.4,
+      "volume": 9314733,
+      "marketCap": 136920006656,
+      "asOf": "2026-09-09T21:06:42.664Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 195.6
+      },
+      "sparkline": [
+        195.6
+      ]
+    },
+    "expiresAt": 1789002402664,
+    "updatedAt": 1788988002664
+  },
+  "ALKLC.IS": {
+    "quote": {
+      "symbol": "ALKLC",
+      "rawSymbol": "ALKLC.IS",
+      "name": "ALTINKILIC GIDA VE SUT",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 475,
+      "currency": "TRY",
+      "change24h": 7,
+      "changePercent": 1.5,
+      "high24h": 477,
+      "low24h": 460.75,
+      "volume": 3147340,
+      "marketCap": 53199998976,
+      "asOf": "2026-09-09T21:06:42.410Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 475
+      },
+      "sparkline": [
+        475
+      ]
+    },
+    "expiresAt": 1789002402410,
+    "updatedAt": 1788988002410
+  },
+  "OTKAR.IS": {
+    "quote": {
+      "symbol": "OTKAR",
+      "rawSymbol": "OTKAR.IS",
+      "name": "OTOKAR",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 324.5,
+      "currency": "TRY",
+      "change24h": -5.5,
+      "changePercent": -1.67,
+      "high24h": 331.75,
+      "low24h": 315.75,
+      "volume": 633158,
+      "marketCap": 38940000256,
+      "asOf": "2026-09-09T21:06:42.605Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 324.5
+      },
+      "sparkline": [
+        324.5
+      ]
+    },
+    "expiresAt": 1789002402605,
+    "updatedAt": 1788988002605
+  },
+  "CGCAM.IS": {
+    "quote": {
+      "symbol": "CGCAM",
+      "rawSymbol": "CGCAM.IS",
+      "name": "CAGDAS CAM",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 32.62,
+      "currency": "TRY",
+      "change24h": -0.56,
+      "changePercent": -1.69,
+      "high24h": 33.36,
+      "low24h": 32.52,
+      "volume": 1713470,
+      "marketCap": 5480159744,
+      "peRatio": 32.949493,
+      "asOf": "2026-09-09T21:06:44.101Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 32.62
+      },
+      "sparkline": [
+        32.62
+      ]
+    },
+    "expiresAt": 1789002404101,
+    "updatedAt": 1788988004101
+  },
+  "GARAN.IS": {
+    "quote": {
+      "symbol": "GARAN",
+      "rawSymbol": "GARAN.IS",
+      "name": "GARANTI BANKASI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 134.3,
+      "currency": "TRY",
+      "change24h": -1.7,
+      "changePercent": -1.25,
+      "high24h": 137.8,
+      "low24h": 133.8,
+      "volume": 58094683,
+      "marketCap": 564060028928,
+      "peRatio": 4.684339,
+      "asOf": "2026-09-09T21:06:44.272Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 134.3
+      },
+      "sparkline": [
+        134.3
+      ]
+    },
+    "expiresAt": 1789002404272,
+    "updatedAt": 1788988004272
+  },
+  "HOROZ.IS": {
+    "quote": {
+      "symbol": "HOROZ",
+      "rawSymbol": "HOROZ.IS",
+      "name": "HOROZ LOJISTIK",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 58.2,
+      "currency": "TRY",
+      "change24h": -1.8,
+      "changePercent": -3,
+      "high24h": 60.45,
+      "low24h": 58.2,
+      "volume": 1066025,
+      "marketCap": 5266406400,
+      "asOf": "2026-09-09T21:06:43.147Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 58.2
+      },
+      "sparkline": [
+        58.2
+      ]
+    },
+    "expiresAt": 1789002403147,
+    "updatedAt": 1788988003147
+  },
+  "BIGEN.IS": {
+    "quote": {
+      "symbol": "BIGEN",
+      "rawSymbol": "BIGEN.IS",
+      "name": "BIRLESIM GRUP ENERJI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 122.9,
+      "currency": "TRY",
+      "change24h": 0.1,
+      "changePercent": 0.08,
+      "high24h": 126.8,
+      "low24h": 110.6,
+      "volume": 27316583,
+      "marketCap": 70913302528,
+      "asOf": "2026-09-09T21:06:46.119Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 122.9
+      },
+      "sparkline": [
+        122.9
+      ]
+    },
+    "expiresAt": 1789002406119,
+    "updatedAt": 1788988006119
+  },
+  "BALSU.IS": {
+    "quote": {
+      "symbol": "BALSU",
+      "rawSymbol": "BALSU.IS",
+      "name": "BALSU GIDA",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 8.94,
+      "currency": "TRY",
+      "change24h": 0.34,
+      "changePercent": 3.95,
+      "high24h": 9.44,
+      "low24h": 8.81,
+      "volume": 119983829,
+      "marketCap": 9941279744,
+      "peRatio": 11.316455,
+      "asOf": "2026-09-09T21:06:42.824Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 8.94
+      },
+      "sparkline": [
+        8.94
+      ]
+    },
+    "expiresAt": 1789002402824,
+    "updatedAt": 1788988002824
+  },
+  "ONRYT.IS": {
+    "quote": {
+      "symbol": "ONRYT",
+      "rawSymbol": "ONRYT.IS",
+      "name": "ONUR TEKNOLOJI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 60.5,
+      "currency": "TRY",
+      "change24h": -0.3,
+      "changePercent": -0.49,
+      "high24h": 62.05,
+      "low24h": 60.25,
+      "volume": 929958,
+      "marketCap": 3801214976,
+      "asOf": "2026-09-09T21:06:41.905Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 60.5
+      },
+      "sparkline": [
+        60.5
+      ]
+    },
+    "expiresAt": 1789002401906,
+    "updatedAt": 1788988001906
+  },
+  "THYAO": {
+    "quote": {
+      "symbol": "THYAO",
+      "rawSymbol": "THYAO.IS",
+      "name": "TURK HAVA YOLLARI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 301,
+      "currency": "TRY",
+      "change24h": -4,
+      "changePercent": -1.31,
+      "high24h": 306.75,
+      "low24h": 300.75,
+      "volume": 58474809,
+      "marketCap": 413057286144,
+      "peRatio": 4.1793947,
+      "asOf": "2026-09-09T22:16:08.192Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 301
+      },
+      "sparkline": [
+        301
+      ]
+    },
+    "expiresAt": 1789006568401,
+    "updatedAt": 1788992168401
+  },
+  "GARAN": {
+    "quote": {
+      "symbol": "GARAN",
+      "rawSymbol": "GARAN.IS",
+      "name": "GARANTI BANKASI",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 134.3,
+      "currency": "TRY",
+      "change24h": -1.7,
+      "changePercent": -1.25,
+      "high24h": 137.8,
+      "low24h": 133.8,
+      "volume": 58094683,
+      "marketCap": 564060028928,
+      "peRatio": 4.684339,
+      "asOf": "2026-09-09T22:16:08.936Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 134.3
+      },
+      "sparkline": [
+        134.3
+      ]
+    },
+    "expiresAt": 1789006569144,
+    "updatedAt": 1788992169144
+  },
+  "AKBNK": {
+    "quote": {
+      "symbol": "AKBNK",
+      "rawSymbol": "AKBNK.IS",
+      "name": "AKBANK",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 72.95,
+      "currency": "TRY",
+      "change24h": -2,
+      "changePercent": -2.67,
+      "high24h": 76.3,
+      "low24h": 72.65,
+      "volume": 370053606,
+      "marketCap": 379339997184,
+      "peRatio": 5.6814637,
+      "asOf": "2026-09-09T22:16:09.673Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 72.95
+      },
+      "sparkline": [
+        72.95
+      ]
+    },
+    "expiresAt": 1789006569879,
+    "updatedAt": 1788992169879
+  },
+  "ASELS": {
+    "quote": {
+      "symbol": "ASELS",
+      "rawSymbol": "ASELS.IS",
+      "name": "ASELSAN",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 402.25,
+      "currency": "TRY",
+      "change24h": 12.25,
+      "changePercent": 3.14,
+      "high24h": 406.25,
+      "low24h": 391,
+      "volume": 49335597,
+      "marketCap": 1834259972096,
+      "peRatio": 51.046955,
+      "asOf": "2026-09-09T22:16:10.448Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 402.25
+      },
+      "sparkline": [
+        402.25
+      ]
+    },
+    "expiresAt": 1789006570660,
+    "updatedAt": 1788992170660
+  },
+  "KCHOL": {
+    "quote": {
+      "symbol": "KCHOL",
+      "rawSymbol": "KCHOL.IS",
+      "name": "KOC HOLDING",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 223.7,
+      "currency": "TRY",
+      "change24h": -1.1,
+      "changePercent": -0.49,
+      "high24h": 232.5,
+      "low24h": 221.8,
+      "volume": 50690865,
+      "marketCap": 567081172992,
+      "peRatio": 24.448088,
+      "asOf": "2026-09-09T22:16:11.195Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 223.7
+      },
+      "sparkline": [
+        223.7
+      ]
+    },
+    "expiresAt": 1789006571405,
+    "updatedAt": 1788992171405
+  },
+  "TUPRS": {
+    "quote": {
+      "symbol": "TUPRS",
+      "rawSymbol": "TUPRS.IS",
+      "name": "TUPRAS",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 414.25,
+      "currency": "TRY",
+      "change24h": 19.75,
+      "changePercent": 5.01,
+      "high24h": 418,
+      "low24h": 398,
+      "volume": 40857119,
+      "marketCap": 798175068160,
+      "peRatio": 11.825579,
+      "asOf": "2026-09-09T22:16:11.932Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 414.25
+      },
+      "sparkline": [
+        414.25
+      ]
+    },
+    "expiresAt": 1789006572141,
+    "updatedAt": 1788992172141
+  },
+  "BIMAS": {
+    "quote": {
+      "symbol": "BIMAS",
+      "rawSymbol": "BIMAS.IS",
+      "name": "BIM MAGAZALAR",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 427.5,
+      "currency": "TRY",
+      "change24h": 7,
+      "changePercent": 1.66,
+      "high24h": 428.5,
+      "low24h": 417,
+      "volume": 10265039,
+      "marketCap": 506920927232,
+      "peRatio": 20.702179,
+      "asOf": "2026-09-09T22:16:12.675Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 427.5
+      },
+      "sparkline": [
+        427.5
+      ]
+    },
+    "expiresAt": 1789006572882,
+    "updatedAt": 1788992172882
+  },
+  "EREGL": {
+    "quote": {
+      "symbol": "EREGL",
+      "rawSymbol": "EREGL.IS",
+      "name": "EREGLI DEMIR CELIK",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 39.08,
+      "currency": "TRY",
+      "change24h": -0.84,
+      "changePercent": -2.1,
+      "high24h": 40.28,
+      "low24h": 38.9,
+      "volume": 173346058,
+      "marketCap": 262690930688,
+      "peRatio": 33.982613,
+      "asOf": "2026-09-09T22:16:13.408Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 39.08
+      },
+      "sparkline": [
+        39.08
+      ]
+    },
+    "expiresAt": 1789006573617,
+    "updatedAt": 1788992173617
+  },
+  "SAHOL": {
+    "quote": {
+      "symbol": "SAHOL",
+      "rawSymbol": "SAHOL.IS",
+      "name": "SABANCI HOLDING",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 96.05,
+      "currency": "TRY",
+      "change24h": -0.45,
+      "changePercent": -0.47,
+      "high24h": 98.4,
+      "low24h": 95.7,
+      "volume": 50143059,
+      "marketCap": 198615564288,
+      "peRatio": 9.881687,
+      "asOf": "2026-09-09T22:16:14.139Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 96.05
+      },
+      "sparkline": [
+        96.05
+      ]
+    },
+    "expiresAt": 1789006574344,
+    "updatedAt": 1788992174344
+  },
+  "ISCTR": {
+    "quote": {
+      "symbol": "ISCTR",
+      "rawSymbol": "ISCTR.IS",
+      "name": "IS BANKASI (C)",
+      "category": "BIST",
+      "exchange": "BIST",
+      "price": 13.92,
+      "currency": "TRY",
+      "change24h": -0.43,
+      "changePercent": -3,
+      "high24h": 14.75,
+      "low24h": 13.86,
+      "volume": 2115124891,
+      "marketCap": 347999993856,
+      "peRatio": 5.117647,
+      "asOf": "2026-09-09T22:16:14.877Z",
+      "sourceName": "yahoo",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 13.92
+      },
+      "sparkline": [
+        13.92
+      ]
+    },
+    "expiresAt": 1789006575087,
+    "updatedAt": 1788992175087
+  },
+  "USD/TRY": {
+    "quote": {
+      "symbol": "USD/TRY",
+      "rawSymbol": "USD/TRY",
+      "name": "USD/TRY",
+      "category": "FOREX",
+      "exchange": "NASDAQ",
+      "price": 100,
+      "currency": "USD",
+      "change24h": 0,
+      "changePercent": 0,
+      "volume": null,
+      "asOf": "2026-09-09T22:16:15.654Z",
+      "sourceName": "fallback_manager",
+      "isStale": true,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 100
+      },
+      "sparkline": []
+    },
+    "expiresAt": 1788993975654,
+    "updatedAt": 1788992175654
+  },
+  "EUR/TRY": {
+    "quote": {
+      "symbol": "EUR/TRY",
+      "rawSymbol": "EUR/TRY",
+      "name": "EUR/TRY",
+      "category": "FOREX",
+      "exchange": "NASDAQ",
+      "price": 100,
+      "currency": "USD",
+      "change24h": 0,
+      "changePercent": 0,
+      "volume": null,
+      "asOf": "2026-09-09T22:16:16.205Z",
+      "sourceName": "fallback_manager",
+      "isStale": true,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 100
+      },
+      "sparkline": []
+    },
+    "expiresAt": 1788993976205,
+    "updatedAt": 1788992176205
+  },
+  "XAU/USD": {
+    "quote": {
+      "symbol": "XAU/USD",
+      "rawSymbol": "XAU/USD",
+      "name": "XAU/USD",
+      "category": "COMMODITIES",
+      "exchange": "NASDAQ",
+      "price": 100,
+      "currency": "USD",
+      "change24h": 0,
+      "changePercent": 0,
+      "volume": null,
+      "asOf": "2026-09-09T22:16:16.754Z",
+      "sourceName": "fallback_manager",
+      "isStale": true,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 100
+      },
+      "sparkline": []
+    },
+    "expiresAt": 1788993976754,
+    "updatedAt": 1788992176754
+  },
+  "BTC": {
+    "quote": {
+      "symbol": "BTC",
+      "rawSymbol": "BTCUSDT",
+      "name": "BTC / USD Tether",
+      "category": "CRYPTO",
+      "exchange": "BINANCE",
+      "price": 77818.66,
+      "currency": "USD",
+      "change24h": -671.35,
+      "changePercent": -0.85,
+      "high24h": 79760,
+      "low24h": 77770,
+      "volume": 14315.44063,
+      "asOf": "2026-09-09T22:16:17.435Z",
+      "sourceName": "binance",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 77818.66
+      },
+      "sparkline": [
+        77818.66
+      ]
+    },
+    "expiresAt": 1788992297645,
+    "updatedAt": 1788992177645
+  },
+  "ETH": {
+    "quote": {
+      "symbol": "ETH",
+      "rawSymbol": "ETHUSDT",
+      "name": "ETH / USD Tether",
+      "category": "CRYPTO",
+      "exchange": "BINANCE",
+      "price": 2444.68,
+      "currency": "USD",
+      "change24h": -38.76,
+      "changePercent": -1.56,
+      "high24h": 2523.3,
+      "low24h": 2444.15,
+      "volume": 296377.6071,
+      "asOf": "2026-09-09T22:16:18.296Z",
+      "sourceName": "binance",
+      "isStale": false,
+      "validation": {
+        "isValid": true,
+        "validationErrors": [],
+        "sanitized": false,
+        "originalPrice": 2444.68
+      },
+      "sparkline": [
+        2444.68
+      ]
+    },
+    "expiresAt": 1788992298514,
+    "updatedAt": 1788992178514
+  }
+}
