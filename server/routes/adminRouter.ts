@@ -800,10 +800,10 @@ adminRouter.post('/pipeline-proxy', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Uç nokta (endpoint) belirtilmelidir.' });
     }
     
-    // Güvenlik: Yalnızca /api/export/ rotalarına izin ver
+    // Güvenlik: Yalnızca /api/export/ ve /api/v1/ rotalarına izin ver
     const cleanEndpoint = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
-    if (!cleanEndpoint.startsWith('/api/export/')) {
-      return res.status(403).json({ error: 'Yalnızca /api/export/* rotaları test edilebilir.' });
+    if (!cleanEndpoint.startsWith('/api/export/') && !cleanEndpoint.startsWith('/api/v1/')) {
+      return res.status(403).json({ error: 'Yalnızca /api/export/* ve /api/v1/* rotaları test edilebilir.' });
     }
 
     const startTime = Date.now();

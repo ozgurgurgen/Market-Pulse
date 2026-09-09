@@ -340,8 +340,8 @@
     },
     "localFinanceApi": {
       "enabled": true,
-      "baseUrl": "https://bobby-layout-circles-reform.trycloudflare.com/",
-      "apiKey": "fin_live_master_9vdthiz069",
+      "baseUrl": "",
+      "apiKey": "",
       "lastStatus": "untested",
       "lastConnectedAt": null,
       "lastErrorMessage": null

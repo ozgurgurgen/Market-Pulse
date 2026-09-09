@@ -117,7 +117,8 @@ export const DEFAULT_DB_SETTINGS: DatabaseIntegrationSettings = {
   },
   localFinanceApi: {
     enabled: true,
-    baseUrl: (process.env.LOCAL_FINANCE_API_URL || process.env.LOCAL_API_BASE_URL || process.env.LOCAL_API_URL)?.trim() || 'https://bobby-layout-circles-reform.trycloudflare.com',
+    baseUrl: (process.env.LOCAL_FINANCE_API_URL || process.env.LOCAL_API_BASE_URL || process.env.LOCAL_API_URL)?.trim() || '',
+    apiKey: (process.env.LOCAL_API_KEY || process.env.X_API_KEY)?.trim() || '',
     lastStatus: 'untested',
     lastConnectedAt: null,
     lastErrorMessage: null
@@ -1061,7 +1062,32 @@ export async function testFinanceApiConnection(
   let companiesCount = 0;
   let tablesCount = 0;
 
-  // 1. Test /api/export/funds?limit=5 (TEFAS fonları)
+  // 1. Test /api/v1/bist/stocks?limit=5 (Canlı BIST Hisseleri)
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(`${targetUrl}/api/v1/bist/stocks?limit=5`, {
+      signal: controller.signal,
+      headers: reqHeaders
+    });
+    clearTimeout(timer);
+    if (res.ok) {
+      const data = await res.json();
+      const count = Array.isArray(data?.data) ? data.data.length : (Array.isArray(data) ? data.length : 0);
+      if (count > 0) companiesCount = count;
+      endpointsTested.push({ endpoint: '/api/v1/bist/stocks', ok: true, count });
+    } else {
+      endpointsTested.push({ endpoint: '/api/v1/bist/stocks', ok: false, error: parseCloudflareStatusError(res.status) });
+    }
+  } catch (err: any) {
+    endpointsTested.push({ 
+      endpoint: '/api/v1/bist/stocks', 
+      ok: false, 
+      error: err.name === 'AbortError' ? 'Zaman aşımı (6s)' : (err.message || 'Bağlantı hatası') 
+    });
+  }
+
+  // 2. Test /api/export/funds?limit=5 (TEFAS fonları)
   try {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 6000);

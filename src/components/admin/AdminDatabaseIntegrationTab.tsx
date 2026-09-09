@@ -130,8 +130,8 @@ const DEFAULT_SETTINGS: DatabaseSettings = {
   },
   localFinanceApi: {
     enabled: true,
-    baseUrl: 'https://bobby-layout-circles-reform.trycloudflare.com',
-    apiKey: 'fin_live_master_9vdthiz069',
+    baseUrl: '',
+    apiKey: '',
     lastStatus: 'untested'
   }
 };
@@ -1220,7 +1220,11 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
               onClick={() => setSettings(prev => ({
                 ...prev,
                 localFinanceApi: {
-                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  enabled: true,
+                  apiKey: prev.localFinanceApi?.apiKey || '',
+                  cfAccessClientId: prev.localFinanceApi?.cfAccessClientId || '',
+                  cfAccessClientSecret: prev.localFinanceApi?.cfAccessClientSecret || '',
+                  ...(prev.localFinanceApi || {}),
                   baseUrl: 'http://localhost:3001'
                 }
               }))}
@@ -1233,7 +1237,11 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
               onClick={() => setSettings(prev => ({
                 ...prev,
                 localFinanceApi: {
-                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  enabled: true,
+                  apiKey: prev.localFinanceApi?.apiKey || '',
+                  cfAccessClientId: prev.localFinanceApi?.cfAccessClientId || '',
+                  cfAccessClientSecret: prev.localFinanceApi?.cfAccessClientSecret || '',
+                  ...(prev.localFinanceApi || {}),
                   baseUrl: 'http://localhost:5000'
                 }
               }))}
@@ -1246,7 +1254,11 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
               onClick={() => setSettings(prev => ({
                 ...prev,
                 localFinanceApi: {
-                  ...(prev.localFinanceApi || { enabled: true, apiKey: 'fin_live_master_9vdthiz069' }),
+                  enabled: true,
+                  apiKey: prev.localFinanceApi?.apiKey || '',
+                  cfAccessClientId: prev.localFinanceApi?.cfAccessClientId || '',
+                  cfAccessClientSecret: prev.localFinanceApi?.cfAccessClientSecret || '',
+                  ...(prev.localFinanceApi || {}),
                   baseUrl: 'http://localhost:8000'
                 }
               }))}
@@ -1349,7 +1361,7 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
                       apiKey: e.target.value
                     }
                   }))}
-                  placeholder="fin_live_master_9vdthiz069"
+                  placeholder="Örn: fin_live_master_... veya boş bırakın"
                   className="w-full bg-slate-950 border border-slate-700/80 rounded-xl pl-9 pr-4 py-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-orange-500 font-mono transition-colors"
                 />
               </div>
@@ -1541,15 +1553,15 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           {/* Quick Endpoint Trigger Buttons */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
             {[
-              { label: '1. Şirketler (1014)', ep: '/api/export/companies' },
-              { label: '2. Arama (THYAO)', ep: '/api/export/search?q=THYAO&limit=10' },
-              { label: '3. Tüm Veri (THYAO)', ep: '/api/export/all/THYAO' },
-              { label: '4. Finansallar (THYAO)', ep: '/api/export/financials/THYAO' },
-              { label: '5. TEFAS Fonları', ep: '/api/export/funds?limit=20' },
-              { label: '6. Fon Detay (TAU)', ep: '/api/export/fund/TAU' },
-              { label: '7. Toplu (KAP & Fiyat)', ep: '/api/export/bulk?tables=disclosures,prices&limit_per_table=5' },
-              { label: '7b. Takas & Yabancı', ep: '/api/export/bulk?tables=settlement&limit_per_table=10' },
-              { label: '7c. Geri Alımlar', ep: '/api/export/bulk?tables=buybacks&limit_per_table=10' },
+              { label: '1. BIST V1 Stocks (THYAO)', ep: '/api/v1/bist/stocks?search=THYAO&limit=10&sortBy=marketCap&order=desc' },
+              { label: '2. Şirketler (1014)', ep: '/api/export/companies' },
+              { label: '3. Arama (THYAO)', ep: '/api/export/search?q=THYAO&limit=10' },
+              { label: '4. Tüm Veri (THYAO)', ep: '/api/export/all/THYAO' },
+              { label: '5. Finansallar (THYAO)', ep: '/api/export/financials/THYAO' },
+              { label: '6. TEFAS Fonları', ep: '/api/export/funds?limit=20' },
+              { label: '7. Fon Detay (TAU)', ep: '/api/export/fund/TAU' },
+              { label: '8. Toplu (KAP & Fiyat)', ep: '/api/export/bulk?tables=disclosures,prices&limit_per_table=5' },
+              { label: '9. Takas & Yabancı', ep: '/api/export/bulk?tables=settlement&limit_per_table=10' },
               { label: '10. DB Şeması (43)', ep: '/api/export/schema' },
             ].map((item, idx) => (
               <button

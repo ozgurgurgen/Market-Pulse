@@ -64,11 +64,11 @@ export class LocalFinanceApiAdapter {
     if (envKey) return envKey;
     try {
       const local = serverLocalDatabase.get<any>('adminConfig', 'databaseIntegration');
-      if (local?.localFinanceApi?.apiKey) {
-        return local.localFinanceApi.apiKey;
+      if (local?.localFinanceApi?.apiKey !== undefined) {
+        return (local.localFinanceApi.apiKey || '').trim();
       }
     } catch {}
-    return 'fin_live_master_9vdthiz069';
+    return '';
   }
 
   /**
@@ -86,11 +86,13 @@ export class LocalFinanceApiAdapter {
       const defaultHeaders: Record<string, string> = {
         'Accept': 'application/json, text/plain, */*',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 MarketPulse-Cloudflare/1.0',
-        'X-API-Key': apiKey,
-        'Authorization': `Bearer ${apiKey}`,
         ...this.customHeaders,
         ...(options.headers as Record<string, string> || {})
       };
+      if (apiKey) {
+        defaultHeaders['X-API-Key'] = apiKey;
+        defaultHeaders['Authorization'] = `Bearer ${apiKey}`;
+      }
 
       const response = await fetch(`${this.getBaseUrl()}${endpoint}`, {
         ...options,
