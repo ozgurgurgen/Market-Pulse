@@ -13,7 +13,7 @@ import { createServer as createViteServer } from 'vite';
 import { INITIAL_MARKET_NEWS, STREAMING_HEADLINES_POOL } from './src/data/newsData';
 import { executeAICompletion } from './server/aiService';
 import { runPortfolioBacktest } from './server/backtestService';
-import { AIModelConfig, BacktestConfig } from './src/types';
+import { AIModelConfig, AIProviderType, BacktestConfig } from './src/types';
 import {
   CHATBOT_SYSTEM_PROMPT_V3,
   buildTefasFundPromptV3,
@@ -984,6 +984,7 @@ app.post('/api/ai/test-connection', async (req, res) => {
   try {
     const { modelConfig } = req.body as { modelConfig: AIModelConfig };
     const provider = modelConfig?.provider || 'gemini';
+    const startTime = Date.now();
 
     // 1. OpenRouter Universal Cloud Router Test
     if (provider === 'openrouter') {
@@ -1004,24 +1005,36 @@ app.post('/api/ai/test-connection', async (req, res) => {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${apiKey}`,
-            'HTTP-Referer': process.env.APP_URL || 'https://marketpulse.ai',
-            'X-Title': 'MarketPulse AI',
+            'HTTP-Referer': modelConfig?.openRouterSiteUrl || process.env.APP_URL || 'https://marketpulse.ai',
+            'X-Title': modelConfig?.openRouterAppName || 'MarketPulse AI',
           },
         });
 
+        const latencyMs = Date.now() - startTime;
+
         if (pingRes.ok) {
           const data = await pingRes.json();
-          const totalModels = data.data?.length || 0;
+          const rawList = Array.isArray(data?.data) ? data.data : [];
+          const models = rawList.slice(0, 100).map((m: any) => ({
+            id: m.id,
+            name: m.name || m.id,
+            owned_by: m.id?.split('/')[0] || 'openrouter',
+            context_length: m.context_length,
+          }));
+
           return res.json({
             status: 'online',
             provider: 'openrouter',
-            message: `OpenRouter bulut ağına başarıyla bağlanıldı! (${totalModels} model mevcut, Seçili Model: ${model})`,
+            latencyMs,
+            message: `OpenRouter ağına bağlanıldı! (${rawList.length} model mevcut, Gecikme: ${latencyMs}ms, Seçili: ${model})`,
+            availableModels: models,
           });
         } else {
           const errText = await pingRes.text();
           return res.json({
             status: 'offline',
             provider: 'openrouter',
+            latencyMs,
             message: `OpenRouter doğrulama başarısız (HTTP ${pingRes.status}). API anahtarınızı kontrol edin.`,
             error: errText,
           });
@@ -1036,17 +1049,17 @@ app.post('/api/ai/test-connection', async (req, res) => {
       }
     }
 
-    // 2. 9Router (Yerel AI Yönlendirici) Test
+    // 2. 9Router (Yerel & Ağ AI Yönlendirici) Test
     if (provider === 'ninerouter') {
       const baseUrl = (modelConfig?.nineRouterBaseUrl || 'http://localhost:9999/v1').replace(/\/$/, '');
       const apiKey = modelConfig?.nineRouterApiKey || process.env.NINEROUTER_API_KEY;
       const model = modelConfig?.nineRouterModel || 'local-default';
 
       try {
-        const headers: Record<string, string> = {};
+        const headers: Record<string, string> = { 'Content-Type': 'application/json' };
         if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
 
-        // Attempt connecting to 9Router models or ping endpoint
+        // Attempt connecting to 9Router models endpoint
         const endpoint = baseUrl.endsWith('/v1') ? `${baseUrl}/models` : `${baseUrl}/v1/models`;
         let pingRes = await fetch(endpoint, { method: 'GET', headers }).catch(() => null);
 
@@ -1056,25 +1069,46 @@ app.post('/api/ai/test-connection', async (req, res) => {
           pingRes = await fetch(altEndpoint, { method: 'GET', headers }).catch(() => null);
         }
 
+        const latencyMs = Date.now() - startTime;
+
         if (pingRes && pingRes.ok) {
-          let modelsCount = '';
+          let models: Array<{ id: string; name: string; owned_by?: string }> = [];
           try {
             const data = await pingRes.json();
-            if (data?.data && Array.isArray(data.data)) {
-              modelsCount = ` (${data.data.length} yerel model yönlendiriliyor)`;
+            if (Array.isArray(data?.data)) {
+              models = data.data.map((m: any) => ({
+                id: typeof m === 'string' ? m : (m.id || m.name || String(m)),
+                name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+                owned_by: m.owned_by || m.provider || '9router',
+              }));
+            } else if (Array.isArray(data?.models)) {
+              models = data.models.map((m: any) => ({
+                id: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+                name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+                owned_by: '9router',
+              }));
+            } else if (Array.isArray(data)) {
+              models = data.map((m: any) => ({
+                id: typeof m === 'string' ? m : (m.id || m.name || String(m)),
+                name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+                owned_by: '9router',
+              }));
             }
           } catch {}
 
           return res.json({
             status: 'online',
             provider: 'ninerouter',
-            message: `9Router yerel AI yönlendiricisine başarıyla bağlanıldı!${modelsCount} Seçili Model: ${model}`,
+            latencyMs,
+            message: `9Router yerel yönlendiricisine bağlanıldı! (${models.length} model listelendi, Gecikme: ${latencyMs}ms, Seçili: ${model})`,
+            availableModels: models,
           });
         } else {
           return res.json({
             status: 'warning',
             provider: 'ninerouter',
-            message: `9Router (${baseUrl}) endpoint'ine ulaşılamadı. 9Router servisinin bilgisayarınızda çalıştığından emin olun (Örn: http://localhost:9999/v1).`,
+            latencyMs,
+            message: `9Router (${baseUrl}) endpoint'ine ulaşılamadı (HTTP ${pingRes?.status || 'Bağlantı Yok'}). Servisin çalıştığından emin olun (Örn: http://localhost:9999/v1).`,
           });
         }
       } catch (err: any) {
@@ -1092,13 +1126,19 @@ app.post('/api/ai/test-connection', async (req, res) => {
       const url = (modelConfig?.ollamaUrl || 'http://localhost:11434').replace(/\/$/, '');
       try {
         const pingRes = await fetch(`${url}/api/tags`);
+        const latencyMs = Date.now() - startTime;
         if (pingRes.ok) {
           const data = await pingRes.json();
-          const models = data.models?.map((m: any) => m.name) || [];
+          const models = data.models?.map((m: any) => ({
+            id: m.name,
+            name: m.name,
+            owned_by: m.details?.family || 'ollama',
+          })) || [];
           return res.json({
             status: 'online',
             provider: 'ollama',
-            message: `Ollama servisine başarıyla bağlanıldı! (${models.length} model yüklü)`,
+            latencyMs,
+            message: `Ollama servisine bağlanıldı! (${models.length} model yüklü, Gecikme: ${latencyMs}ms)`,
             availableModels: models,
           });
         }
@@ -1115,23 +1155,32 @@ app.post('/api/ai/test-connection', async (req, res) => {
     // 4. Gemini Test
     if (provider === 'gemini') {
       const apiKey = process.env.GEMINI_API_KEY;
+      const latencyMs = Date.now() - startTime;
       if (!apiKey) {
         return res.json({
           status: 'warning',
           provider: 'gemini',
-          message: 'GEMINI_API_KEY tanımlanmamış. Sistem akıllı yerel fallback motoruyla çalışmaktadır.',
+          message: 'GEMINI_API_KEY sunucu ortamında tanımlanmamış. Sistem akıllı yerel fallback motoruyla çalışmaktadır.',
         });
       }
       return res.json({
         status: 'online',
         provider: 'gemini',
+        latencyMs,
         message: `Google Gemini API bağlantısı aktif! (${modelConfig?.geminiModel || 'gemini-3.7-flash'})`,
+        availableModels: [
+          { id: 'gemini-3.7-flash', name: 'Gemini 3.7 Flash (Düşünme Yetenekli / En Yeni)', owned_by: 'google' },
+          { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (Hızlı & Düşük Maliyet)', owned_by: 'google' },
+          { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro (Derin Finansal Akıl Yürütme)', owned_by: 'google' },
+          { id: 'gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro Preview (Önizleme)', owned_by: 'google' },
+          { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash Lite (Ultra Hafif)', owned_by: 'google' },
+        ],
       });
     }
 
     // 5. Custom Endpoint Test
     if (provider === 'custom') {
-      const baseUrl = modelConfig?.customBaseUrl;
+      const baseUrl = modelConfig?.customBaseUrl?.replace(/\/$/, '');
       if (!baseUrl) {
         return res.json({
           status: 'warning',
@@ -1139,11 +1188,48 @@ app.post('/api/ai/test-connection', async (req, res) => {
           message: 'Özel API Base URL adresi girilmedi.',
         });
       }
-      return res.json({
-        status: 'online',
-        provider: 'custom',
-        message: `Özel API sağlayıcısı (${baseUrl}) yapılandırıldı. Model: ${modelConfig?.customModelName || 'custom-llm'}`,
-      });
+
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (modelConfig?.customApiKey) {
+        headers['Authorization'] = `Bearer ${modelConfig.customApiKey}`;
+      }
+
+      try {
+        const endpoint = baseUrl.endsWith('/v1') ? `${baseUrl}/models` : `${baseUrl}/v1/models`;
+        let pingRes = await fetch(endpoint, { method: 'GET', headers }).catch(() => null);
+        if (!pingRes || !pingRes.ok) {
+          pingRes = await fetch(`${baseUrl}/models`, { method: 'GET', headers }).catch(() => null);
+        }
+
+        const latencyMs = Date.now() - startTime;
+        let models: Array<{ id: string; name: string }> = [];
+
+        if (pingRes && pingRes.ok) {
+          const data = await pingRes.json();
+          if (Array.isArray(data?.data)) {
+            models = data.data.map((m: any) => ({
+              id: m.id || m.name || String(m),
+              name: m.name || m.id || String(m),
+            }));
+          }
+        }
+
+        return res.json({
+          status: pingRes?.ok ? 'online' : 'warning',
+          provider: 'custom',
+          latencyMs,
+          message: pingRes?.ok
+            ? `Özel API servisine başarıyla bağlanıldı! (${models.length} model listelendi)`
+            : `Özel API servisi yapılandırıldı (${baseUrl}). Model: ${modelConfig?.customModelName || 'custom-llm'}`,
+          availableModels: models,
+        });
+      } catch (err: any) {
+        return res.json({
+          status: 'offline',
+          provider: 'custom',
+          message: `Özel API servisine bağlanılamadı: ${err.message}`,
+        });
+      }
     }
 
     return res.json({
@@ -1153,6 +1239,216 @@ app.post('/api/ai/test-connection', async (req, res) => {
     });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+// Dedicated endpoint to dynamically fetch all models from any provider (9Router, OpenRouter, Ollama, Custom, Gemini)
+app.post('/api/ai/fetch-models', async (req, res) => {
+  try {
+    const { provider, baseUrl, apiKey } = req.body as {
+      provider: AIProviderType;
+      baseUrl?: string;
+      apiKey?: string;
+    };
+
+    if (provider === 'ninerouter') {
+      const cleanUrl = (baseUrl || 'http://localhost:9999/v1').replace(/\/$/, '');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+      const endpoint = cleanUrl.endsWith('/v1') ? `${cleanUrl}/models` : `${cleanUrl}/v1/models`;
+      let fetchRes = await fetch(endpoint, { method: 'GET', headers }).catch(() => null);
+      if (!fetchRes || !fetchRes.ok) {
+        fetchRes = await fetch(`${cleanUrl}/models`, { method: 'GET', headers }).catch(() => null);
+      }
+
+      if (fetchRes && fetchRes.ok) {
+        const data = await fetchRes.json();
+        let models: Array<{ id: string; name: string; owned_by?: string }> = [];
+
+        if (Array.isArray(data?.data)) {
+          models = data.data.map((m: any) => ({
+            id: typeof m === 'string' ? m : (m.id || m.name || String(m)),
+            name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+            owned_by: m.owned_by || m.provider || '9router',
+          }));
+        } else if (Array.isArray(data?.models)) {
+          models = data.models.map((m: any) => ({
+            id: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+            name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+            owned_by: '9router',
+          }));
+        } else if (Array.isArray(data)) {
+          models = data.map((m: any) => ({
+            id: typeof m === 'string' ? m : (m.id || m.name || String(m)),
+            name: typeof m === 'string' ? m : (m.name || m.id || String(m)),
+            owned_by: '9router',
+          }));
+        }
+
+        return res.json({
+          success: true,
+          status: 'online',
+          models,
+          count: models.length,
+          message: `9Router üzerinden ${models.length} model listelendi.`,
+        });
+      } else {
+        return res.json({
+          success: false,
+          status: 'offline',
+          models: [],
+          message: `9Router servisine ulaşılamadı (${cleanUrl}). Lütfen uygulamanın açık ve portun erişilebilir olduğundan emin olun.`,
+        });
+      }
+    }
+
+    if (provider === 'openrouter') {
+      const cleanUrl = (baseUrl || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+      const fetchRes = await fetch(`${cleanUrl}/models`, { method: 'GET', headers }).catch(() => null);
+      if (fetchRes && fetchRes.ok) {
+        const data = await fetchRes.json();
+        const rawList = Array.isArray(data?.data) ? data.data : [];
+        const models = rawList.map((m: any) => ({
+          id: m.id,
+          name: m.name || m.id,
+          owned_by: m.id?.split('/')[0] || 'openrouter',
+          context_length: m.context_length,
+        }));
+        return res.json({
+          success: true,
+          status: 'online',
+          models,
+          count: models.length,
+          message: `OpenRouter üzerinden ${models.length} model listelendi.`,
+        });
+      }
+      return res.json({
+        success: false,
+        status: 'offline',
+        models: [],
+        message: 'OpenRouter modelleri çekilemedi. API anahtarınızı kontrol edin.',
+      });
+    }
+
+    if (provider === 'ollama') {
+      const cleanUrl = (baseUrl || 'http://localhost:11434').replace(/\/$/, '');
+      const fetchRes = await fetch(`${cleanUrl}/api/tags`).catch(() => null);
+      if (fetchRes && fetchRes.ok) {
+        const data = await fetchRes.json();
+        const models = (data.models || []).map((m: any) => ({
+          id: m.name,
+          name: m.name,
+          owned_by: m.details?.family || 'ollama',
+        }));
+        return res.json({
+          success: true,
+          status: 'online',
+          models,
+          count: models.length,
+          message: `Ollama üzerinde kurulu ${models.length} model listelendi.`,
+        });
+      }
+      return res.json({
+        success: false,
+        status: 'offline',
+        models: [],
+        message: `Ollama servisine ulaşılamadı (${cleanUrl}).`,
+      });
+    }
+
+    if (provider === 'gemini') {
+      return res.json({
+        success: true,
+        status: 'online',
+        models: [
+          { id: 'gemini-3.7-flash', name: 'Gemini 3.7 Flash (Düşünme Yetenekli / En Yeni)', owned_by: 'google' },
+          { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (Hızlı & Düşük Maliyet)', owned_by: 'google' },
+          { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro (Derin Finansal Akıl Yürütme)', owned_by: 'google' },
+          { id: 'gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro Preview (Önizleme)', owned_by: 'google' },
+          { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash Lite (Ultra Hafif)', owned_by: 'google' },
+        ],
+        count: 5,
+        message: 'Google Gemini resmi modelleri listelendi.',
+      });
+    }
+
+    if (provider === 'custom') {
+      const cleanUrl = (baseUrl || '').replace(/\/$/, '');
+      if (!cleanUrl) {
+        return res.json({ success: false, models: [], message: 'Base URL belirtilmedi.' });
+      }
+      const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+      if (apiKey) headers['Authorization'] = `Bearer ${apiKey}`;
+
+      const endpoint = cleanUrl.endsWith('/v1') ? `${cleanUrl}/models` : `${cleanUrl}/v1/models`;
+      let fetchRes = await fetch(endpoint, { method: 'GET', headers }).catch(() => null);
+      if (!fetchRes || !fetchRes.ok) {
+        fetchRes = await fetch(`${cleanUrl}/models`, { method: 'GET', headers }).catch(() => null);
+      }
+
+      if (fetchRes && fetchRes.ok) {
+        const data = await fetchRes.json();
+        const rawList = Array.isArray(data?.data) ? data.data : (Array.isArray(data) ? data : []);
+        const models = rawList.map((m: any) => ({
+          id: m.id || m.name || String(m),
+          name: m.name || m.id || String(m),
+          owned_by: m.owned_by || 'custom',
+        }));
+        return res.json({
+          success: true,
+          status: 'online',
+          models,
+          count: models.length,
+          message: `${models.length} model listelendi.`,
+        });
+      }
+      return res.json({
+        success: false,
+        status: 'offline',
+        models: [],
+        message: `Özel servisten modeller çekilemedi (${cleanUrl}).`,
+      });
+    }
+
+    res.json({ success: false, models: [], message: 'Bilinmeyen sağlayıcı.' });
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Live Prompt Test for 9Router and other LLMs
+app.post('/api/ai/test-prompt', async (req, res) => {
+  try {
+    const { modelConfig, prompt } = req.body as {
+      modelConfig: AIModelConfig;
+      prompt?: string;
+    };
+    const testText = prompt || 'MarketPulse AI test bağlantısı. 1 cümleyle yanıt ver.';
+
+    const aiRes = await executeAICompletion({
+      prompt: testText,
+      modelConfig,
+      systemPrompt: 'Sen hızlı yanıt veren bir test botusun. Sadece kısa, tek cümlelik bir onay mesajı ver.',
+      temperature: 0.3,
+    });
+
+    res.json({
+      success: true,
+      text: aiRes.text,
+      modelUsed: aiRes.modelUsed,
+      provider: aiRes.provider,
+      warning: aiRes.warning,
+      isFallback: aiRes.isFallback,
+    });
+  } catch (err: any) {
+    res.status(500).json({
+      success: false,
+      error: err.message,
+    });
   }
 });
 

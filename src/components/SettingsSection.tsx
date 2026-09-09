@@ -36,6 +36,7 @@ import { useSubscription } from '../hooks/useSubscription';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { safeFetchJson } from '../utils/apiClient';
+import { NineRouterConnectionPanel } from './NineRouterConnectionPanel';
 
 interface SettingsSectionProps {
   modelConfig: AIModelConfig;
@@ -85,6 +86,92 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
   const [aiTestStatus, setAiTestStatus] = useState<'idle' | 'testing' | 'online' | 'offline' | 'warning'>('idle');
   const [aiTestMsg, setAiTestMsg] = useState('');
   const [aiSaveMsg, setAiSaveMsg] = useState<string | null>(null);
+
+  // 9Router Advanced States
+  const [nineRouterTimeout, setNineRouterTimeout] = useState<number>(modelConfig.nineRouterTimeout || 60);
+  const [nineRouterTemperature, setNineRouterTemperature] = useState<number>(modelConfig.nineRouterTemperature ?? 0.7);
+  const [nineRouterMaxTokens, setNineRouterMaxTokens] = useState<number>(modelConfig.nineRouterMaxTokens || 4096);
+  const [nineRouterFallbackToGemini, setNineRouterFallbackToGemini] = useState<boolean>(modelConfig.nineRouterFallbackToGemini !== false);
+
+  // Other LLM Advanced States
+  const [openRouterTemperature, setOpenRouterTemperature] = useState<number>(modelConfig.openRouterTemperature ?? 0.7);
+  const [openRouterSiteUrl, setOpenRouterSiteUrl] = useState<string>(modelConfig.openRouterSiteUrl || '');
+  const [openRouterAppName, setOpenRouterAppName] = useState<string>(modelConfig.openRouterAppName || '');
+  const [openRouterFetchedModels, setOpenRouterFetchedModels] = useState<Array<{ id: string; name: string }>>([]);
+  const [isFetchingOpenRouter, setIsFetchingOpenRouter] = useState(false);
+
+  const [geminiTemperature, setGeminiTemperature] = useState<number>(modelConfig.geminiTemperature ?? 0.7);
+  const [geminiSearchGrounding, setGeminiSearchGrounding] = useState<boolean>(modelConfig.geminiSearchGrounding !== false);
+
+  const [ollamaTemperature, setOllamaTemperature] = useState<number>(modelConfig.ollamaTemperature ?? 0.7);
+  const [ollamaFetchedModels, setOllamaFetchedModels] = useState<Array<{ id: string; name: string }>>([]);
+  const [isFetchingOllama, setIsFetchingOllama] = useState(false);
+
+  const [customTemperature, setCustomTemperature] = useState<number>(modelConfig.customTemperature ?? 0.7);
+  const [customFetchedModels, setCustomFetchedModels] = useState<Array<{ id: string; name: string }>>([]);
+  const [isFetchingCustom, setIsFetchingCustom] = useState(false);
+
+  const handleFetchOpenRouterModels = async () => {
+    setIsFetchingOpenRouter(true);
+    try {
+      const res = await safeFetchJson<{ success: boolean; models: Array<{ id: string; name: string }> }>('/api/ai/fetch-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          provider: 'openrouter',
+          baseUrl: openRouterBaseUrl,
+          apiKey: openRouterApiKey,
+        }),
+      });
+      if (res.data?.success && res.data.models) {
+        setOpenRouterFetchedModels(res.data.models);
+      }
+    } catch {}
+    finally {
+      setIsFetchingOpenRouter(false);
+    }
+  };
+
+  const handleFetchOllamaModels = async () => {
+    setIsFetchingOllama(true);
+    try {
+      const res = await safeFetchJson<{ success: boolean; models: Array<{ id: string; name: string }> }>('/api/ai/fetch-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          provider: 'ollama',
+          baseUrl: ollamaUrl,
+        }),
+      });
+      if (res.data?.success && res.data.models) {
+        setOllamaFetchedModels(res.data.models);
+      }
+    } catch {}
+    finally {
+      setIsFetchingOllama(false);
+    }
+  };
+
+  const handleFetchCustomModels = async () => {
+    setIsFetchingCustom(true);
+    try {
+      const res = await safeFetchJson<{ success: boolean; models: Array<{ id: string; name: string }> }>('/api/ai/fetch-models', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          provider: 'custom',
+          baseUrl: customBaseUrl,
+          apiKey: customApiKey,
+        }),
+      });
+      if (res.data?.success && res.data.models) {
+        setCustomFetchedModels(res.data.models);
+      }
+    } catch {}
+    finally {
+      setIsFetchingCustom(false);
+    }
+  };
 
   // Appearance & Ticker Settings
   const [tickerSpeed, setTickerSpeed] = useState<number>(modelConfig.tickerSpeed ?? 60);
@@ -165,17 +252,28 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
       ...modelConfig,
       provider,
       geminiModel,
+      geminiTemperature,
+      geminiSearchGrounding,
       openRouterApiKey,
       openRouterModel,
       openRouterBaseUrl,
+      openRouterTemperature,
+      openRouterSiteUrl,
+      openRouterAppName,
       nineRouterBaseUrl,
       nineRouterModel,
       nineRouterApiKey,
+      nineRouterTimeout,
+      nineRouterTemperature,
+      nineRouterMaxTokens,
+      nineRouterFallbackToGemini,
       ollamaUrl,
       ollamaModel,
+      ollamaTemperature,
       customBaseUrl,
       customApiKey,
       customModelName,
+      customTemperature,
       taskRoutes,
     };
 
@@ -200,17 +298,28 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
       ...modelConfig,
       provider,
       geminiModel,
+      geminiTemperature,
+      geminiSearchGrounding,
       openRouterApiKey,
       openRouterModel,
       openRouterBaseUrl,
+      openRouterTemperature,
+      openRouterSiteUrl,
+      openRouterAppName,
       nineRouterBaseUrl,
       nineRouterModel,
       nineRouterApiKey,
+      nineRouterTimeout,
+      nineRouterTemperature,
+      nineRouterMaxTokens,
+      nineRouterFallbackToGemini,
       ollamaUrl,
       ollamaModel,
+      ollamaTemperature,
       customBaseUrl,
       customApiKey,
       customModelName,
+      customTemperature,
       taskRoutes,
     };
 
@@ -745,21 +854,24 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
             
             {/* Gemini Config */}
             {provider === 'gemini' && (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                     <Sparkles size={14} className="text-emerald-400" />
                     Google Gemini Modeli
                   </label>
-                  <span className="text-[11px] text-slate-400 font-mono">
-                    API Key: Sistem Sunucusu Tarafından Sağlanır
+                  <span className="text-[11px] text-emerald-400/90 font-mono flex items-center gap-1">
+                    <ShieldCheck size={13} /> Sunucu Güvenli API Anahtarı
                   </span>
                 </div>
+                
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { id: 'gemini-3.7-flash', name: 'Gemini 3.7 Flash', desc: 'En hızlı ve yüksek doğruluklu genel model (Önerilen)' },
+                    { id: 'gemini-3.7-flash', name: 'Gemini 3.7 Flash', desc: 'En yeni nesil & akıllı hibrit hız (Önerilen)' },
                     { id: 'gemini-3.1-pro-preview', name: 'Gemini 3.1 Pro', desc: 'Karmaşık finansal analizler ve derin muhakeme' },
-                    { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash-Lite', desc: 'Ultra düşük gecikme ve hızlı sinyal üretimi' }
+                    { id: 'gemini-3.1-flash-lite', name: 'Gemini 3.1 Flash-Lite', desc: 'Ultra düşük gecikme ve anlık sinyal üretimi' },
+                    { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash', desc: 'Yüksek verimli analitik ve hızlı yanıt' },
+                    { id: 'gemini-2.5-pro', name: 'Gemini 2.5 Pro', desc: 'Geniş bağlam ve derin raporlama' }
                   ].map((m) => (
                     <button
                       key={m.id}
@@ -776,16 +888,60 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                     </button>
                   ))}
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-slate-800/60">
+                  <div className="space-y-1.5">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold text-slate-300">Yaratıcılık / Sıcaklık (Temperature)</span>
+                      <span className="text-emerald-400 font-mono font-bold">{geminiTemperature}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0.0"
+                      max="1.0"
+                      step="0.05"
+                      value={geminiTemperature}
+                      onChange={(e) => setGeminiTemperature(parseFloat(e.target.value))}
+                      className="w-full accent-emerald-500 cursor-pointer"
+                    />
+                    <div className="flex justify-between text-[10px] text-slate-500">
+                      <span>0.0 (Tamamen Deterministik / Sayısal)</span>
+                      <span>1.0 (Yaratıcı & Yorumlayıcı)</span>
+                    </div>
+                  </div>
+
+                  <div className="p-3 bg-slate-900/60 border border-slate-800 rounded-xl flex items-center justify-between">
+                    <div>
+                      <div className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                        <Zap size={14} className="text-amber-400" />
+                        Google Canlı Arama Grounding
+                      </div>
+                      <div className="text-[10px] text-slate-400 mt-0.5">
+                        Gemini analizlerine anlık Google web arama verilerini entegre eder
+                      </div>
+                    </div>
+                    <input
+                      type="checkbox"
+                      checked={geminiSearchGrounding}
+                      onChange={(e) => setGeminiSearchGrounding(e.target.checked)}
+                      className="w-4 h-4 accent-emerald-500 cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
             )}
 
             {/* OpenRouter Config */}
             {provider === 'openrouter' && (
               <div className="space-y-4">
+                <div className="p-3 bg-cyan-950/30 border border-cyan-800/40 rounded-xl text-xs text-cyan-300 leading-relaxed">
+                  <strong>OpenRouter Entegrasyonu:</strong> Tek bir API anahtarı ile DeepSeek R1, Claude 3.7 Sonnet, Meta LLaMA 3.3 70B ve yüzlerce global AI modelini doğrudan MarketPulse AI içinde kullanabilirsiniz.
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Key size={14} className="text-indigo-400" />
+                      <Key size={14} className="text-cyan-400" />
                       OpenRouter API Anahtarı
                     </label>
                     <div className="relative">
@@ -794,7 +950,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                         value={openRouterApiKey}
                         onChange={(e) => setOpenRouterApiKey(e.target.value)}
                         placeholder="sk-or-v1-..."
-                        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none pr-10"
+                        className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono placeholder:text-slate-600 focus:border-cyan-500 focus:outline-none pr-10"
                       />
                       <button
                         type="button"
@@ -810,24 +966,56 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                   </div>
 
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Share2 size={14} className="text-indigo-400" />
-                      Model Tanımlayıcısı
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                        <Share2 size={14} className="text-cyan-400" />
+                        Model Tanımlayıcısı
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleFetchOpenRouterModels}
+                        disabled={isFetchingOpenRouter}
+                        className="text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                      >
+                        <RefreshCw size={11} className={isFetchingOpenRouter ? 'animate-spin' : ''} />
+                        Canlı Modelleri Çek
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={openRouterModel}
                       onChange={(e) => setOpenRouterModel(e.target.value)}
                       placeholder="deepseek/deepseek-r1"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono placeholder:text-slate-600 focus:border-indigo-500 focus:outline-none"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-cyan-300 font-mono placeholder:text-slate-600 focus:border-cyan-500 focus:outline-none"
                     />
+
+                    {openRouterFetchedModels.length > 0 && (
+                      <div className="p-2 bg-slate-900/90 border border-cyan-800/50 rounded-lg max-h-32 overflow-y-auto space-y-1">
+                        <div className="text-[10px] text-slate-400 font-bold px-1">Seçilebilir OpenRouter Modelleri ({openRouterFetchedModels.length}):</div>
+                        <div className="grid grid-cols-2 gap-1">
+                          {openRouterFetchedModels.slice(0, 16).map((m) => (
+                            <button
+                              key={m.id}
+                              type="button"
+                              onClick={() => setOpenRouterModel(m.id)}
+                              className={`text-[10px] px-2 py-1 rounded text-left truncate font-mono transition-colors ${
+                                openRouterModel === m.id ? 'bg-cyan-600 text-white font-bold' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                              }`}
+                            >
+                              {m.name || m.id}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex flex-wrap gap-1.5 pt-1">
                       {[
                         { label: 'DeepSeek R1', id: 'deepseek/deepseek-r1' },
                         { label: 'DeepSeek V3', id: 'deepseek/deepseek-chat' },
                         { label: 'Claude 3.7', id: 'anthropic/claude-3.7-sonnet' },
-                        { label: 'LLaMA 3.3', id: 'meta-llama/llama-3.3-70b-instruct' },
-                        { label: 'Gemini 2.5', id: 'google/gemini-2.5-flash' },
+                        { label: 'LLaMA 3.3 70B', id: 'meta-llama/llama-3.3-70b-instruct' },
+                        { label: 'Gemini 2.5 Flash', id: 'google/gemini-2.5-flash' },
                         { label: 'GPT-4o Mini', id: 'openai/gpt-4o-mini' },
                       ].map((preset) => (
                         <button
@@ -836,7 +1024,7 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                           onClick={() => setOpenRouterModel(preset.id)}
                           className={`text-[10px] px-2 py-0.5 rounded-md border font-mono transition-all cursor-pointer ${
                             openRouterModel === preset.id
-                              ? 'bg-indigo-600 text-white border-indigo-500 font-bold'
+                              ? 'bg-cyan-600 text-white border-cyan-500 font-bold'
                               : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
                           }`}
                         >
@@ -846,50 +1034,144 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                     </div>
                   </div>
                 </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-slate-800/60">
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-slate-300">Sıcaklık (Temperature: {openRouterTemperature})</label>
+                    <input
+                      type="range"
+                      min="0.0"
+                      max="1.0"
+                      step="0.05"
+                      value={openRouterTemperature}
+                      onChange={(e) => setOpenRouterTemperature(parseFloat(e.target.value))}
+                      className="w-full accent-cyan-500 cursor-pointer"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-slate-300">Base URL (Opsiyonel)</label>
+                    <input
+                      type="text"
+                      value={openRouterBaseUrl}
+                      onChange={(e) => setOpenRouterBaseUrl(e.target.value)}
+                      placeholder="https://openrouter.ai/api/v1"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:outline-none"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-[11px] font-semibold text-slate-300">Uygulama Adı (X-Title)</label>
+                    <input
+                      type="text"
+                      value={openRouterAppName}
+                      onChange={(e) => setOpenRouterAppName(e.target.value)}
+                      placeholder="MarketPulse Terminal"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs text-slate-300 font-mono focus:outline-none"
+                    />
+                  </div>
+                </div>
               </div>
             )}
 
-            {/* 9Router Config */}
+            {/* 9Router Full Comprehensive Connection Panel */}
             {provider === 'ninerouter' && (
+              <NineRouterConnectionPanel
+                config={{
+                  nineRouterBaseUrl,
+                  nineRouterModel,
+                  nineRouterApiKey,
+                  nineRouterTimeout,
+                  nineRouterTemperature,
+                  nineRouterMaxTokens,
+                  nineRouterFallbackToGemini,
+                }}
+                onChange={(patch) => {
+                  if (patch.nineRouterBaseUrl !== undefined) setNineRouterBaseUrl(patch.nineRouterBaseUrl);
+                  if (patch.nineRouterModel !== undefined) setNineRouterModel(patch.nineRouterModel);
+                  if (patch.nineRouterApiKey !== undefined) setNineRouterApiKey(patch.nineRouterApiKey);
+                  if (patch.nineRouterTimeout !== undefined) setNineRouterTimeout(patch.nineRouterTimeout);
+                  if (patch.nineRouterTemperature !== undefined) setNineRouterTemperature(patch.nineRouterTemperature);
+                  if (patch.nineRouterMaxTokens !== undefined) setNineRouterMaxTokens(patch.nineRouterMaxTokens);
+                  if (patch.nineRouterFallbackToGemini !== undefined) setNineRouterFallbackToGemini(patch.nineRouterFallbackToGemini);
+                }}
+              />
+            )}
+
+            {/* Ollama Config */}
+            {provider === 'ollama' && (
               <div className="space-y-4">
-                <div className="p-3 bg-violet-500/10 border border-violet-500/30 rounded-xl text-[11px] text-violet-300 leading-relaxed">
-                  <strong>9Router Yerel Entegrasyonu:</strong> Bilgisayarınızda veya yerel sunucunuzda koşan 9Router servisini kullanır. Varsayılan olarak <code>http://localhost:9999/v1</code> portunu dinler.
+                <div className="p-3 bg-amber-950/20 border border-amber-800/40 rounded-xl text-xs text-amber-300 leading-relaxed">
+                  <strong>Ollama Yerel Yapay Zeka:</strong> Bilgisayarınızda yerel çalışan Ollama servisine doğrudan bağlanır. Tamamen çevrimdışı ve ücretsiz finansal çıkarım sağlar.
                 </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Network size={14} className="text-violet-400" />
-                      9Router URL
+                      <Terminal size={14} className="text-amber-400" />
+                      Ollama Sunucu URL
                     </label>
                     <input
                       type="text"
-                      value={nineRouterBaseUrl}
-                      onChange={(e) => setNineRouterBaseUrl(e.target.value)}
-                      placeholder="http://localhost:9999/v1"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-violet-500 focus:outline-none"
+                      value={ollamaUrl}
+                      onChange={(e) => setOllamaUrl(e.target.value)}
+                      placeholder="http://localhost:11434"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-amber-500 focus:outline-none"
                     />
+                    <p className="text-[10px] text-slate-500">Varsayılan yerel port: http://localhost:11434</p>
                   </div>
+
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Cpu size={14} className="text-violet-400" />
-                      Model Adı
-                    </label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
+                        <Cpu size={14} className="text-amber-400" />
+                        Ollama Model Adı
+                      </label>
+                      <button
+                        type="button"
+                        onClick={handleFetchOllamaModels}
+                        disabled={isFetchingOllama}
+                        className="text-[11px] text-amber-400 hover:text-amber-300 font-semibold flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                      >
+                        <RefreshCw size={11} className={isFetchingOllama ? 'animate-spin' : ''} />
+                        Yüklü Modelleri Çek
+                      </button>
+                    </div>
                     <input
                       type="text"
-                      value={nineRouterModel}
-                      onChange={(e) => setNineRouterModel(e.target.value)}
-                      placeholder="local-default"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-violet-500 focus:outline-none"
+                      value={ollamaModel}
+                      onChange={(e) => setOllamaModel(e.target.value)}
+                      placeholder="deepseek-r1:latest"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-amber-300 font-mono focus:border-amber-500 focus:outline-none"
                     />
+
+                    {ollamaFetchedModels.length > 0 && (
+                      <div className="p-2 bg-slate-900/90 border border-amber-800/50 rounded-lg max-h-32 overflow-y-auto space-y-1">
+                        <div className="text-[10px] text-slate-400 font-bold px-1">Bilgisayarınızda Bulunan Modeller ({ollamaFetchedModels.length}):</div>
+                        <div className="grid grid-cols-2 gap-1">
+                          {ollamaFetchedModels.map((m) => (
+                            <button
+                              key={m.id}
+                              type="button"
+                              onClick={() => setOllamaModel(m.id)}
+                              className={`text-[10px] px-2 py-1 rounded text-left truncate font-mono transition-colors ${
+                                ollamaModel === m.id ? 'bg-amber-600 text-white font-bold' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                              }`}
+                            >
+                              {m.name || m.id}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
                     <div className="flex flex-wrap gap-1.5 pt-1">
-                      {['local-default', 'deepseek-r1', 'llama-3.3-70b', 'qwen-2.5-coder', 'mistral-small'].map((name) => (
+                      {['deepseek-r1:latest', 'llama3.2:latest', 'qwen2.5:latest', 'mistral:latest'].map((name) => (
                         <button
                           key={name}
                           type="button"
-                          onClick={() => setNineRouterModel(name)}
+                          onClick={() => setOllamaModel(name)}
                           className={`text-[10px] px-2 py-0.5 rounded-md border font-mono transition-all cursor-pointer ${
-                            nineRouterModel === name
-                              ? 'bg-violet-600 text-white border-violet-500 font-bold'
+                            ollamaModel === name
+                              ? 'bg-amber-600 text-white border-amber-500 font-bold'
                               : 'bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700'
                           }`}
                         >
@@ -899,37 +1181,21 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
 
-            {/* Ollama Config */}
-            {provider === 'ollama' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Terminal size={14} className="text-cyan-400" />
-                      Ollama Sunucu URL
-                    </label>
+                <div className="pt-2 border-t border-slate-800/60">
+                  <div className="space-y-1 max-w-sm">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold text-slate-300">Sıcaklık (Temperature)</span>
+                      <span className="text-amber-400 font-mono font-bold">{ollamaTemperature}</span>
+                    </div>
                     <input
-                      type="text"
-                      value={ollamaUrl}
-                      onChange={(e) => setOllamaUrl(e.target.value)}
-                      placeholder="http://localhost:11434"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-cyan-500 focus:outline-none"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                      <Cpu size={14} className="text-cyan-400" />
-                      Ollama Model Adı
-                    </label>
-                    <input
-                      type="text"
-                      value={ollamaModel}
-                      onChange={(e) => setOllamaModel(e.target.value)}
-                      placeholder="deepseek-r1:latest"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-cyan-500 focus:outline-none"
+                      type="range"
+                      min="0.0"
+                      max="1.0"
+                      step="0.05"
+                      value={ollamaTemperature}
+                      onChange={(e) => setOllamaTemperature(parseFloat(e.target.value))}
+                      className="w-full accent-amber-500 cursor-pointer"
                     />
                   </div>
                 </div>
@@ -939,6 +1205,10 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
             {/* Custom API Config */}
             {provider === 'custom' && (
               <div className="space-y-4">
+                <div className="p-3 bg-purple-950/20 border border-purple-800/40 rounded-xl text-xs text-purple-300 leading-relaxed">
+                  <strong>Özel / OpenAI Uyumlu Endpoint:</strong> vLLM, LM Studio, Text Generation WebUI veya kurumsal AI sunucularınızın <code>/v1</code> endpoint'ine doğrudan bağlanır.
+                </div>
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-200">API Endpoint URL</label>
@@ -947,18 +1217,49 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                       value={customBaseUrl}
                       onChange={(e) => setCustomBaseUrl(e.target.value)}
                       placeholder="https://api.openai.com/v1"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-amber-500 focus:outline-none"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-purple-500 focus:outline-none"
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <label className="text-xs font-bold text-slate-200">Model İsmi</label>
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-200">Model İsmi</label>
+                      <button
+                        type="button"
+                        onClick={handleFetchCustomModels}
+                        disabled={isFetchingCustom}
+                        className="text-[11px] text-purple-400 hover:text-purple-300 font-semibold flex items-center gap-1 cursor-pointer disabled:opacity-50"
+                      >
+                        <RefreshCw size={11} className={isFetchingCustom ? 'animate-spin' : ''} />
+                        Modelleri Çek
+                      </button>
+                    </div>
                     <input
                       type="text"
                       value={customModelName}
                       onChange={(e) => setCustomModelName(e.target.value)}
-                      placeholder="gpt-4o"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-amber-500 focus:outline-none"
+                      placeholder="gpt-4o veya custom-model"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-purple-300 font-mono focus:border-purple-500 focus:outline-none"
                     />
+
+                    {customFetchedModels.length > 0 && (
+                      <div className="p-2 bg-slate-900/90 border border-purple-800/50 rounded-lg max-h-32 overflow-y-auto space-y-1">
+                        <div className="text-[10px] text-slate-400 font-bold px-1">Algılanan Modeller ({customFetchedModels.length}):</div>
+                        <div className="grid grid-cols-2 gap-1">
+                          {customFetchedModels.map((m) => (
+                            <button
+                              key={m.id}
+                              type="button"
+                              onClick={() => setCustomModelName(m.id)}
+                              className={`text-[10px] px-2 py-1 rounded text-left truncate font-mono transition-colors ${
+                                customModelName === m.id ? 'bg-purple-600 text-white font-bold' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                              }`}
+                            >
+                              {m.name || m.id}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-xs font-bold text-slate-200">API Key (Opsiyonel)</label>
@@ -967,7 +1268,25 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
                       value={customApiKey}
                       onChange={(e) => setCustomApiKey(e.target.value)}
                       placeholder="Bearer token"
-                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-amber-500 focus:outline-none"
+                      className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono focus:border-purple-500 focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-800/60">
+                  <div className="space-y-1 max-w-sm">
+                    <div className="flex justify-between text-xs">
+                      <span className="font-semibold text-slate-300">Sıcaklık (Temperature)</span>
+                      <span className="text-purple-400 font-mono font-bold">{customTemperature}</span>
+                    </div>
+                    <input
+                      type="range"
+                      min="0.0"
+                      max="1.0"
+                      step="0.05"
+                      value={customTemperature}
+                      onChange={(e) => setCustomTemperature(parseFloat(e.target.value))}
+                      className="w-full accent-purple-500 cursor-pointer"
                     />
                   </div>
                 </div>

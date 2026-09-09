@@ -1965,16 +1965,21 @@ export const AdminDatabaseIntegrationTab: React.FC = () => {
           {/* Quick Endpoint Trigger Buttons */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
             {[
-              { label: '1. BIST V1 Stocks (THYAO)', ep: '/api/v1/bist/stocks?search=THYAO&limit=10&sortBy=marketCap&order=desc' },
+              { label: '1. BIST Canlı (THYAO)', ep: '/api/v1/bist/stocks?search=THYAO&limit=10&sortBy=marketCap&order=desc' },
               { label: '2. Şirketler (1014)', ep: '/api/export/companies' },
               { label: '3. Arama (THYAO)', ep: '/api/export/search?q=THYAO&limit=10' },
               { label: '4. Tüm Veri (THYAO)', ep: '/api/export/all/THYAO' },
               { label: '5. Finansallar (THYAO)', ep: '/api/export/financials/THYAO' },
               { label: '6. TEFAS Fonları', ep: '/api/export/funds?limit=20' },
               { label: '7. Fon Detay (TAU)', ep: '/api/export/fund/TAU' },
-              { label: '8. Toplu (KAP & Fiyat)', ep: '/api/export/bulk?tables=disclosures,prices&limit_per_table=5' },
-              { label: '9. Takas & Yabancı', ep: '/api/export/bulk?tables=settlement&limit_per_table=10' },
-              { label: '10. DB Şeması (43)', ep: '/api/export/schema' },
+              { label: '8. Fona Giren Hisseler', ep: '/api/v1/tefas/top-held-stocks' },
+              { label: '9. KAP Bildirimleri', ep: '/api/v1/kap/disclosures?limit=5' },
+              { label: '10. Halka Arzlar (IPO)', ep: '/api/v1/ipos' },
+              { label: '11. ABD Borsaları', ep: '/api/v1/us-stocks?limit=10' },
+              { label: '12. Toplu (KAP/Fiyat)', ep: '/api/export/bulk?tables=disclosures,prices&limit_per_table=5' },
+              { label: '13. Takas & Saklama', ep: '/api/export/bulk?tables=settlement&limit_per_table=10' },
+              { label: '14. Makro Ekonomi', ep: '/api/macro' },
+              { label: '15. Kripto Paralar', ep: '/api/crypto/prices' },
             ].map((item, idx) => (
               <button
                 key={idx}

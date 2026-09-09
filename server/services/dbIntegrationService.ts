@@ -1093,11 +1093,25 @@ export async function testFinanceApiConnection(
   let companiesCount = 0;
   let tablesCount = 0;
 
+  // Helper to safely parse JSON and gracefully handle HTML/Cloudflare/SPA error pages
+  const parseJsonSafe = async (res: Response) => {
+    const text = await res.text();
+    const trimmed = text.trim();
+    if (trimmed.startsWith('<') || res.headers.get('content-type')?.includes('text/html')) {
+      throw new Error('Sunucu JSON yerine HTML döndürdü (uç nokta bu serviste henüz aktif değil veya statik sayfa)');
+    }
+    try {
+      return JSON.parse(text);
+    } catch (e: any) {
+      throw new Error(`Geçersiz JSON formatı: ${e.message}`);
+    }
+  };
+
   // 1. Test /api/v1/bist/stocks?limit=5 (Canlı BIST Hisseleri)
   try {
     const res = await fetchEndpoint('/api/v1/bist/stocks?limit=5');
     if (res.ok) {
-      const data = await res.json();
+      const data = await parseJsonSafe(res);
       const count = Array.isArray(data?.data) ? data.data.length : (Array.isArray(data) ? data.length : 0);
       if (count > 0) companiesCount = count;
       endpointsTested.push({ endpoint: '/api/v1/bist/stocks', ok: true, count });
@@ -1116,7 +1130,7 @@ export async function testFinanceApiConnection(
   try {
     const res = await fetchEndpoint('/api/export/funds?limit=5');
     if (res.ok) {
-      const data = await res.json();
+      const data = await parseJsonSafe(res);
       const count = Array.isArray(data) ? data.length : (Array.isArray(data?.funds) ? data.funds.length : 0);
       fundsCount = count;
       endpointsTested.push({ endpoint: '/api/export/funds', ok: true, count });
@@ -1135,7 +1149,7 @@ export async function testFinanceApiConnection(
   try {
     const res = await fetchEndpoint('/api/export/bulk?tables=disclosures&limit_per_table=5');
     if (res.ok) {
-      const data = await res.json();
+      const data = await parseJsonSafe(res);
       const count = Array.isArray(data?.disclosures) ? data.disclosures.length : (Array.isArray(data) ? data.length : 0);
       disclosuresCount = count;
       endpointsTested.push({ endpoint: '/api/export/bulk (KAP)', ok: true, count });
@@ -1154,7 +1168,7 @@ export async function testFinanceApiConnection(
   try {
     const res = await fetchEndpoint('/api/export/companies?limit=5', 5000);
     if (res.ok) {
-      const data = await res.json();
+      const data = await parseJsonSafe(res);
       const count = Array.isArray(data) ? data.length : 0;
       companiesCount = count;
       endpointsTested.push({ endpoint: '/api/export/companies', ok: true, count });
@@ -1169,22 +1183,30 @@ export async function testFinanceApiConnection(
     });
   }
 
-  // 5. Test /api/export/schema (Veritabanı Şeması)
-  try {
-    const res = await fetchEndpoint('/api/export/schema', 5000);
-    if (res.ok) {
-      const data = await res.json();
-      const count = data?.tables ? Object.keys(data.tables).length : (Array.isArray(data) ? data.length : (data ? Object.keys(data).length : 0));
-      tablesCount = count;
-      endpointsTested.push({ endpoint: '/api/export/schema', ok: true, count });
-    } else {
-      endpointsTested.push({ endpoint: '/api/export/schema', ok: false, error: parseCloudflareStatusError(res.status) });
+  // 5. Test /api/export/schema (Veritabanı Şeması - opsiyonel yedek rotalarla)
+  let schemaFound = false;
+  const schemaCandidates = ['/api/export/schema', '/api/v1/schema', '/api/schema'];
+  for (const sPath of schemaCandidates) {
+    try {
+      const res = await fetchEndpoint(sPath, 4000);
+      if (res.ok) {
+        const data = await parseJsonSafe(res);
+        const count = data?.tables ? Object.keys(data.tables).length : (Array.isArray(data) ? data.length : (data ? Object.keys(data).length : 0));
+        tablesCount = count;
+        endpointsTested.push({ endpoint: sPath, ok: true, count });
+        schemaFound = true;
+        break;
+      }
+    } catch {
+      // try next candidate
     }
-  } catch (err: any) {
+  }
+
+  if (!schemaFound) {
     endpointsTested.push({ 
       endpoint: '/api/export/schema', 
       ok: false, 
-      error: err.name === 'AbortError' ? 'Zaman aşımı (5s)' : (err.message || 'Bağlantı hatası') 
+      error: 'Uç nokta henüz sunucuda tanımlı değil (HTML yanıtı döndü - opsiyonel)' 
     });
   }
 

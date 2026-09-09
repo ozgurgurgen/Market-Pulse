@@ -164,7 +164,12 @@ export class LocalFinanceApiAdapter {
         });
         clearTimeout(timeoutId);
         if (response.ok) {
-          return await response.json();
+          const contentType = response.headers.get('content-type') || '';
+          const text = await response.text();
+          if (text.trim().startsWith('<') || contentType.includes('text/html')) {
+            continue; // HTML returned instead of JSON, continue
+          }
+          return JSON.parse(text);
         }
       } catch {
         // Continue to fallback url if first attempt failed

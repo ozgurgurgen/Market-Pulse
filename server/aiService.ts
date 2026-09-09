@@ -149,6 +149,9 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
     const openRouterUrl = (effectiveBaseUrl || modelConfig?.openRouterBaseUrl || 'https://openrouter.ai/api/v1').replace(/\/$/, '');
     const apiKey = effectiveApiKey || modelConfig?.openRouterApiKey || process.env.OPENROUTER_API_KEY;
     const model = effectiveModelName || modelConfig?.openRouterModel || 'deepseek/deepseek-r1';
+    const temp = modelConfig?.openRouterTemperature ?? effectiveTemperature;
+    const referer = modelConfig?.openRouterSiteUrl || process.env.APP_URL || 'https://marketpulse.ai';
+    const appTitle = modelConfig?.openRouterAppName || 'MarketPulse AI';
 
     if (!apiKey) {
       console.warn('OpenRouter API Key tanımlanmamış. Fallback devreye alınıyor.');
@@ -181,13 +184,13 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
-          'HTTP-Referer': process.env.APP_URL || 'https://marketpulse.ai',
-          'X-Title': 'MarketPulse AI',
+          'HTTP-Referer': referer,
+          'X-Title': appTitle,
         },
         body: JSON.stringify({
           model,
           messages,
-          temperature: effectiveTemperature,
+          temperature: temp,
         }),
         signal: controller.signal,
       });
@@ -234,16 +237,20 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
   }
 
   // ----------------------------------------------------
-  // 3. 9Router (Yerel AI Yönlendirici / Local Router)
+  // 3. 9Router (Yerel & Ağ AI Yönlendirici / Local Router)
   // ----------------------------------------------------
   if (effectiveProvider === 'ninerouter') {
     let nineUrl = (effectiveBaseUrl || modelConfig?.nineRouterBaseUrl || 'http://localhost:9999/v1').replace(/\/$/, '');
     const apiKey = effectiveApiKey || modelConfig?.nineRouterApiKey || process.env.NINEROUTER_API_KEY;
     const model = effectiveModelName || modelConfig?.nineRouterModel || 'local-default';
+    const timeoutSec = modelConfig?.nineRouterTimeout || 60;
+    const temp = modelConfig?.nineRouterTemperature ?? effectiveTemperature;
+    const maxTokens = modelConfig?.nineRouterMaxTokens;
+    const shouldFallback = modelConfig?.nineRouterFallbackToGemini !== false;
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30s timeout
+      const timeoutId = setTimeout(() => controller.abort(), timeoutSec * 1000);
 
       const messages: Array<{ role: string; content: string }> = [];
       if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
@@ -261,14 +268,19 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
         ? `${nineUrl}/chat/completions`
         : `${nineUrl}/v1/chat/completions`;
 
+      const requestBody: any = {
+        model,
+        messages,
+        temperature: temp,
+      };
+      if (maxTokens) {
+        requestBody.max_tokens = maxTokens;
+      }
+
       let response = await fetch(targetEndpoint, {
         method: 'POST',
         headers,
-        body: JSON.stringify({
-          model,
-          messages,
-          temperature: effectiveTemperature,
-        }),
+        body: JSON.stringify(requestBody),
         signal: controller.signal,
       }).catch(async (e) => {
         // Fallback endpoint if /v1/ was duplicated or missing
@@ -277,7 +289,7 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
           return fetch(altEndpoint, {
             method: 'POST',
             headers,
-            body: JSON.stringify({ model, messages, temperature: effectiveTemperature }),
+            body: JSON.stringify(requestBody),
             signal: controller.signal,
           });
         }
@@ -303,7 +315,7 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
       }
     } catch (err: any) {
       console.warn(`9Router (${nineUrl} - ${model}) hatası:`, err.message);
-      if (process.env.GEMINI_API_KEY) {
+      if (shouldFallback && process.env.GEMINI_API_KEY) {
         const geminiRes = await runGeminiWithFallback(prompt, systemPrompt, 'gemini-3.7-flash', effectiveTemperature, useSearchGrounding);
         return {
           ...geminiRes,
@@ -315,7 +327,7 @@ export async function executeAICompletion(options: AICallOptions): Promise<AICal
         modelUsed: `9Router (${model}) - Bağlantı Yok`,
         provider: 'fallback',
         isFallback: true,
-        warning: `9Router yerel yönlendiricisine (${nineUrl}) bağlanılamadı. Lütfen 9Router uygulamasının çalıştığından emin olun.`,
+        warning: `9Router yerel yönlendiricisine (${nineUrl}) bağlanılamadı: ${err.message}. Lütfen 9Router uygulamasının çalıştığından emin olun.`,
       };
     }
   }

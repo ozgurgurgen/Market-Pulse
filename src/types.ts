@@ -23,26 +23,38 @@ export interface AITaskRouteConfig {
 
 export interface AIModelConfig {
   provider: AIProviderType;
-  geminiModel: string; // 'gemini-3.7-flash' | 'gemini-3.1-pro-preview' | 'gemini-3.1-flash-lite'
+  geminiModel: string; // 'gemini-3.7-flash' | 'gemini-2.5-pro' | 'gemini-2.5-flash' | 'gemini-3.1-pro-preview' | 'gemini-3.1-flash-lite'
+  geminiTemperature?: number; // 0.0 to 1.0 (default 0.7)
+  geminiSearchGrounding?: boolean; // Google search live grounding
+  geminiThinkingBudget?: number; // Reasoning token budget
   
   // OpenRouter (Universal AI Cloud Router)
   openRouterApiKey?: string;
   openRouterModel?: string; // e.g. 'deepseek/deepseek-r1', 'anthropic/claude-3.7-sonnet', 'meta-llama/llama-3.3-70b-instruct'
   openRouterBaseUrl?: string; // default 'https://openrouter.ai/api/v1'
+  openRouterTemperature?: number; // 0.0 to 1.0
+  openRouterSiteUrl?: string; // HTTP-Referer for rankings
+  openRouterAppName?: string; // X-Title for rankings
 
-  // 9Router (Yerel AI Yönlendirici / Local AI Router)
+  // 9Router (Yerel & Ağ AI Yönlendirici / Local AI Router)
   nineRouterBaseUrl?: string; // default 'http://localhost:9999/v1' or 'http://127.0.0.1:9999/v1'
   nineRouterModel?: string; // e.g. 'local-default', 'deepseek-r1', 'llama-3.3-70b'
-  nineRouterApiKey?: string; // Optional local authorization token
+  nineRouterApiKey?: string; // Optional local/network bearer authorization token
+  nineRouterTimeout?: number; // Request timeout in seconds (default: 60)
+  nineRouterTemperature?: number; // 0.0 to 1.0 (default: 0.7)
+  nineRouterMaxTokens?: number; // Max generation tokens (e.g. 4096, 8192)
+  nineRouterFallbackToGemini?: boolean; // If 9Router fails, fallback to Gemini (default: true)
 
   // Ollama (Yerel LLM)
   ollamaUrl: string; // e.g. 'http://localhost:11434'
   ollamaModel: string; // e.g. 'deepseek-r1:latest', 'llama3.2:latest', 'qwen2.5:latest'
+  ollamaTemperature?: number; // 0.0 to 1.0
 
   // Custom OpenAI-compatible Endpoint
   customBaseUrl?: string;
   customApiKey?: string;
   customModelName?: string;
+  customTemperature?: number;
 
   // Task-specific AI Model Routing (Görev Bazlı Yapay Zeka Matrisi)
   taskRoutes?: Partial<Record<AITaskType, AITaskRouteConfig>>;
