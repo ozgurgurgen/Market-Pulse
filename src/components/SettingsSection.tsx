@@ -325,22 +325,28 @@ export const SettingsSection: React.FC<SettingsSectionProps> = ({
 
     try {
       const { data, ok } = await safeFetchJson<{
-        success: boolean;
-        provider: string;
-        model: string;
-        latencyMs: number;
-        message: string;
+        success?: boolean;
+        status?: 'online' | 'offline' | 'warning' | 'testing';
+        provider?: string;
+        model?: string;
+        latencyMs?: number;
+        message?: string;
       }>('/api/ai/test-connection', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ modelConfig: currentConfig }),
       });
 
-      if (ok && data?.success) {
+      const isSuccess = data?.success === true || data?.status === 'online';
+
+      if (ok && isSuccess) {
         setAiTestStatus('online');
-        setAiTestMsg(`✅ Bağlantı Başarılı! Sağlayıcı: ${data.provider.toUpperCase()} (${data.model}) — Gecikme: ${data.latencyMs}ms`);
+        const activeProvider = (data?.provider || provider).toUpperCase();
+        const activeModel = data?.model || (provider === 'ninerouter' ? nineRouterModel : provider === 'openrouter' ? openRouterModel : provider === 'ollama' ? ollamaModel : geminiModel);
+        const latency = data?.latencyMs ? ` — Gecikme: ${data.latencyMs}ms` : '';
+        setAiTestMsg(`✅ Bağlantı Başarılı! Sağlayıcı: ${activeProvider} (${activeModel})${latency}`);
       } else {
-        setAiTestStatus('offline');
+        setAiTestStatus(data?.status === 'warning' ? 'warning' : 'offline');
         setAiTestMsg(`❌ Bağlantı Başarısız: ${data?.message || 'Sunucudan yanıt alınamadı.'}`);
       }
     } catch (err: any) {

@@ -134,7 +134,7 @@ export const NineRouterConnectionPanel: React.FC<NineRouterConnectionPanelProps>
         if (selectedModel === 'local-default' && fetchData.models[0]?.id) {
           onChange({ nineRouterModel: fetchData.models[0].id });
         }
-      } else if (testData?.status === 'online') {
+      } else if (testData?.status === 'online' || testData?.success === true) {
         if (Array.isArray(testData.availableModels) && testData.availableModels.length > 0) {
           setAvailableModels(testData.availableModels);
         }

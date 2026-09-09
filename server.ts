@@ -994,8 +994,10 @@ app.post('/api/ai/test-connection', async (req, res) => {
 
       if (!apiKey) {
         return res.json({
+          success: false,
           status: 'warning',
           provider: 'openrouter',
+          model,
           message: 'OpenRouter API anahtarı (sk-or-...) henüz girilmedi. Lütfen geçerli bir OpenRouter API Key kaydedin.',
         });
       }
@@ -1023,8 +1025,10 @@ app.post('/api/ai/test-connection', async (req, res) => {
           }));
 
           return res.json({
+            success: true,
             status: 'online',
             provider: 'openrouter',
+            model,
             latencyMs,
             message: `OpenRouter ağına bağlanıldı! (${rawList.length} model mevcut, Gecikme: ${latencyMs}ms, Seçili: ${model})`,
             availableModels: models,
@@ -1032,8 +1036,10 @@ app.post('/api/ai/test-connection', async (req, res) => {
         } else {
           const errText = await pingRes.text();
           return res.json({
+            success: false,
             status: 'offline',
             provider: 'openrouter',
+            model,
             latencyMs,
             message: `OpenRouter doğrulama başarısız (HTTP ${pingRes.status}). API anahtarınızı kontrol edin.`,
             error: errText,
@@ -1041,8 +1047,10 @@ app.post('/api/ai/test-connection', async (req, res) => {
         }
       } catch (err: any) {
         return res.json({
+          success: false,
           status: 'offline',
           provider: 'openrouter',
+          model,
           message: `OpenRouter bağlantısı kurulamadı: ${err.message}`,
           error: err.message,
         });
@@ -1097,24 +1105,30 @@ app.post('/api/ai/test-connection', async (req, res) => {
           } catch {}
 
           return res.json({
+            success: true,
             status: 'online',
             provider: 'ninerouter',
+            model,
             latencyMs,
             message: `9Router yerel yönlendiricisine bağlanıldı! (${models.length} model listelendi, Gecikme: ${latencyMs}ms, Seçili: ${model})`,
             availableModels: models,
           });
         } else {
           return res.json({
+            success: false,
             status: 'warning',
             provider: 'ninerouter',
+            model,
             latencyMs,
             message: `9Router (${baseUrl}) endpoint'ine ulaşılamadı (HTTP ${pingRes?.status || 'Bağlantı Yok'}). Servisin çalıştığından emin olun (Örn: http://localhost:9999/v1).`,
           });
         }
       } catch (err: any) {
         return res.json({
+          success: false,
           status: 'offline',
           provider: 'ninerouter',
+          model,
           message: `9Router yerel yönlendiricisine (${baseUrl}) bağlanılamadı: ${err.message}`,
           error: err.message,
         });
@@ -1124,6 +1138,7 @@ app.post('/api/ai/test-connection', async (req, res) => {
     // 3. Ollama Test
     if (provider === 'ollama') {
       const url = (modelConfig?.ollamaUrl || 'http://localhost:11434').replace(/\/$/, '');
+      const model = modelConfig?.ollamaModel || 'llama3';
       try {
         const pingRes = await fetch(`${url}/api/tags`);
         const latencyMs = Date.now() - startTime;
@@ -1135,17 +1150,30 @@ app.post('/api/ai/test-connection', async (req, res) => {
             owned_by: m.details?.family || 'ollama',
           })) || [];
           return res.json({
+            success: true,
             status: 'online',
             provider: 'ollama',
+            model,
             latencyMs,
             message: `Ollama servisine bağlanıldı! (${models.length} model yüklü, Gecikme: ${latencyMs}ms)`,
             availableModels: models,
           });
+        } else {
+          return res.json({
+            success: false,
+            status: 'offline',
+            provider: 'ollama',
+            model,
+            latencyMs,
+            message: `Ollama servisi yanıt vermedi (HTTP ${pingRes.status}).`,
+          });
         }
       } catch (err: any) {
         return res.json({
+          success: false,
           status: 'offline',
           provider: 'ollama',
+          model,
           message: `Yerel Ollama servisine (${url}) bağlanılamadı. Terminalde 'ollama serve' komutunun çalıştığından emin olun.`,
           error: err.message,
         });
@@ -1156,18 +1184,23 @@ app.post('/api/ai/test-connection', async (req, res) => {
     if (provider === 'gemini') {
       const apiKey = process.env.GEMINI_API_KEY;
       const latencyMs = Date.now() - startTime;
+      const model = modelConfig?.geminiModel || 'gemini-3.7-flash';
       if (!apiKey) {
         return res.json({
+          success: false,
           status: 'warning',
           provider: 'gemini',
+          model,
           message: 'GEMINI_API_KEY sunucu ortamında tanımlanmamış. Sistem akıllı yerel fallback motoruyla çalışmaktadır.',
         });
       }
       return res.json({
+        success: true,
         status: 'online',
         provider: 'gemini',
+        model,
         latencyMs,
-        message: `Google Gemini API bağlantısı aktif! (${modelConfig?.geminiModel || 'gemini-3.7-flash'})`,
+        message: `Google Gemini API bağlantısı aktif! (${model})`,
         availableModels: [
           { id: 'gemini-3.7-flash', name: 'Gemini 3.7 Flash (Düşünme Yetenekli / En Yeni)', owned_by: 'google' },
           { id: 'gemini-2.5-flash', name: 'Gemini 2.5 Flash (Hızlı & Düşük Maliyet)', owned_by: 'google' },
@@ -1181,10 +1214,13 @@ app.post('/api/ai/test-connection', async (req, res) => {
     // 5. Custom Endpoint Test
     if (provider === 'custom') {
       const baseUrl = modelConfig?.customBaseUrl?.replace(/\/$/, '');
+      const model = modelConfig?.customModelName || 'custom-llm';
       if (!baseUrl) {
         return res.json({
+          success: false,
           status: 'warning',
           provider: 'custom',
+          model,
           message: 'Özel API Base URL adresi girilmedi.',
         });
       }
@@ -1215,18 +1251,22 @@ app.post('/api/ai/test-connection', async (req, res) => {
         }
 
         return res.json({
+          success: pingRes?.ok ?? false,
           status: pingRes?.ok ? 'online' : 'warning',
           provider: 'custom',
+          model,
           latencyMs,
           message: pingRes?.ok
             ? `Özel API servisine başarıyla bağlanıldı! (${models.length} model listelendi)`
-            : `Özel API servisi yapılandırıldı (${baseUrl}). Model: ${modelConfig?.customModelName || 'custom-llm'}`,
+            : `Özel API servisi yapılandırıldı (${baseUrl}). Model: ${model}`,
           availableModels: models,
         });
       } catch (err: any) {
         return res.json({
+          success: false,
           status: 'offline',
           provider: 'custom',
+          model,
           message: `Özel API servisine bağlanılamadı: ${err.message}`,
         });
       }
