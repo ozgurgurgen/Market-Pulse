@@ -2,8 +2,18 @@ import { Router } from 'express';
 import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
 import { serverLocalDatabase } from '../services/serverLocalDatabase';
 import { BIST_300_STOCKS } from '../data/bistUniverse';
+import { getSectorsStocksHeatmapData } from '../services/sectorHeatmapService';
 
 export const sectorRouter = Router();
+
+sectorRouter.get('/stocks-heatmap', async (req, res) => {
+  try {
+    const data = await getSectorsStocksHeatmapData();
+    return res.json({ success: true, data });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
 
 sectorRouter.get('/:name', async (req, res) => {
   const sectorName = req.params.name;

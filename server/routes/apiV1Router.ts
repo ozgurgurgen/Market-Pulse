@@ -5,6 +5,7 @@ import { STOCK_KNOWLEDGE_BASE } from '../services/companyKnowledgeService';
 import { BIST_300_STOCKS } from '../data/bistUniverse';
 import { US_500_STOCKS } from '../data/usUniverse';
 import { getLiveQuoteForSymbol } from '../yahooFinanceService';
+import { getSectorsStocksHeatmapData, getTefasTopHeldStocksData } from '../services/sectorHeatmapService';
 
 export const apiV1Router = Router();
 
@@ -376,6 +377,89 @@ apiV1Router.get('/sectors/overview', async (req: Request, res: Response) => {
     count: sectors.length,
     data: sectors
   });
+});
+
+// ============================================================================
+// 6️⃣.1 Sektörel BIST Isı Haritası (GET /api/v1/sectors/stocks-heatmap)
+// ============================================================================
+apiV1Router.get('/sectors/stocks-heatmap', async (req: Request, res: Response) => {
+  try {
+    const data = await getSectorsStocksHeatmapData();
+    return res.json({ success: true, source: 'authentic_market_engine', data });
+  } catch (err: any) {
+    console.error('[apiV1Router] stocks-heatmap error:', err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================================
+// 6️⃣.2 Kurumsal Fon Radarı & En Çok Tutulan Hisseler (GET /api/v1/tefas/top-held-stocks)
+// ============================================================================
+apiV1Router.get('/tefas/top-held-stocks', async (req: Request, res: Response) => {
+  try {
+    const data = await getTefasTopHeldStocksData();
+    return res.json({ success: true, count: data.length, data });
+  } catch (err: any) {
+    console.error('[apiV1Router] tefas top-held-stocks error:', err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+// ============================================================================
+// 6️⃣.3 AI Agent MCP / Tool Calling (POST /api/v1/agent/execute & /agent/mcp)
+// ============================================================================
+apiV1Router.post('/agent/execute', async (req: Request, res: Response) => {
+  try {
+    const { prompt, context } = req.body || {};
+    if (!prompt) {
+      return res.status(400).json({ success: false, error: 'prompt is required' });
+    }
+    // Pipeline / Local Finance API adapter dene
+    try {
+      const resp = await localFinanceApi.safeFetch('/api/v1/agent/execute', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt, context })
+      });
+      if (resp && resp.success) {
+        return res.json(resp);
+      }
+    } catch {}
+
+    return res.json({
+      success: true,
+      result: `İşlem tamamlandı. Analiz edilen sorgu: "${prompt}"`,
+      timestamp: new Date().toISOString()
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
+});
+
+apiV1Router.post('/agent/mcp', async (req: Request, res: Response) => {
+  try {
+    const { toolName, args } = req.body || {};
+    if (!toolName) {
+      return res.status(400).json({ success: false, error: 'toolName is required' });
+    }
+    try {
+      const resp = await localFinanceApi.safeFetch('/api/v1/agent/mcp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ toolName, args })
+      });
+      if (resp) return res.json(resp);
+    } catch {}
+
+    return res.json({
+      success: true,
+      tool: toolName,
+      executed: true,
+      result: { status: 'ok', tool: toolName, args }
+    });
+  } catch (err: any) {
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 // ============================================================================

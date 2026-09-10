@@ -20,8 +20,8 @@ import { useSubscription } from '../hooks/useSubscription';
 
 
 interface HeaderProps {
-  activeTab: 'opportunities' | 'latest_financials' | 'screener' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing';
-  setActiveTab: (tab: 'opportunities' | 'latest_financials' | 'screener' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing') => void;
+  activeTab: 'opportunities' | 'latest_financials' | 'screener' | 'heatmap' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing';
+  setActiveTab: (tab: 'opportunities' | 'latest_financials' | 'screener' | 'heatmap' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing') => void;
   quotes: StockQuote[];
   onSelectStock: (quote: StockQuote) => void;
   onRefreshAll: () => void;

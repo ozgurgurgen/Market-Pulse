@@ -5,6 +5,13 @@ import { serverLocalDatabase } from '../services/serverLocalDatabase';
 import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
 import { calculateParametricTechnicalAnalysis } from '../signalEngine/technicalCalculation';
 import { BIST_300_STOCKS } from '../data/bistUniverse';
+import {
+  getFormattedFinancialStatements,
+  getBuffettValuationAnalysis,
+  getFairValueEstimate,
+  getSeasonalityAnalysis,
+  getBrokerageDistribution
+} from '../services/stockFinancialsValuationEngine';
 
 export const stockDetailRouter = Router();
 
@@ -367,9 +374,17 @@ stockDetailRouter.get('/:symbol/analyst', async (req, res) => {
 // ============================================================================
 stockDetailRouter.get('/:symbol/financials', async (req, res) => {
   const symbol = cleanTicker(req.params.symbol);
-  const aggData = getAggregatedDataFromDB(symbol);
-  if (aggData?.financials) return res.json({ success: true, data: aggData.financials });
-  return res.json({ success: true, data: [] });
+  try {
+    const aggData = getAggregatedDataFromDB(symbol);
+    if (aggData?.financials && Array.isArray(aggData.financials.balanceSheet) && aggData.financials.balanceSheet.length > 0) {
+      return res.json({ success: true, data: aggData.financials });
+    }
+    const financials = await getFormattedFinancialStatements(symbol);
+    return res.json({ success: true, data: financials });
+  } catch (err: any) {
+    console.error(`[StockDetail] financials error for ${symbol}:`, err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 stockDetailRouter.get('/:symbol/multiples', async (req, res) => {
@@ -405,24 +420,47 @@ stockDetailRouter.get('/:symbol/events', async (req, res) => {
 
 stockDetailRouter.get('/:symbol/brokerage-distribution', async (req, res) => {
   const symbol = cleanTicker(req.params.symbol);
-  const aggData = getAggregatedDataFromDB(symbol);
-  if (aggData?.ownership) return res.json({ success: true, data: aggData.ownership });
-  if (aggData?.brokerage) return res.json({ success: true, data: aggData.brokerage });
-  return res.json({ success: true, data: { isUS: false, market: 'BIST', ownershipRatio: 0, topBuyers: [], topSellers: [], topCustodians: [], netFirst5: 0 }});
+  try {
+    const aggData = getAggregatedDataFromDB(symbol);
+    if (aggData?.ownership && aggData.ownership.topCustodians?.length > 0) {
+      return res.json({ success: true, data: aggData.ownership });
+    }
+    const brokerage = await getBrokerageDistribution(symbol);
+    return res.json({ success: true, data: brokerage });
+  } catch (err: any) {
+    console.error(`[StockDetail] brokerage-distribution error for ${symbol}:`, err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 stockDetailRouter.get('/:symbol/seasonality', async (req, res) => {
   const symbol = cleanTicker(req.params.symbol);
-  const aggData = getAggregatedDataFromDB(symbol);
-  if (aggData?.seasonality) return res.json({ success: true, data: aggData.seasonality });
-  return res.json({ success: true, data: { monthlyAverages: [], analysisText: 'Mevsimsellik analizi bulunamadı.', optimalBuyingMonths: [], optimalSellingMonths: [] }});
+  try {
+    const aggData = getAggregatedDataFromDB(symbol);
+    if (aggData?.seasonality && aggData.seasonality.monthlyStats?.length > 0) {
+      return res.json({ success: true, data: aggData.seasonality });
+    }
+    const seasonality = await getSeasonalityAnalysis(symbol);
+    return res.json({ success: true, data: seasonality });
+  } catch (err: any) {
+    console.error(`[StockDetail] seasonality error for ${symbol}:`, err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 stockDetailRouter.get('/:symbol/fairvalue', async (req, res) => {
   const symbol = cleanTicker(req.params.symbol);
-  const aggData = getAggregatedDataFromDB(symbol);
-  if (aggData?.fairvalue) return res.json({ success: true, data: aggData.fairvalue });
-  return res.json({ success: true, data: { ticker: symbol, fairValueEstimate: 0, upsidePotentialPct: 0, methodology: 'Resmi Rapor', valuationModels: [] }});
+  try {
+    const aggData = getAggregatedDataFromDB(symbol);
+    if (aggData?.fairvalue && aggData.fairvalue.fairValueEstimate > 0) {
+      return res.json({ success: true, data: aggData.fairvalue });
+    }
+    const fairvalue = await getFairValueEstimate(symbol);
+    return res.json({ success: true, data: fairvalue });
+  } catch (err: any) {
+    console.error(`[StockDetail] fairvalue error for ${symbol}:`, err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });
 
 stockDetailRouter.get('/:symbol/subsidiaries', async (req, res) => {
@@ -446,7 +484,15 @@ stockDetailRouter.get('/:symbol/subsidiaries', async (req, res) => {
 
 stockDetailRouter.get('/:symbol/buffett', async (req, res) => {
   const symbol = cleanTicker(req.params.symbol);
-  const aggData = getAggregatedDataFromDB(symbol);
-  if (aggData?.buffett) return res.json({ success: true, data: aggData.buffett });
-  return res.json({ success: true, data: null, message: 'Buffett modeli değerlendirmesi' });
+  try {
+    const aggData = getAggregatedDataFromDB(symbol);
+    if (aggData?.buffett && aggData.buffett.results) {
+      return res.json({ success: true, data: aggData.buffett });
+    }
+    const buffett = await getBuffettValuationAnalysis(symbol);
+    return res.json({ success: true, data: buffett });
+  } catch (err: any) {
+    console.error(`[StockDetail] buffett error for ${symbol}:`, err);
+    return res.status(500).json({ success: false, error: err.message });
+  }
 });

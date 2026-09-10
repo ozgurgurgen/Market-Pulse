@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import { TefasFund, TefasCategory } from '../types';
 import { TefasAiRadarModal } from './TefasAiRadarModal';
+import { TefasSmartMoneyRadar } from './TefasSmartMoneyRadar';
 import { safeFetchJson } from '../utils/apiClient';
 
 interface TefasFundsSectionProps {
@@ -29,6 +30,7 @@ interface TefasFundsSectionProps {
   onAddToBacktest: (fund: TefasFund) => void;
   onOpenModelSettings: () => void;
   activeModelName: string;
+  onSelectStock?: (symbol: string) => void;
 }
 
 type SortField = 'return1Y' | 'return6M' | 'return3Y' | 'dailyReturn' | 'sharpeRatio' | 'riskScore' | 'price';
@@ -39,7 +41,9 @@ export const TefasFundsSection: React.FC<TefasFundsSectionProps> = ({
   onAddToBacktest,
   onOpenModelSettings,
   activeModelName,
+  onSelectStock,
 }) => {
+  const [tefasSubTab, setTefasSubTab] = useState<'FUNDS' | 'SMART_MONEY_RADAR'>('FUNDS');
   const [funds, setFunds] = useState<TefasFund[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRadarOpen, setIsRadarOpen] = useState(false);
@@ -249,6 +253,47 @@ export const TefasFundsSection: React.FC<TefasFundsSectionProps> = ({
           </div>
         </div>
 
+        {/* Sub-Tab Navigation Switcher */}
+        <div className="flex items-center gap-2 p-1.5 bg-slate-900 border border-slate-800 rounded-2xl w-fit">
+          <button
+            type="button"
+            onClick={() => setTefasSubTab('FUNDS')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              tefasSubTab === 'FUNDS'
+                ? 'bg-emerald-600 text-white shadow-lg shadow-emerald-950/40'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <ShieldCheck size={16} />
+            Tüm TEFAS Yatırım Fonları
+          </button>
+          <button
+            type="button"
+            onClick={() => setTefasSubTab('SMART_MONEY_RADAR')}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 cursor-pointer ${
+              tefasSubTab === 'SMART_MONEY_RADAR'
+                ? 'bg-gradient-to-r from-indigo-600 to-indigo-500 text-white shadow-lg shadow-indigo-950/40'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <Zap size={16} className="text-amber-300" />
+            Kurumsal Fon Radarı (Akıllı Para)
+            <span className="text-[10px] px-2 py-0.5 rounded-md bg-indigo-950 text-indigo-300 border border-indigo-700/50 font-extrabold">
+              TOP 20 HİSSE
+            </span>
+          </button>
+        </div>
+
+        {tefasSubTab === 'SMART_MONEY_RADAR' ? (
+          <TefasSmartMoneyRadar
+            onSelectStock={onSelectStock}
+            onSelectFundCode={(code) => {
+              const matched = funds.find(f => f.code === code);
+              if (matched) onSelectFund(matched);
+            }}
+          />
+        ) : (
+          <>
         {/* Filter Toolbar */}
         <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-4">
           {/* Search and Sort controls */}
@@ -595,6 +640,8 @@ export const TefasFundsSection: React.FC<TefasFundsSectionProps> = ({
               </div>
             </div>
           </div>
+        )}
+        </>
         )}
 
       </div>

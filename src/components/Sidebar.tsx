@@ -21,7 +21,8 @@ import {
   LogOut,
   User as UserIcon,
   Crown,
-  Building2
+  Building2,
+  LayoutGrid
 } from 'lucide-react';
 import { MarketCategory, AIModelConfig } from '../types';
 import { useAuth } from '../contexts/AuthContext';
@@ -29,7 +30,7 @@ import { useSubscription } from '../hooks/useSubscription';
 
 
 export interface TabItem {
-  id: 'opportunities' | 'latest_financials' | 'screener' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing';
+  id: 'opportunities' | 'latest_financials' | 'screener' | 'heatmap' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing';
   label: string;
   shortLabel: string;
   icon: React.ComponentType<{ size?: number; className?: string }>;
@@ -61,6 +62,14 @@ export const MAIN_NAVIGATION_TABS: TabItem[] = [
     shortLabel: 'Fırsatlar',
     icon: Sparkles,
     description: 'Yapay zeka sinyalleri ve taramalar'
+  },
+  { 
+    id: 'heatmap', 
+    label: 'Sektörel Isı Haritası', 
+    shortLabel: 'Isı Haritası',
+    icon: LayoutGrid,
+    badge: 'BIST Canlı',
+    description: 'Sektörel piyasa değeri ve değişim treemap matrisi'
   },
   { 
     id: 'ipo', 

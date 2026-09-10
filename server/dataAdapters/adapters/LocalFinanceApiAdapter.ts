@@ -729,6 +729,14 @@ export class LocalFinanceApiAdapter {
       return null;
     }
   }
+
+  /**
+   * GET /api/v1/opportunities — Fırsat Listesi
+   */
+  async getV1Opportunities(): Promise<any | null> {
+    if (!this.isConfigured()) return null;
+    return this.safeFetch('/api/v1/opportunities');
+  }
 }
 
 export const localFinanceApi = new LocalFinanceApiAdapter();

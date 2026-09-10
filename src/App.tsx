@@ -34,6 +34,7 @@ const FinancialAcademySection = lazyWithRetry(() => import('./components/Financi
 const IPOTracker = lazyWithRetry(() => import('./components/IPOTracker'), 'IPOTracker');
 const PricingSection = lazyWithRetry(() => import('./components/Subscription/PricingSection'), 'PricingSection');
 const UpgradeModal = lazyWithRetry(() => import('./components/Subscription/UpgradeModal'), 'UpgradeModal');
+const SectorsHeatmapSection = lazyWithRetry(() => import('./components/SectorsHeatmapSection').then(m => ({ default: m.SectorsHeatmapSection })), 'SectorsHeatmapSection');
 
 const TabLoadingFallback = () => (
   <div className="flex flex-col items-center justify-center min-h-[350px] p-8 text-center space-y-4">
@@ -65,7 +66,7 @@ function MainApp() {
   const isFreePlan = userData?.subscription?.tier === 'free' || !userData?.subscription;
   const [watchlistSynced, setWatchlistSynced] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<'opportunities' | 'latest_financials' | 'screener' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing'>('opportunities');
+  const [activeTab, setActiveTab] = useState<'opportunities' | 'latest_financials' | 'screener' | 'heatmap' | 'ipo' | 'academy' | 'intelligence' | 'portfolio' | 'macro' | 'tefas' | 'backtest' | 'markets' | 'chat' | 'watchlist' | 'settings' | 'admin' | 'pricing'>('opportunities');
   const [selectedCategory, setSelectedCategory] = useState<MarketCategory>('ALL');
   
   // Slide-out Drawer State
@@ -522,6 +523,11 @@ function MainApp() {
 
         {/* Lazy Loaded Secondary Tabs */}
         <React.Suspense fallback={<TabLoadingFallback />}>
+          {/* Tab: Sektörel BIST Isı Haritası (Heatmap) */}
+          {activeTab === 'heatmap' && (
+            <SectorsHeatmapSection onSelectStock={handleSelectSymbolFromNews} />
+          )}
+
           {/* Tab: Halka Arz (IPO) Takip & Analiz Modülü */}
           {activeTab === 'ipo' && (
             <IPOTracker onOpenUpgradeModal={(feature) => {
@@ -571,6 +577,7 @@ function MainApp() {
                 onAddToBacktest={handleAddFundToBacktest}
                 onOpenModelSettings={() => setIsModelModalOpen(true)}
                 activeModelName={activeModelDisplay}
+                onSelectStock={handleSelectSymbolFromNews}
               />
             </div>
           )}

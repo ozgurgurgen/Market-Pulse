@@ -39,6 +39,7 @@ import {
   initializePostgresSchema,
   syncDatabasesBetweenFirebaseAndPostgres,
   getPostgresClient,
+  executePostgresQuery,
   maskDbSettings
 } from '../services/dbIntegrationService';
 import { adminAnalyticsRouter } from './adminAnalyticsRouter';
@@ -941,6 +942,42 @@ adminRouter.post('/db-initialize-schema', async (req: Request, res: Response) =>
     return res.json(result);
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * 16b. POST /api/admin/db-execute-query
+ * Admin panelinden PostgreSQL üzerinde güvenli sorgu çalıştırma ve tablo şeması denetleme
+ */
+adminRouter.post('/db-execute-query', async (req: Request, res: Response) => {
+  try {
+    const { query, params } = req.body;
+    if (!query || typeof query !== 'string') {
+      return res.status(400).json({ success: false, error: 'SQL sorgusu belirtilmelidir.' });
+    }
+
+    const trimmedQuery = query.trim();
+    const result = await executePostgresQuery(trimmedQuery, Array.isArray(params) ? params : []);
+    
+    if (result.success) {
+      logAudit(
+        'POSTGRES_SQL_QUERY_EXECUTED',
+        req.user?.uid || 'admin',
+        `Admin (${req.user?.email || 'admin'}) SQL sorgusu çalıştırdı: ${trimmedQuery.substring(0, 100)}...`,
+        {
+          adminEmail: req.user?.email,
+          newValue: {
+            query: trimmedQuery,
+            rowCount: result.rowCount,
+            executionTimeMs: result.executionTimeMs
+          }
+        }
+      );
+    }
+
+    return res.json(result);
+  } catch (error: any) {
+    return res.status(500).json({ success: false, error: error.message });
   }
 });
 

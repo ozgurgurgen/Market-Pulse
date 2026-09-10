@@ -139,15 +139,18 @@ let pgPoolInstance: Pool | null = null;
  * Mask sensitive password for frontend delivery
  */
 export function maskDbSettings(settings: DatabaseIntegrationSettings): DatabaseIntegrationSettings {
+  if (!settings) return DEFAULT_DB_SETTINGS;
   const cloned = JSON.parse(JSON.stringify(settings));
-  if (cloned.postgres.password) {
-    cloned.postgres.password = '••••••••';
-  }
-  if (cloned.postgres.connectionUrl) {
-    cloned.postgres.connectionUrl = cloned.postgres.connectionUrl.replace(
-      /:([^:@]+)@/,
-      ':••••••••@'
-    );
+  if (cloned.postgres) {
+    if (cloned.postgres.password) {
+      cloned.postgres.password = '••••••••';
+    }
+    if (cloned.postgres.connectionUrl) {
+      cloned.postgres.connectionUrl = cloned.postgres.connectionUrl.replace(
+        /:([^:@]+)@/,
+        ':••••••••@'
+      );
+    }
   }
   return cloned;
 }
@@ -578,10 +581,114 @@ export async function initializePostgresSchema(customConfig?: Partial<PostgresCo
       );`,
       `CREATE INDEX IF NOT EXISTS idx_api_cache_category ON api_cache_store(category);`,
       `CREATE INDEX IF NOT EXISTS idx_api_cache_symbol ON api_cache_store(symbol);`,
-      `CREATE INDEX IF NOT EXISTS idx_api_cache_expires_at ON api_cache_store(expires_at);`
+      `CREATE INDEX IF NOT EXISTS idx_api_cache_expires_at ON api_cache_store(expires_at);`,
+      `CREATE TABLE IF NOT EXISTS bist_companies (
+        symbol VARCHAR(32) PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        sector VARCHAR(100),
+        market VARCHAR(64),
+        index_membership VARCHAR(64),
+        market_cap NUMERIC(20, 2),
+        free_float_rate NUMERIC(8, 4),
+        pe_ratio NUMERIC(10, 2),
+        pb_ratio NUMERIC(10, 2),
+        ev_ebitda NUMERIC(10, 2),
+        net_profit NUMERIC(20, 2),
+        equity NUMERIC(20, 2),
+        revenue NUMERIC(20, 2),
+        last_financial_period VARCHAR(16),
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE INDEX IF NOT EXISTS idx_bist_companies_sector ON bist_companies(sector);`,
+      `CREATE TABLE IF NOT EXISTS tefas_funds (
+        code VARCHAR(16) PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        founder VARCHAR(255),
+        fund_type VARCHAR(64),
+        category VARCHAR(64),
+        price NUMERIC(16, 6) DEFAULT 0,
+        daily_return NUMERIC(8, 4) DEFAULT 0,
+        monthly_return NUMERIC(8, 4) DEFAULT 0,
+        return_3m NUMERIC(8, 4) DEFAULT 0,
+        return_6m NUMERIC(8, 4) DEFAULT 0,
+        return_1y NUMERIC(8, 4) DEFAULT 0,
+        return_3y NUMERIC(8, 4) DEFAULT 0,
+        return_5y NUMERIC(8, 4) DEFAULT 0,
+        risk_score INT DEFAULT 1,
+        sharpe_ratio NUMERIC(8, 4),
+        total_value NUMERIC(20, 2),
+        investors_count INT DEFAULT 0,
+        portfolio_breakdown JSONB,
+        top_held_stocks JSONB,
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE INDEX IF NOT EXISTS idx_tefas_funds_category ON tefas_funds(category);`,
+      `CREATE TABLE IF NOT EXISTS kap_disclosures (
+        id VARCHAR(64) PRIMARY KEY,
+        symbol VARCHAR(32) NOT NULL,
+        company_title VARCHAR(255),
+        disclosure_type VARCHAR(100),
+        title TEXT NOT NULL,
+        summary TEXT,
+        publish_date TIMESTAMPTZ NOT NULL,
+        is_price_impact BOOLEAN DEFAULT FALSE,
+        related_url TEXT,
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE INDEX IF NOT EXISTS idx_kap_symbol_date ON kap_disclosures(symbol, publish_date DESC);`,
+      `CREATE TABLE IF NOT EXISTS macro_economic_data (
+        indicator_id VARCHAR(64) PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        current_value NUMERIC(16, 4) NOT NULL,
+        previous_value NUMERIC(16, 4),
+        change_rate NUMERIC(8, 4),
+        unit VARCHAR(32),
+        period VARCHAR(32),
+        source VARCHAR(100) DEFAULT 'TCMB/TUIK',
+        historical_series JSONB,
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE TABLE IF NOT EXISTS user_portfolios (
+        id VARCHAR(64) PRIMARY KEY,
+        user_id VARCHAR(128) REFERENCES users(id) ON DELETE CASCADE,
+        portfolio_name VARCHAR(128) NOT NULL DEFAULT 'Ana Portföy',
+        assets JSONB NOT NULL DEFAULT '[]'::jsonb,
+        cash_balance NUMERIC(16, 2) DEFAULT 0,
+        currency VARCHAR(16) DEFAULT 'TRY',
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE INDEX IF NOT EXISTS idx_user_portfolios_user ON user_portfolios(user_id);`,
+      `CREATE TABLE IF NOT EXISTS ai_analyses (
+        id VARCHAR(64) PRIMARY KEY,
+        symbol VARCHAR(32) NOT NULL,
+        analysis_type VARCHAR(64) NOT NULL,
+        model_name VARCHAR(64),
+        score INT,
+        intrinsic_value NUMERIC(16, 4),
+        summary TEXT,
+        full_report JSONB,
+        requested_by VARCHAR(128),
+        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );`,
+      `CREATE INDEX IF NOT EXISTS idx_ai_analyses_symbol ON ai_analyses(symbol, created_at DESC);`
     ];
 
-    const createdTables: string[] = ['users', 'user_usage', 'system_audit_logs', 'ipo_listings', 'watchlists', 'market_quotes', 'api_cache_store'];
+    const createdTables: string[] = [
+      'users',
+      'user_usage',
+      'system_audit_logs',
+      'ipo_listings',
+      'watchlists',
+      'market_quotes',
+      'api_cache_store',
+      'bist_companies',
+      'tefas_funds',
+      'kap_disclosures',
+      'macro_economic_data',
+      'user_portfolios',
+      'ai_analyses'
+    ];
 
     for (const q of schemaQueries) {
       await client.query(q);
@@ -594,6 +701,37 @@ export async function initializePostgresSchema(customConfig?: Partial<PostgresCo
       try { await client.end(); } catch {}
     }
     return { success: false, createdTables: [], error: err.message };
+  }
+}
+
+/**
+ * Execute ad-hoc SQL query safely (Read & Schema Inspection for Admin Panel)
+ */
+export async function executePostgresQuery(
+  sql: string,
+  params: any[] = []
+): Promise<{ success: boolean; rows?: any[]; rowCount?: number; executionTimeMs?: number; error?: string }> {
+  const startTime = Date.now();
+  let client: Client | null = null;
+  try {
+    client = await getPostgresClient();
+    const res = await client.query(sql, params);
+    await client.end();
+    return {
+      success: true,
+      rows: res.rows || [],
+      rowCount: res.rowCount ?? (res.rows ? res.rows.length : 0),
+      executionTimeMs: Date.now() - startTime
+    };
+  } catch (err: any) {
+    if (client) {
+      try { await client.end(); } catch {}
+    }
+    return {
+      success: false,
+      error: err.message || 'SQL sorgusu çalıştırılırken hata oluştu.',
+      executionTimeMs: Date.now() - startTime
+    };
   }
 }
 
