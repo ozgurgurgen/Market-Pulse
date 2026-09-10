@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { 
   ResponsiveContainer, 
   AreaChart, 
@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { AcademyTooltip } from '../AcademyTooltip';
 import { TechnicalAnalysisResult } from '../../types';
+import { safeFetchJson } from '../../utils/apiClient';
 
 interface HistoricalPoint {
   date: string;
@@ -65,78 +66,103 @@ export const InteractiveStockPriceChart: React.FC<InteractiveStockPriceChartProp
   const [showRSI, setShowRSI] = useState(false);
   const [showMACD, setShowMACD] = useState(false);
   const [showBollinger, setShowBollinger] = useState(false);
+  const [apiHistory, setApiHistory] = useState<any[]>([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
-  // Generate or slice realistic timeframe data based on timeframe & base price
+  // Fetch real history from API if initialData is not provided
+  useEffect(() => {
+    let isMounted = true;
+    if (initialData && initialData.length > 0) return;
+
+    const cleanSymbol = symbol.replace('.IS', '').replace('^', '');
+    setHistoryLoading(true);
+
+    safeFetchJson<{ success: boolean; history?: any[] }>(`/api/v1/bist/stock/${encodeURIComponent(cleanSymbol)}/history?limit=1260`)
+      .then(({ data, ok }) => {
+        if (isMounted && ok && data?.history && Array.isArray(data.history)) {
+          setApiHistory(data.history);
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (isMounted) setHistoryLoading(false);
+      });
+
+    return () => { isMounted = false; };
+  }, [symbol, initialData]);
+
+  // Generate or slice realistic timeframe data based on authentic data
   const chartData = useMemo(() => {
-    let days = 90;
-    if (timeframe === '1H') days = 7;
-    else if (timeframe === '1A') days = 30;
-    else if (timeframe === '3A') days = 90;
-    else if (timeframe === '1Y') days = 250;
-    else if (timeframe === '5Y') days = 500;
-    else if (timeframe === 'ALL') days = 750;
+    const rawPoints = (initialData && initialData.length > 0) ? initialData : apiHistory;
 
-    // Build authentic price series progression from history to currentPrice
-    const now = new Date();
-    const data: HistoricalPoint[] = [];
-    const baseP = currentPrice > 0 ? currentPrice : 100;
-    const prices: number[] = [];
+    if (rawPoints && rawPoints.length > 0) {
+      // Authentic OHLCV points from API or props
+      let days = 90;
+      if (timeframe === '1H') days = 7;
+      else if (timeframe === '1A') days = 30;
+      else if (timeframe === '3A') days = 90;
+      else if (timeframe === '1Y') days = 250;
+      else if (timeframe === '5Y') days = 1260;
+      else if (timeframe === 'ALL') days = 2500;
 
-    for (let i = days; i >= 0; i--) {
-      const d = new Date(now.getTime() - i * 24 * 60 * 60 * 1000);
-      const dateStr = d.toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit', year: days > 250 ? '2-digit' : undefined });
-      
-      const progress = (days - i) / Math.max(1, days);
-      // Kademeli gerçekçi fiyat serisi
-      const cleanPrice = Number((baseP * (0.90 + 0.10 * progress)).toFixed(2));
-      prices.push(cleanPrice);
+      const sliced = rawPoints.slice(Math.max(0, rawPoints.length - days));
+      const prices: number[] = [];
 
-      // Gerçek Matematiksel Hareketli Ortalamalar (SMA)
-      const slice20 = prices.slice(Math.max(0, prices.length - 20));
-      const ma20Val = Number((slice20.reduce((a, b) => a + b, 0) / slice20.length).toFixed(2));
+      return sliced.map((pt: any, idx: number) => {
+        const p = typeof pt.close === 'number' ? pt.close : (typeof pt.price === 'number' ? pt.price : currentPrice);
+        prices.push(p);
 
-      const slice50 = prices.slice(Math.max(0, prices.length - 50));
-      const ma50Val = Number((slice50.reduce((a, b) => a + b, 0) / slice50.length).toFixed(2));
+        const slice20 = prices.slice(Math.max(0, prices.length - 20));
+        const ma20Val = Number((slice20.reduce((a, b) => a + b, 0) / slice20.length).toFixed(2));
 
-      const slice200 = prices.slice(Math.max(0, prices.length - 200));
-      const ma200Val = Number((slice200.reduce((a, b) => a + b, 0) / slice200.length).toFixed(2));
+        const slice50 = prices.slice(Math.max(0, prices.length - 50));
+        const ma50Val = Number((slice50.reduce((a, b) => a + b, 0) / slice50.length).toFixed(2));
 
-      // Hacim
-      const vol = 1250000;
+        const slice200 = prices.slice(Math.max(0, prices.length - 200));
+        const ma200Val = Number((slice200.reduce((a, b) => a + b, 0) / slice200.length).toFixed(2));
 
-      // Standart sapma & Bollinger Bantları
-      const mean = ma20Val;
-      const variance = slice20.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / slice20.length;
-      const stdDev = Math.sqrt(variance);
-      const bbUpper = Number((mean + 2 * stdDev).toFixed(2));
-      const bbLower = Number((mean - 2 * stdDev).toFixed(2));
+        const mean = ma20Val;
+        const variance = slice20.reduce((sum, val) => sum + Math.pow(val - mean, 2), 0) / slice20.length;
+        const stdDev = Math.sqrt(variance);
 
-      // Gerçek RSI ve MACD
-      const rsiVal = techData?.rsi ?? (50 + progress * 5);
-      const targetMacd = techData?.macdDetails?.macdLine ?? 0.5;
-      const targetSig = techData?.macdDetails?.signalLine ?? 0.3;
-      const macdVal = Number((targetMacd * progress).toFixed(2));
-      const macdSig = Number((targetSig * progress).toFixed(2));
-      const macdHist = Number((macdVal - macdSig).toFixed(2));
-
-      data.push({
-        date: dateStr,
-        price: cleanPrice,
-        ma20: ma20Val,
-        ma50: ma50Val,
-        ma200: ma200Val,
-        volume: vol,
-        rsi: Number(rsiVal.toFixed(2)),
-        macd: macdVal,
-        macdSignal: macdSig,
-        macdHist: macdHist,
-        bbUpper,
-        bbLower
+        return {
+          date: pt.date || pt.time || `${idx + 1}`,
+          price: p,
+          ma20: ma20Val,
+          ma50: ma50Val,
+          ma200: ma200Val,
+          volume: pt.volume || 0,
+          rsi: pt.rsi ?? techData?.rsi,
+          macd: pt.macd ?? techData?.macdDetails?.macdLine,
+          macdSignal: pt.macdSignal ?? techData?.macdDetails?.signalLine,
+          macdHist: pt.macdHist,
+          bbUpper: Number((mean + 2 * stdDev).toFixed(2)),
+          bbLower: Number((mean - 2 * stdDev).toFixed(2))
+        };
       });
     }
 
-    return data;
-  }, [timeframe, currentPrice, techData]);
+    // When no historical OHLCV data is available yet, display single current live point (no fake synthetic ramp)
+    if (currentPrice > 0) {
+      const todayStr = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: '2-digit' });
+      return [{
+        date: todayStr,
+        price: currentPrice,
+        ma20: currentPrice,
+        ma50: currentPrice,
+        ma200: currentPrice,
+        volume: 0,
+        rsi: techData?.rsi,
+        macd: techData?.macdDetails?.macdLine,
+        macdSignal: techData?.macdDetails?.signalLine,
+        macdHist: techData?.macdDetails?.histogram,
+        bbUpper: currentPrice,
+        bbLower: currentPrice
+      }];
+    }
+
+    return [];
+  }, [timeframe, currentPrice, techData, initialData, apiHistory]);
 
   // Determine Golden Cross / Death Cross status on current data
   const crossStatus = useMemo(() => {

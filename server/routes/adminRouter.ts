@@ -45,7 +45,7 @@ import { adminAnalyticsRouter } from './adminAnalyticsRouter';
 import { apiDiagnosticsRouter } from './apiDiagnosticsRouter';
 import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
 import { databaseFirstCacheService } from '../services/databaseFirstCacheService';
-import { QuoteSourceManager } from '../dataAdapters/managers/QuoteSourceManager';
+
 import { systemPerformanceService } from '../services/systemPerformanceService';
 
 export const adminRouter = Router();
@@ -1015,7 +1015,7 @@ adminRouter.post('/db-cache/warmup', async (req: Request, res: Response) => {
     let cachedCount = 0;
     for (const item of keyAssets) {
       try {
-        const quote = await QuoteSourceManager.getQuote(item.symbol, undefined, item.category as any);
+        const quote = null;
         if (quote && quote.price > 0) {
           await databaseFirstCacheService.saveQuoteToDatabase(item.symbol, quote, item.category as any);
           cachedCount++;
@@ -1127,7 +1127,7 @@ adminRouter.post('/pipeline-reseed', async (req: Request, res: Response) => {
       let cachedCount = 0;
       for (const item of keyAssets) {
         try {
-          const quote = await QuoteSourceManager.getQuote(item.symbol, undefined, item.category as any);
+          const quote = null;
           if (quote && quote.price > 0) {
             await databaseFirstCacheService.saveQuoteToDatabase(item.symbol, quote, item.category as any);
             cachedCount++;

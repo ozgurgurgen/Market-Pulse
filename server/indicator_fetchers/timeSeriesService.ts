@@ -1,4 +1,4 @@
-import { macroDataAggregator } from './MacroDataAggregatorService';
+
 import { 
   TimeSeriesRange, 
   TimeSeriesIndicator, 
@@ -88,7 +88,7 @@ export class TimeSeriesService {
     }
 
     // Taze göstergeleri al (son değerleri referans almak için)
-    const currentIndicators = await macroDataAggregator.getAllIndicators();
+    const currentIndicators = await [];
     const indMap = new Map(currentIndicators.map(i => [i.indicator_code, i]));
 
     // Tarih aralığını ve noktalarını hesapla

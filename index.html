@@ -8,16 +8,23 @@
     <!-- PWA Anti-Loop / Service Worker Clean Script -->
     <script>
       (function() {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.getRegistrations().then(function(registrations) {
-            for (var i = 0; i < registrations.length; i++) {
-              registrations[i].unregister().then(function(success) {
-                if (success) console.log('ServiceWorker unregistered successfully.');
-              });
-            }
-          }).catch(function(err) {
-            console.warn('Service Worker unregistration notice:', err);
-          });
+        try {
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              for (var i = 0; i < registrations.length; i++) {
+                registrations[i].unregister();
+              }
+            }).catch(function() {});
+          }
+          if ('caches' in window) {
+            caches.keys().then(function(names) {
+              for (var i = 0; i < names.length; i++) {
+                caches.delete(names[i]);
+              }
+            }).catch(function() {});
+          }
+        } catch (err) {
+          console.warn('Cache cleanup notice:', err);
         }
       })();
     </script>
@@ -84,6 +91,16 @@
         to { transform: rotate(360deg); }
       }
     </style>
+
+    <script>
+      setTimeout(function() {
+        var preloader = document.getElementById('mp-preloader');
+        var fallback = document.getElementById('mp-slow-fallback');
+        if (preloader && fallback) {
+          fallback.style.display = 'block';
+        }
+      }, 15000);
+    </script>
 
     <script type="module" src="/src/main.tsx"></script>
   </body>

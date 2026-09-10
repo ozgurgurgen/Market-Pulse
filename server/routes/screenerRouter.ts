@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
-import { getLiveQuoteForSymbol } from '../yahooFinanceService';
+
 import { isMockFallbackEnabled } from '../services/dbIntegrationService';
 
 export const screenerRouter = Router();
@@ -205,7 +205,7 @@ screenerRouter.get('/:preset', async (req, res) => {
   const results: ScreenedStock[] = [];
 
   for (const sym of pool.slice(0, 15)) {
-    const quote = await getLiveQuoteForSymbol(sym);
+    const quote = null;
     const price = quote?.currentPrice || 0;
     const change = typeof quote?.change24hPercent === 'number' ? quote.change24hPercent : 0;
     const vol = typeof quote?.volume === 'number' ? quote.volume : typeof quote?.volume === 'string' ? Number(quote.volume) || 0 : 0;

@@ -20,7 +20,7 @@ import {
   calculatePivotPoints, 
   roundToTick 
 } from './indicators';
-import { generateSyntheticPriceBars } from './testRunner';
+import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
 import { getLiveQuoteForSymbol } from '../yahooFinanceService';
 
 interface TechnicalCacheItem {
@@ -100,28 +100,40 @@ export async function calculateParametricTechnicalAnalysis(
 
   // 3. Canlı Fiyat ve Fiyat Bar Serisi Hazırlığı
   const liveQuote = await getLiveQuoteForSymbol(normSymbol);
-  const basePrice = liveQuote?.currentPrice || (
-    normSymbol === 'THYAO' ? 318.50 : 
-    normSymbol === 'AKBNK' ? 58.70 : 
-    normSymbol === 'FROTO' ? 1125.00 : 
-    normSymbol === 'GARAN' ? 114.50 : 
-    normSymbol === 'ASELS' ? 64.20 : 
-    normSymbol === 'EREGL' ? 48.90 : 
-    100.00
-  );
-
+  
   // Gerekli bar sayısı (en az slowMaPeriod + 50 bar)
   const barCount = Math.max(120, params.slowMaPeriod + 40);
-  const trendPattern = basePrice > 100 ? 'BULL' : 'SIDEWAYS';
-  const bars = generateSyntheticPriceBars(barCount, trendPattern, basePrice);
-  const closes = bars.map(b => b.close);
-  const highs = bars.map(b => b.high);
-  const lows = bars.map(b => b.low);
+  
+  let closes: number[] = [];
+  let highs: number[] = [];
+  let lows: number[] = [];
+  
+  try {
+    const historyData = await localFinanceApi.getV1BistStockHistory(normSymbol, barCount);
+    if (historyData && Array.isArray(historyData) && historyData.length > 0) {
+      closes = historyData.map((b: any) => b.close || b.price || 0);
+      highs = historyData.map((b: any) => b.high || b.price || 0);
+      lows = historyData.map((b: any) => b.low || b.price || 0);
+    } else if (historyData && Array.isArray(historyData.data) && historyData.data.length > 0) {
+      closes = historyData.data.map((b: any) => b.close || b.price || 0);
+      highs = historyData.data.map((b: any) => b.high || b.price || 0);
+      lows = historyData.data.map((b: any) => b.low || b.price || 0);
+    }
+  } catch (err) {
+    console.warn(`[Technical Engine] Failed to fetch real history for ${normSymbol}, falling back to live quote only.`);
+  }
+  
+  const basePrice = liveQuote?.currentPrice || (closes.length > 0 ? closes[closes.length - 1] : 100);
+
+  // Eğer geçmiş veri yeterli değilse (veya servis çökmüşse), dürüstçe uydurma veri üretmeden hatayı fırlat
+  if (closes.length < Math.max(20, params.fastMaPeriod)) {
+    throw new Error(`${normSymbol} için yeterli gerçek geçmiş fiyat verisi bulunamadı (Boru hattı çevrimdışı).`);
+  }
 
   // Güncel son fiyatı liveQuote ile tam eşle
   closes[closes.length - 1] = basePrice;
-  highs[highs.length - 1] = Math.max(highs[highs.length - 1], basePrice * 1.01);
-  lows[lows.length - 1] = Math.min(lows[lows.length - 1], basePrice * 0.99);
+  highs[highs.length - 1] = Math.max(highs[highs.length - 1], basePrice);
+  lows[lows.length - 1] = Math.min(lows[lows.length - 1], basePrice);
 
   // 4. İndikatör Hesaplamaları
   // A. Hareketli Ortalamalar

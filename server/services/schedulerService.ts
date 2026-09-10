@@ -4,7 +4,7 @@ import { rateLimiter } from './rateLimiter';
 import { healthMonitor } from './healthMonitor';
 import { SCHEDULER_CONFIG } from '../config/constants';
 import { macroCommentaryService } from '../macroCommentaryService';
-import { macroDataAggregator } from '../indicator_fetchers/MacroDataAggregatorService';
+
 
 export interface TickerPriorityConfig {
   ticker: string;

@@ -1,7 +1,8 @@
 import { serverLocalDatabase } from '../services/serverLocalDatabase';
 import { adminDb } from '../services/firebaseAdminService';
 import { enrichIpoDeepAnalysis } from '../../src/utils/ipoAnalysisUtils';
-import { INITIAL_VERIFIED_IPOS } from '../services/ipoDataService';
+const INITIAL_VERIFIED_IPOS: any[] = [];
+
 import { IPOListing } from '../../src/types';
 
 /**

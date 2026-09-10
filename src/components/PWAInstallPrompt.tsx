@@ -9,7 +9,11 @@ export const PWAInstallPrompt: React.FC = () => {
   const [showIOSInstructions, setShowIOSInstructions] = useState(false);
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission>('default');
 
+  const isIframe = typeof window !== 'undefined' && window.self !== window.top;
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth > 768;
+
   useEffect(() => {
+    if (isIframe || isDesktop) return;
     try {
       if (typeof window !== 'undefined' && 'Notification' in window) {
         setNotificationPermission(Notification.permission);
@@ -113,7 +117,7 @@ export const PWAInstallPrompt: React.FC = () => {
     );
   }
 
-  if (!showPrompt) return null;
+  if (isIframe || isDesktop || !showPrompt) return null;
 
   return (
     <>

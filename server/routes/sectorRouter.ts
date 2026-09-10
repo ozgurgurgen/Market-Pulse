@@ -1,70 +1,85 @@
 import { Router } from 'express';
 import { localFinanceApi } from '../dataAdapters/adapters/LocalFinanceApiAdapter';
-import { isMockFallbackEnabled } from '../services/dbIntegrationService';
+import { serverLocalDatabase } from '../services/serverLocalDatabase';
+import { BIST_300_STOCKS } from '../data/bistUniverse';
 
 export const sectorRouter = Router();
 
 sectorRouter.get('/:name', async (req, res) => {
   const sectorName = req.params.name;
 
-  // 1. Pipeline'dan doğrudan sektör karşılaştırması var mı kontrol et
-  if (localFinanceApi.isConfigured()) {
-    try {
-      const companies = await localFinanceApi.getAllCompanies();
-      if (Array.isArray(companies)) {
-        // İlgili sektöre ait şirketleri filtrele
-        const matching = companies.filter((c: any) => 
-          c.sector && c.sector.toLowerCase().includes(sectorName.toLowerCase())
-        );
-
-        if (matching.length > 0) {
-          const topCompanies = matching.slice(0, 5).map((c: any, i: number) => ({
-            symbol: c.ticker + '.IS',
-            name: c.company_name || c.ticker,
-            pe: 7.5 + i * 1.2,
-            pb: 1.5 + i * 0.3,
-            roe: 0.28 - i * 0.03,
-            rank: i + 1
-          }));
-
-          return res.json({
-            sector: sectorName,
-            industry: matching[0]?.sector || 'BIST Sektör',
-            averagePE: 8.5,
-            averagePB: 2.1,
-            averageROE: 0.28,
-            topCompanies
-          });
-        }
+  // 1. Pipeline / Yerel Finans API adaptöründen sektör verisi çekmeyi dene
+  try {
+    const overview = await localFinanceApi.getV1SectorsOverview();
+    if (overview && Array.isArray(overview)) {
+      const match = overview.find((s: any) => 
+        (s.sectorName || s.name || s.sector || '').toLowerCase().includes(sectorName.toLowerCase())
+      );
+      if (match) {
+        return res.json({
+          sector: match.sectorName || sectorName,
+          industry: match.sectorName || sectorName,
+          averagePE: match.averagePE || null,
+          averagePB: match.averagePB || null,
+          averageROE: match.averageROE || null,
+          stockCount: match.stockCount || (match.stocks ? match.stocks.length : 0),
+          topCompanies: match.topStocks || match.stocks || []
+        });
       }
-    } catch (e) {
-      console.warn('[sectorRouter] error fetching real companies:', e);
     }
+  } catch (e) {
+    console.warn('[sectorRouter] error fetching sectors overview:', e);
   }
 
-  const mockFallbackEnabled = await isMockFallbackEnabled();
-  if (!mockFallbackEnabled) {
+  // 2. Gerçek BIST evreninden ve piyasa kotasyonlarından hesapla (Asla sahte matematiksel formül kullanılmaz)
+  const quotesDb = serverLocalDatabase.getCollectionDict<any>('market_quotes');
+  const matchingStocks = BIST_300_STOCKS.filter((c: any) => 
+    c.sector && c.sector.toLowerCase().includes(sectorName.toLowerCase())
+  );
+
+  if (matchingStocks.length > 0) {
+    const scoredCompanies = matchingStocks.map((c: any) => {
+      const clean = c.symbol.replace('.IS', '');
+      const qObj = quotesDb[`${clean}.IS`] || quotesDb[clean];
+      const q = qObj?.quote || qObj;
+      const pe = (typeof q?.peRatio === 'number' && q.peRatio > 0) ? q.peRatio : 0;
+      const change = typeof q?.changePercent === 'number' ? q.changePercent : 0;
+      const marketCap = typeof q?.marketCap === 'number' ? q.marketCap : 0;
+
+      return {
+        symbol: c.symbol.endsWith('.IS') ? c.symbol : `${c.symbol}.IS`,
+        name: c.name || c.symbol,
+        pe: pe > 0 ? pe : null,
+        pb: null,
+        roe: null,
+        marketCap,
+        change24hPercent: change
+      };
+    });
+
+    const validPes = scoredCompanies.filter(c => c.pe !== null).map(c => c.pe as number);
+    const averagePE = validPes.length > 0 
+      ? Number((validPes.reduce((a, b) => a + b, 0) / validPes.length).toFixed(2))
+      : null;
+
     return res.json({
       sector: sectorName,
-      industry: 'NoN',
-      averagePE: 0,
-      averagePB: 0,
-      averageROE: 0,
-      topCompanies: []
+      industry: matchingStocks[0]?.sector || sectorName,
+      averagePE,
+      averagePB: null,
+      averageROE: null,
+      stockCount: matchingStocks.length,
+      topCompanies: scoredCompanies.slice(0, 10)
     });
   }
 
-  // Fallback
-  res.json({
+  return res.json({
     sector: sectorName,
-    industry: 'BIST Sektör Grubu',
-    averagePE: 9.2,
-    averagePB: 1.8,
-    averageROE: 0.25,
-    topCompanies: [
-      { symbol: 'THYAO.IS', name: 'Türk Hava Yolları', pe: 4.8, pb: 0.95, roe: 0.34, rank: 1 },
-      { symbol: 'ASELS.IS', name: 'Aselsan', pe: 8.2, pb: 2.1, roe: 0.29, rank: 2 },
-      { symbol: 'EREGL.IS', name: 'Ereğli Demir Çelik', pe: 9.5, pb: 1.2, roe: 0.18, rank: 3 }
-    ]
+    industry: sectorName,
+    averagePE: null,
+    averagePB: null,
+    averageROE: null,
+    stockCount: 0,
+    topCompanies: []
   });
 });

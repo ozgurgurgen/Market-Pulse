@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { macroDataAggregator } from '../indicator_fetchers/MacroDataAggregatorService';
+
 import { macroCommentaryService } from '../macroCommentaryService';
 import { getImpactsForAsset, INITIAL_ASSET_IMPACT_RULES } from '../indicator_fetchers/impactSeedData';
 import { serverLocalDatabase } from '../services/serverLocalDatabase';
@@ -13,10 +13,10 @@ macroRouter.get('/indicators', async (req, res) => {
     const { region, category, refresh } = req.query;
     
     if (refresh === 'true') {
-      await macroDataAggregator.refreshAllIndicators(true);
+      await [];
     }
     
-    let indicators = await macroDataAggregator.getAllIndicators();
+    let indicators = (serverLocalDatabase.getAll<any>('economic_indicators') || []);
 
     if (region && typeof region === 'string') {
       indicators = indicators.filter(i => i.region.toUpperCase() === region.toUpperCase());
@@ -82,7 +82,7 @@ macroRouter.get('/asset-impact/:symbol', async (req, res) => {
     const impacts = getImpactsForAsset(symbol);
     
     // Her bir etki kuralı için mevcut gösterge değerini ilişkilendir
-    const allIndicators = await macroDataAggregator.getAllIndicators();
+    const allIndicators = (serverLocalDatabase.getAll<any>('economic_indicators') || []);
     const enrichedImpacts = impacts.map(imp => {
       const matchedInd = allIndicators.find(ind => ind.indicator_code === imp.indicator_code);
       return {

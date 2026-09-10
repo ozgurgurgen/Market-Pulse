@@ -9,6 +9,8 @@
 
 import fs from 'fs';
 import path from 'path';
+import { INITIAL_DEFAULT_OPPORTUNITIES } from '../../src/data/defaultOpportunitiesData';
+import { INITIAL_DEFAULT_QUOTES } from '../../src/data/defaultQuotesData';
 
 interface ServerDbRecord {
   id: string;
@@ -45,8 +47,33 @@ class ServerLocalDatabaseService {
       });
 
       console.log('✅ [ServerLocalDB] Sunucu tarafı yerel veritabanı motoru başlatıldı:', this.dataDir);
+      this.seedInitialDataIfEmpty();
     } catch (err) {
       console.error('❌ [ServerLocalDB] Dizin oluşturulamadı:', err);
+    }
+  }
+
+  private seedInitialDataIfEmpty() {
+    try {
+      // 1. ai_opportunities
+      const existingOpps = this.getAll('ai_opportunities');
+      if (!existingOpps || existingOpps.length === 0) {
+        for (const opp of INITIAL_DEFAULT_OPPORTUNITIES) {
+          this.set('ai_opportunities', opp.id, opp);
+        }
+        console.log(`[ServerLocalDB] Seeded ${INITIAL_DEFAULT_OPPORTUNITIES.length} default opportunities.`);
+      }
+
+      // 2. market_quotes
+      const existingQuotes = this.getAll('market_quotes');
+      if (!existingQuotes || existingQuotes.length < 10) {
+        for (const q of INITIAL_DEFAULT_QUOTES) {
+          this.set('market_quotes', q.symbol, q);
+        }
+        console.log(`[ServerLocalDB] Seeded ${INITIAL_DEFAULT_QUOTES.length} default market quotes.`);
+      }
+    } catch (err) {
+      console.warn('[ServerLocalDB] Seed notice:', err);
     }
   }
 
@@ -206,6 +233,16 @@ class ServerLocalDatabaseService {
     this.init();
     const col = this.loadCollection(collection);
     return Array.from(col.values()) as T[];
+  }
+
+  public getCollectionDict<T = any>(collection: string): Record<string, T> {
+    this.init();
+    const col = this.loadCollection(collection);
+    const dict: Record<string, T> = {};
+    col.forEach((v, k) => {
+      dict[k] = v;
+    });
+    return dict;
   }
 
   public list<T = any>(collection: string): { id: string; data: T }[] {

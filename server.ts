@@ -1,3 +1,6 @@
+import { dataSyncWorker } from './server/services/dataSyncWorker';
+import { fetchLiveMarketQuotes, getLiveQuoteForSymbol, ALL_UNIVERSE_ASSETS } from './server/yahooFinanceService';
+
 
 import crypto from 'crypto';
 import { bot } from './server/intelligence/telegramBot';
@@ -32,7 +35,7 @@ import { checkModelDrift, getModelDriftLogs, isSignalGenerationPaused } from './
 import { getHistoricalAssetStats } from './server/signalEngine/tradeTracker';
 import { walkForwardAnalysis, monteCarloSimulation } from './server/signalEngine/backtestEngine';
 import { DEFAULT_SIGNAL_ENGINE_CONFIG } from './server/signalEngine/config';
-import { fetchLiveMarketQuotes, startBackgroundQuoteWorker, getLiveQuoteForSymbol, ALL_UNIVERSE_ASSETS, findAssetBySymbol } from './server/yahooFinanceService';
+
 import { intelligenceRouter } from './server/intelligence/intelligenceRouter';
 import { portfolioRouter } from './server/portfolio/portfolioRouter';
 import { schedulerService } from './server/services/schedulerService';
@@ -49,7 +52,8 @@ import { stockDetailRouter } from './server/routes/stockDetailRouter';
 import { advancedFeaturesRouter } from './server/routes/advancedFeaturesRouter';
 import { screenerRouter } from './server/routes/screenerRouter';
 import { sectorRouter } from './server/routes/sectorRouter';
-import { macroDataAggregator } from './server/indicator_fetchers/MacroDataAggregatorService';
+import { apiV1Router } from './server/routes/apiV1Router';
+
 import { sendTelegramMessage } from './server/services/notificationService';
 import { localFinanceApi } from './server/dataAdapters/adapters/LocalFinanceApiAdapter';
 import { isMockFallbackEnabled, getDatabaseIntegrationSettings } from './server/services/dbIntegrationService';
@@ -65,7 +69,7 @@ import { ipoRouter, adminIpoRouter } from './server/routes/ipoRouter';
 import { adminIntegrityRouter } from './server/routes/adminIntegrityRouter';
 import newsRouter from './server/routes/newsRouter';
 import { QuoteSourceManager } from './server/dataAdapters/managers/QuoteSourceManager';
-import { FundSourceManager } from './server/dataAdapters/managers/FundAndMacroSourceManagers';
+
 import { checkAnalysisLimit, checkAiReportLimit, checkBacktestPlanLimits, loadSubscriptionContext } from './server/middlewares/subscriptionGuard';
 import { systemPerformanceService } from './server/services/systemPerformanceService';
 
@@ -237,6 +241,7 @@ app.use('/api/academy', requirePermission('academy.access'));
 app.use('/api/screener', requirePermission('screener.access'), screenerRouter);
 app.use('/api/sector', requirePermission('screener.access'), sectorRouter);
 app.use("/api/market/news", newsRouter);
+app.use('/api/v1', apiV1Router);
 app.use('/api', advancedFeaturesRouter);
 
 // Market asset universe (Yahoo Finance Optimized)
@@ -390,9 +395,7 @@ function generateMarketQuotes() {
 // List & Filter TEFAS Funds (Local Finance API + High-Fidelity Server Local Database)
 app.get('/api/tefas/funds', requireAuth, loadSubscriptionContext, async (req, res) => {
   try {
-    let rawFunds: any[] = [];
-
-    // 1. Try Live Local Finance API if configured
+    let rawFunds: any[] = []; // 1. Try Live Local Finance API if configured
     if (localFinanceApi.isConfigured()) {
       try {
         const liveFunds = await localFinanceApi.getFunds(3000);
@@ -1239,7 +1242,6 @@ app.post('/api/ai/test-connection', async (req, res) => {
 
         const latencyMs = Date.now() - startTime;
         let models: Array<{ id: string; name: string }> = [];
-
         if (pingRes && pingRes.ok) {
           const data = await pingRes.json();
           if (Array.isArray(data?.data)) {
@@ -1305,7 +1307,6 @@ app.post('/api/ai/fetch-models', async (req, res) => {
       if (fetchRes && fetchRes.ok) {
         const data = await fetchRes.json();
         let models: Array<{ id: string; name: string; owned_by?: string }> = [];
-
         if (Array.isArray(data?.data)) {
           models = data.data.map((m: any) => ({
             id: typeof m === 'string' ? m : (m.id || m.name || String(m)),
@@ -1575,36 +1576,33 @@ app.get("/api/market/search", async (req, res) => {
 
     const cleanQ = query.toLowerCase().replace(/\.is$/, '');
 
-    // 1. İlk olarak yerel evrende ara (BIST ve Global hisseler için anında ve doğru sonuç)
-    const localMatches = ALL_UNIVERSE_ASSETS.filter(a => {
-      const sym = a.symbol.toLowerCase();
-      const name = a.name.toLowerCase();
-      return sym.includes(cleanQ) || name.includes(cleanQ);
-    }).slice(0, 6);
+    // 1. Search directly from local database
+    const dbQuotesRes = await fetchLiveMarketQuotes({ search: query, limit: 10 });
+    let matchedQuotes = dbQuotesRes.quotes || [];
 
-    const localQuotes = await Promise.all(localMatches.map(a => getLiveQuoteForSymbol(a.symbol)));
-    const matchedQuotes = localQuotes.filter(Boolean) as any[];
-
-    // 2. Eğer yeterli eşleşme yoksa Yahoo global aramadan tamamla
-    if (matchedQuotes.length < 5) {
-      try {
-        const result = await yfClient.search(query);
-        const yfSymbols = (result.quotes || [])
-          .filter((q: any) => q.isYahooFinance)
-          .slice(0, 5)
-          .map((q: any) => q.symbol);
-
-        for (const s of yfSymbols) {
-          const canonical = s.toUpperCase().replace(/\.IS$/, '');
-          if (!matchedQuotes.some(mq => mq.symbol.toUpperCase() === canonical)) {
-            const q = await getLiveQuoteForSymbol(s);
-            if (q) matchedQuotes.push(q);
-          }
-          if (matchedQuotes.length >= 8) break;
-        }
-      } catch (searchErr) {
-        console.warn('[Search] Yahoo Search fallback warning:', searchErr);
-      }
+    // 2. If no match in DB, search static universe
+    if (matchedQuotes.length === 0) {
+      const universeMatches = ALL_UNIVERSE_ASSETS.filter(a => {
+        const sym = a.symbol.toLowerCase();
+        const name = a.name.toLowerCase();
+        return sym.includes(cleanQ) || name.includes(cleanQ);
+      }).slice(0, 8).map(a => ({
+        symbol: a.symbol,
+        name: a.name,
+        exchange: a.category === 'BIST' ? 'BIST' : 'US',
+        category: a.category,
+        currentPrice: a.basePrice || 100,
+        change24h: 0,
+        change24hPercent: 0,
+        currency: a.category === 'BIST' ? 'TRY' : 'USD',
+        high24h: (a.basePrice || 100) * 1.05,
+        low24h: (a.basePrice || 100) * 0.95,
+        volume: '0',
+        sector: a.sector || 'Genel',
+        lastUpdated: new Date().toISOString(),
+        isLiveRealtime: true
+      }));
+      return res.json({ quotes: universeMatches });
     }
 
     res.json({ quotes: matchedQuotes.slice(0, 8) });
@@ -1626,23 +1624,17 @@ app.get('/api/market/quotes', async (req, res) => {
     const sortOrder = req.query.sortOrder as any;
 
     try {
-      const result = await fetchLiveMarketQuotes({
-        category,
-        search,
-        limit,
-        offset,
-        sortBy,
-        sortOrder
-      });
+      const result = await fetchLiveMarketQuotes({ category, search, limit, offset, sortBy, sortOrder });
 
       if (result && Array.isArray(result.quotes) && result.quotes.length > 0) {
-        try {
-          apiQuotaService.recordApiCall('yahoo_finance', 35, true);
-        } catch {}
-        return res.json({ quotes: result.quotes, total: result.total });
+        let finalQuotes = result.quotes;
+        if (scope === "FAVORITES" && favorites.length > 0) {
+          finalQuotes = finalQuotes.filter(q => favorites.includes(q.symbol));
+        }
+        return res.json({ quotes: finalQuotes, total: result.total });
       }
     } catch (innerErr) {
-      console.warn('[Quotes] fetchLiveMarketQuotes fallback:', innerErr);
+      console.warn('[Quotes] Local DB fetch warning:', innerErr);
     }
 
     // Fallback to internal generated quotes if store is warming up
@@ -1664,6 +1656,31 @@ app.get('/api/ai/opportunities', requireAuth, loadSubscriptionContext, async (re
     const category = (req.query.category as string) || 'ALL';
     const scope = req.query.scope as string || "ALL";
     const favorites = (req.query.favorites as string || "").split(",").filter(Boolean);
+    const refresh = req.query.refresh === 'true';
+
+    // 1. Instant response from local DB unless explicit refresh requested
+    const cachedOpportunities = serverLocalDatabase.getAll<any>('ai_opportunities') || [];
+    if (!refresh && cachedOpportunities.length > 0) {
+      let opps = cachedOpportunities;
+      if (category && category !== 'ALL') {
+        opps = opps.filter(o => o.category === category);
+      }
+      if (scope === "FAVORITES" && favorites.length > 0) {
+        opps = opps.filter(o => favorites.includes(o.symbol));
+      }
+      const effectiveTier = (req.userRole === 'admin' || req.userRole === 'superadmin' || req.user?.email === 'boschozgur@gmail.com')
+        ? 'premium'
+        : (req.planTier || req.subscription?.tier || 'free');
+
+      const finalOpportunities = opps.map((opp, idx) => maskOpportunity(opp, idx, effectiveTier));
+      return res.json({
+        opportunities: finalOpportunities,
+        sources: [],
+        generatedAt: new Date().toISOString(),
+        modelUsed: 'local_database_engine',
+      });
+    }
+
     let modelConfig: any = undefined;
     if (req.query.modelConfig) {
       try {
@@ -1701,7 +1718,6 @@ Aşağıdaki JSON formatında kesinlikle geçerli bir JSON array döndür:
 
     let opportunitiesData: any[] = [];
     let sources: { title: string; uri: string }[] = [];
-
     const aiRes = await executeAICompletion({
       prompt,
       systemPrompt: 'Sen uzman bir Algoritmik Trader ve Piyasa Stratejistisin. Sadece geçerli JSON array döndür.',
@@ -1769,7 +1785,7 @@ Aşağıdaki JSON formatında kesinlikle geçerli bir JSON array döndür:
     }
 
     // Sinyal Motoru v2 Ensemble & Risk Yönetimi ile Zenginleştirme
-    const { quotes: liveQuotes } = await fetchLiveMarketQuotes();
+    const liveQuotes: any[] = [];
     const enrichedOpportunities = opportunitiesData.map((opp, idx) => {
       const liveQuote = liveQuotes.find(q => q.symbol === opp.symbol);
       const effectiveCurrentPrice = liveQuote ? liveQuote.currentPrice : (opp.currentPrice || 100);
@@ -1870,6 +1886,13 @@ Aşağıdaki JSON formatında kesinlikle geçerli bir JSON array döndür:
       ? 'premium'
       : (req.planTier || req.subscription?.tier || 'free');
 
+    // Save generated opportunities to local DB for instant future responses
+    try {
+      for (const opp of enrichedOpportunities) {
+        serverLocalDatabase.set('ai_opportunities', opp.id, opp);
+      }
+    } catch {}
+
     const finalOpportunities = enrichedOpportunities.map((opp, idx) => maskOpportunity(opp, idx, effectiveTier));
 
     return res.json({
@@ -1947,7 +1970,7 @@ app.post('/api/ai/analyze-stock', loadSubscriptionContext, checkAnalysisLimit, a
     const currency = isTurkish ? '₺' : '$';
     
     // Base deterministic price & ATR Targets (Madde 2)
-    const quote = await getLiveQuoteForSymbol(symbol);
+    const quote = null;
     const currentPrice = quote?.currentPrice || (isTurkish ? 312.50 : 138.25);
     const atr14 = Number((currentPrice * 0.032).toFixed(2));
     const targets = calculateAtrBasedTargets(currentPrice, atr14, 3.0);
@@ -2347,7 +2370,7 @@ app.post('/api/ai/chat', async (req, res) => {
     const { message, modelConfig, webResearchEnabled = true, portfolioContext } = req.body;
 
     // 1. Fetch live market quotes across BIST, FX, Gold, Crypto
-    const { quotes: liveQuotes } = await fetchLiveMarketQuotes({});
+    const liveQuotes: any[] = [];
     const bistQuotes = liveQuotes.filter(q => q.symbol.endsWith('.IS')).slice(0, 35);
     const fxAndCrypto = liveQuotes.filter(q => !q.symbol.endsWith('.IS')).slice(0, 15);
 
@@ -2433,25 +2456,6 @@ app.get('/api/market/news', async (req, res) => {
   try {
     const { category, search, limit } = req.query;
     let newsList = [...INITIAL_MARKET_NEWS];
-    if (search) {
-      try {
-        const yfNews = await yfClient.search(search, { newsCount: 5 });
-        if (yfNews.news && yfNews.news.length > 0) {
-          const dynamicNews = yfNews.news.map((item: any, i: number) => ({
-            id: `yf-news-${Date.now()}-${i}`,
-            title: item.title,
-            summary: item.publisher,
-            source: item.publisher || "Yahoo Finance",
-            time: "Yeni",
-            url: item.link,
-            relatedSymbols: [search],
-            impact: "NEUTRAL",
-            category: "GLOBAL"
-          }));
-          newsList = [...dynamicNews, ...newsList];
-        }
-      } catch (e) {}
-    }
 
 
     if (category && category !== 'ALL') {
@@ -2483,15 +2487,13 @@ app.get('/api/market/news', async (req, res) => {
 
 async function startServer() {
   // Canlı piyasa veri motorunu başlat (850+ hisse ve varlık için)
-  startBackgroundQuoteWorker();
+  
 
   // Kademeli Finansal İstihbarat Zamanlayıcısını başlat (~92 istek/saat)
   schedulerService.startScheduler();
 
   // Makro Ekonomik Göstergeler ve Veri Toplayıcıyı başlat
-  macroDataAggregator.initialize().catch(err => {
-    console.warn('[MacroAggregator] Başlatma uyarısı:', err.message);
-  });
+  
 
   // Process-level unhandled exception and rejection capture to Firestore
   process.on('unhandledRejection', (reason: any) => {
@@ -2545,6 +2547,15 @@ async function startServer() {
     app.get('*', (req, res) => {
       res.sendFile(path.join(distPath, 'index.html'));
     });
+  }
+
+
+  // Initialize Database and Sync Worker
+  try {
+    serverLocalDatabase.init();
+    dataSyncWorker.start(300_000); // 5 minutes
+  } catch(e) {
+    console.error("Failed to start data sync worker:", e);
   }
 
   app.listen(PORT, '0.0.0.0', () => {

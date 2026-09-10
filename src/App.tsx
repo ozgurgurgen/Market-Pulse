@@ -7,32 +7,40 @@ import { useAuth } from './contexts/AuthContext';
 import { AuthScreen } from './components/AuthScreen';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { db, auth } from './lib/firebase';
-import { AdminSettingsSection } from './components/AdminSettingsSection';
-import { TefasFundsSection } from './components/TefasFundsSection';
-import { TefasFundDetailModal } from './components/TefasFundDetailModal';
-import { BacktestSection } from './components/BacktestSection';
-import { MarketOverview } from './components/MarketOverview';
-import { StockAnalysisModal } from './components/StockAnalysisModal';
-import { AIChatAdvisor } from './components/AIChatAdvisor';
-import { FloatingAIAdvisor } from './components/FloatingAIAdvisor';
-import { WatchlistManager } from './components/WatchlistManager';
-import { AdminPanel } from './components/AdminPanel';
 import { MarketNewsSection } from './components/MarketNewsSection';
-import { AIModelSettingsModal } from './components/AIModelSettingsModal';
-import { SettingsSection } from "./components/SettingsSection";
-import { IntelligenceHub } from './components/IntelligenceHub/IntelligenceHub';
-import { PortfolioPage } from './pages/Portfolio';
-import { EconomicIndicatorsPage } from './components/EconomicIndicators/EconomicIndicatorsPage';
-import { LatestBalanceSheetsSection } from './components/LatestBalanceSheetsSection';
-import { AdvancedScreenerSection } from './components/AdvancedScreenerSection';
-import { FinancialAcademySection } from './components/FinancialAcademySection';
-import { IPOTracker } from './components/IPOTracker';
-import { PricingSection } from './components/Subscription/PricingSection';
-import { UpgradeModal } from './components/Subscription/UpgradeModal';
-import { SubscriptionTier } from './shared/subscriptionPlans';
+import { FloatingAIAdvisor } from './components/FloatingAIAdvisor';
 import { OfflineIndicator } from './components/OfflineIndicator';
 import { PWAInstallPrompt } from './components/PWAInstallPrompt';
 import { ErrorBoundary } from './components/ErrorBoundary';
+import { lazyWithRetry } from './utils/lazyRetry';
+
+// Dynamic lazy imports with retry mechanism for non-default tabs and modals
+const TefasFundsSection = lazyWithRetry(() => import('./components/TefasFundsSection'), 'TefasFundsSection');
+const TefasFundDetailModal = lazyWithRetry(() => import('./components/TefasFundDetailModal'), 'TefasFundDetailModal');
+const BacktestSection = lazyWithRetry(() => import('./components/BacktestSection'), 'BacktestSection');
+const MarketOverview = lazyWithRetry(() => import('./components/MarketOverview'), 'MarketOverview');
+const StockAnalysisModal = lazyWithRetry(() => import('./components/StockAnalysisModal'), 'StockAnalysisModal');
+const AIChatAdvisor = lazyWithRetry(() => import('./components/AIChatAdvisor'), 'AIChatAdvisor');
+const WatchlistManager = lazyWithRetry(() => import('./components/WatchlistManager'), 'WatchlistManager');
+const AdminPanel = lazyWithRetry(() => import('./components/AdminPanel'), 'AdminPanel');
+const AIModelSettingsModal = lazyWithRetry(() => import('./components/AIModelSettingsModal'), 'AIModelSettingsModal');
+const SettingsSection = lazyWithRetry(() => import('./components/SettingsSection'), 'SettingsSection');
+const IntelligenceHub = lazyWithRetry(() => import('./components/IntelligenceHub/IntelligenceHub'), 'IntelligenceHub');
+const PortfolioPage = lazyWithRetry(() => import('./pages/Portfolio'), 'PortfolioPage');
+const EconomicIndicatorsPage = lazyWithRetry(() => import('./components/EconomicIndicators/EconomicIndicatorsPage'), 'EconomicIndicatorsPage');
+const LatestBalanceSheetsSection = lazyWithRetry(() => import('./components/LatestBalanceSheetsSection'), 'LatestBalanceSheetsSection');
+const AdvancedScreenerSection = lazyWithRetry(() => import('./components/AdvancedScreenerSection'), 'AdvancedScreenerSection');
+const FinancialAcademySection = lazyWithRetry(() => import('./components/FinancialAcademySection'), 'FinancialAcademySection');
+const IPOTracker = lazyWithRetry(() => import('./components/IPOTracker'), 'IPOTracker');
+const PricingSection = lazyWithRetry(() => import('./components/Subscription/PricingSection'), 'PricingSection');
+const UpgradeModal = lazyWithRetry(() => import('./components/Subscription/UpgradeModal'), 'UpgradeModal');
+
+const TabLoadingFallback = () => (
+  <div className="flex flex-col items-center justify-center min-h-[350px] p-8 text-center space-y-4">
+    <div className="w-8 h-8 border-2 border-slate-700 border-t-emerald-400 rounded-full animate-spin" />
+    <span className="text-xs text-slate-400 font-medium">Modül yükleniyor...</span>
+  </div>
+);
 
 import { INITIAL_DEFAULT_QUOTES } from './data/defaultQuotesData';
 import { INITIAL_DEFAULT_OPPORTUNITIES } from './data/defaultOpportunitiesData';
@@ -48,7 +56,8 @@ import {
   TefasFund, 
   TefasFundDetail, 
   BacktestAsset,
-  AIModelConfig 
+  AIModelConfig,
+  SubscriptionTier
 } from './types';
 
 function MainApp() {
@@ -511,180 +520,196 @@ function MainApp() {
           </div>
         )}
 
-        {/* Tab: Halka Arz (IPO) Takip & Analiz Modülü */}
-        {activeTab === 'ipo' && (
-          <IPOTracker onOpenUpgradeModal={(feature) => {
-            setUpgradeModalFeature(feature || 'Halka Arz Takip & Analiz');
-            setIsUpgradeModalOpen(true);
-          }} />
-        )}
+        {/* Lazy Loaded Secondary Tabs */}
+        <React.Suspense fallback={<TabLoadingFallback />}>
+          {/* Tab: Halka Arz (IPO) Takip & Analiz Modülü */}
+          {activeTab === 'ipo' && (
+            <IPOTracker onOpenUpgradeModal={(feature) => {
+              setUpgradeModalFeature(feature || 'Halka Arz Takip & Analiz');
+              setIsUpgradeModalOpen(true);
+            }} />
+          )}
 
-        {/* Tab: Son Açıklanan Bilanço Akışı */}
-        {activeTab === 'latest_financials' && (
-          <LatestBalanceSheetsSection onSelectStock={handleSelectSymbolFromNews} />
-        )}
+          {/* Tab: Son Açıklanan Bilanço Akışı */}
+          {activeTab === 'latest_financials' && (
+            <LatestBalanceSheetsSection onSelectStock={handleSelectSymbolFromNews} />
+          )}
 
-        {/* Tab: Gelişmiş Hisse Tarayıcı & Filtreleme */}
-        {activeTab === 'screener' && (
-          <AdvancedScreenerSection onSelectStock={handleSelectSymbolFromNews} />
-        )}
+          {/* Tab: Gelişmiş Hisse Tarayıcı & Filtreleme */}
+          {activeTab === 'screener' && (
+            <AdvancedScreenerSection onSelectStock={handleSelectSymbolFromNews} />
+          )}
 
-        {/* Tab: Temel Analiz & Rasyolar Akademisi */}
-        {activeTab === 'academy' && (
-          <FinancialAcademySection />
-        )}
+          {/* Tab: Temel Analiz & Rasyolar Akademisi */}
+          {activeTab === 'academy' && (
+            <FinancialAcademySection />
+          )}
 
-        {/* Tab 2: Portfolio Management System Module */}
-        {activeTab === 'portfolio' && (
-          <PortfolioPage />
-        )}
+          {/* Tab 2: Portfolio Management System Module */}
+          {activeTab === 'portfolio' && (
+            <PortfolioPage />
+          )}
 
-        {/* Tab: Macro & Economic Indicators Dashboard */}
-        {activeTab === 'macro' && (
-          <EconomicIndicatorsPage />
-        )}
+          {/* Tab: Macro & Economic Indicators Dashboard */}
+          {activeTab === 'macro' && (
+            <EconomicIndicatorsPage />
+          )}
 
-        {/* Tab 3: Finansal İstihbarat Merkezi (4-Agent Intelligence Hub) */}
-        {activeTab === 'intelligence' && (
-          <IntelligenceHub 
-            initialTicker="THYAO" 
-            onSelectStock={handleSelectSymbolFromNews} 
-          />
-        )}
+          {/* Tab 3: Finansal İstihbarat Merkezi (4-Agent Intelligence Hub) */}
+          {activeTab === 'intelligence' && (
+            <IntelligenceHub 
+              initialTicker="THYAO" 
+              onSelectStock={handleSelectSymbolFromNews} 
+            />
+          )}
 
-        {/* Tab 3: TEFAS Funds Explorer & Inflation Protection */}
-        {activeTab === 'tefas' && (
-          <div className="space-y-6">
-            <TefasFundsSection
-              onSelectFund={handleSelectTefasFund}
-              onAddToBacktest={handleAddFundToBacktest}
+          {/* Tab 3: TEFAS Funds Explorer & Inflation Protection */}
+          {activeTab === 'tefas' && (
+            <div className="space-y-6">
+              <TefasFundsSection
+                onSelectFund={handleSelectTefasFund}
+                onAddToBacktest={handleAddFundToBacktest}
+                onOpenModelSettings={() => setIsModelModalOpen(true)}
+                activeModelName={activeModelDisplay}
+              />
+            </div>
+          )}
+
+          {/* Tab 3: Portfolio Backtest Simulation Engine */}
+          {activeTab === 'backtest' && (
+            <div className="space-y-6">
+              <BacktestSection
+                initialAssetToAdd={backtestAssetToAdd}
+                onClearInitialAsset={() => setBacktestAssetToAdd(null)}
+                modelConfig={modelConfig}
+                onOpenModelSettings={() => setIsModelModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* Tab 4: Live Market Quotes Table & Charts */}
+          {activeTab === 'markets' && (
+            <div className="space-y-6">
+              <MarketOverview
+                quotes={quotes}
+                onSelectStock={handleSelectStockFromQuote}
+                watchlist={watchlistSymbols}
+                onToggleWatchlist={handleToggleWatchlist}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+              />
+
+              <MarketNewsSection news={news} onSelectSymbol={handleSelectSymbolFromNews} tickerSpeed={modelConfig.newsTickerSpeed !== undefined ? modelConfig.newsTickerSpeed : 300} />
+            </div>
+          )}
+
+          {/* Tab 5: AI Financial Strategist Chat */}
+          {activeTab === 'chat' && (
+            <div className="space-y-6">
+              <div className="mb-4">
+                <h2 className="text-2xl font-bold text-white mb-2">Canlı Araştırma Asistanı</h2>
+                <p className="text-slate-400 text-sm">Piyasa verilerini, KAP bildirimlerini ve finans haberlerini sizin için gerçek zamanlı analiz eden finansal yapay zeka.</p>
+              </div>
+              <AIChatAdvisor 
+                onAnalyzeStock={handleAnalyzeStock}
+                modelConfig={modelConfig}
+                onOpenModelSettings={() => setIsModelModalOpen(true)}
+              />
+            </div>
+          )}
+
+          {/* Tab: Intelligence Hub */}
+          {activeTab === 'intelligence' && (
+            <div className="space-y-6">
+              <IntelligenceHub onSelectStock={handleSelectSymbolFromNews} />
+            </div>
+          )}
+
+          {/* Tab 6: Settings Management */}
+          {activeTab === "settings" && (
+            <SettingsSection 
+              modelConfig={modelConfig} 
+              onSaveConfig={handleSaveModelConfig}
+              onNavigateToPricing={() => setActiveTab('pricing')}
+              onNavigateToTab={(tab) => setActiveTab(tab as any)}
               onOpenModelSettings={() => setIsModelModalOpen(true)}
-              activeModelName={activeModelDisplay}
             />
-          </div>
-        )}
+          )}
 
-        {/* Tab 3: Portfolio Backtest Simulation Engine */}
-        {activeTab === 'backtest' && (
-          <div className="space-y-6">
-            <BacktestSection
-              initialAssetToAdd={backtestAssetToAdd}
-              onClearInitialAsset={() => setBacktestAssetToAdd(null)}
-              modelConfig={modelConfig}
-              onOpenModelSettings={() => setIsModelModalOpen(true)}
-            />
-          </div>
-        )}
+          
+          {/* Tab: Admin Panel */}
+          {activeTab === 'admin' && (
+            <div className="space-y-6">
+              <AdminPanel />
+            </div>
+          )}
 
-        {/* Tab 4: Live Market Quotes Table & Charts */}
-        {activeTab === 'markets' && (
-          <div className="space-y-6">
-            <MarketOverview
-              quotes={quotes}
-              onSelectStock={handleSelectStockFromQuote}
-              watchlist={watchlistSymbols}
-              onToggleWatchlist={handleToggleWatchlist}
-              selectedCategory={selectedCategory}
-              onSelectCategory={setSelectedCategory}
-            />
+          {/* Tab: Pricing & Subscription Packages */}
+          {activeTab === 'pricing' && (
+            <div className="space-y-6 animate-fadeIn">
+              <PricingSection />
+            </div>
+          )}
 
-            <MarketNewsSection news={news} onSelectSymbol={handleSelectSymbolFromNews} tickerSpeed={modelConfig.newsTickerSpeed !== undefined ? modelConfig.newsTickerSpeed : 300} />
-          </div>
-        )}
-
-        {/* Tab 5: AI Financial Strategist Chat */}
-        {activeTab === 'chat' && (
-          <div className="space-y-6">
-            <AIChatAdvisor 
-              onAnalyzeStock={handleAnalyzeStock}
-              modelConfig={modelConfig}
-              onOpenModelSettings={() => setIsModelModalOpen(true)}
-            />
-          </div>
-        )}
-
-        {/* Tab 6: Settings Management */}
-        {activeTab === "settings" && (
-          <SettingsSection 
-            modelConfig={modelConfig} 
-            onSaveConfig={handleSaveModelConfig}
-            onNavigateToPricing={() => setActiveTab('pricing')}
-            onNavigateToTab={(tab) => setActiveTab(tab as any)}
-            onOpenModelSettings={() => setIsModelModalOpen(true)}
-          />
-        )}
-
-        
-        {/* Tab: Admin Panel */}
-        {activeTab === 'admin' && (
-          <div className="space-y-6">
-            <AdminPanel />
-          </div>
-        )}
-
-        {/* Tab: Pricing & Subscription Packages */}
-        {activeTab === 'pricing' && (
-          <div className="space-y-6 animate-fadeIn">
-            <PricingSection />
-          </div>
-        )}
-
-        {activeTab === 'watchlist' && (
-          <div className="space-y-6">
-            <WatchlistManager
-              watchlistItems={watchlist}
-              quotes={quotes}
-              onRemoveFromWatchlist={handleRemoveFromWatchlist}
-              onAnalyzeStock={handleAnalyzeStock}
-              onUpdateItemNotes={handleUpdateItemNotes}
-              isFreePlan={isFreePlan}
-            />
-          </div>
-        )}
+          {activeTab === 'watchlist' && (
+            <div className="space-y-6">
+              <WatchlistManager
+                watchlistItems={watchlist}
+                quotes={quotes}
+                onRemoveFromWatchlist={handleRemoveFromWatchlist}
+                onAnalyzeStock={handleAnalyzeStock}
+                onUpdateItemNotes={handleUpdateItemNotes}
+                isFreePlan={isFreePlan}
+              />
+            </div>
+          )}
+        </React.Suspense>
 
       </main>
 
-      {/* Modals */}
-      {/* Membership & Subscription Upgrade Modal */}
-      <UpgradeModal
-        isOpen={isUpgradeModalOpen}
-        onClose={() => setIsUpgradeModalOpen(false)}
-        targetFeature={upgradeModalFeature}
-        requiredTier={upgradeModalTier}
-      />
-      {isTefasModalOpen && (
-        <TefasFundDetailModal
-          fund={selectedTefasFund}
-          isLoading={isTefasLoading}
-          onClose={() => setIsTefasModalOpen(false)}
-          onAddToBacktest={handleAddFundToBacktest}
-          onToggleWatchlist={handleToggleWatchlist}
-          isWatchlisted={selectedTefasFund ? watchlistSymbols.includes(selectedTefasFund.code) : false}
-          onSelectFund={(code) => {
-            handleSelectTefasFund({ code: code.toUpperCase(), name: code.toUpperCase() } as any);
-          }}
+      {/* Modals wrapped in Suspense */}
+      <React.Suspense fallback={null}>
+        {/* Membership & Subscription Upgrade Modal */}
+        <UpgradeModal
+          isOpen={isUpgradeModalOpen}
+          onClose={() => setIsUpgradeModalOpen(false)}
+          targetFeature={upgradeModalFeature}
+          requiredTier={upgradeModalTier}
         />
-      )}
+        {isTefasModalOpen && (
+          <TefasFundDetailModal
+            fund={selectedTefasFund}
+            isLoading={isTefasLoading}
+            onClose={() => setIsTefasModalOpen(false)}
+            onAddToBacktest={handleAddFundToBacktest}
+            onToggleWatchlist={handleToggleWatchlist}
+            isWatchlisted={selectedTefasFund ? watchlistSymbols.includes(selectedTefasFund.code) : false}
+            onSelectFund={(code) => {
+              handleSelectTefasFund({ code: code.toUpperCase(), name: code.toUpperCase() } as any);
+            }}
+          />
+        )}
 
-      {/* Deep Stock Analysis Modal with Google Finance & Recharts */}
-      {isAnalysisModalOpen && (
-        <StockAnalysisModal
-          analysis={selectedAnalysis}
-          isLoading={isAnalysisLoading}
-          onClose={() => setIsAnalysisModalOpen(false)}
-          isWatchlisted={selectedAnalysis ? watchlistSymbols.includes(selectedAnalysis.symbol) : false}
-          onToggleWatchlist={handleToggleWatchlist}
-          news={news}
+        {/* Deep Stock Analysis Modal with Google Finance & Recharts */}
+        {isAnalysisModalOpen && (
+          <StockAnalysisModal
+            analysis={selectedAnalysis}
+            isLoading={isAnalysisLoading}
+            onClose={() => setIsAnalysisModalOpen(false)}
+            isWatchlisted={selectedAnalysis ? watchlistSymbols.includes(selectedAnalysis.symbol) : false}
+            onToggleWatchlist={handleToggleWatchlist}
+            news={news}
+          />
+        )}
+
+        {/* AI Model Switcher & Ollama Settings Modal */}
+        <AIModelSettingsModal
+          isOpen={isModelModalOpen}
+          onClose={() => setIsModelModalOpen(false)}
+          config={modelConfig}
+          onSaveConfig={handleSaveModelConfig}
         />
-      )}
-
-      {/* AI Model Switcher & Ollama Settings Modal */}
-      <AIModelSettingsModal
-        isOpen={isModelModalOpen}
-        onClose={() => setIsModelModalOpen(false)}
-        config={modelConfig}
-        onSaveConfig={handleSaveModelConfig}
-      />
+      </React.Suspense>
 
       {/* Global Floating AI Advisor Widget */}
       <FloatingAIAdvisor 

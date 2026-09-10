@@ -1202,3 +1202,6 @@ export const AIModelSettingsModal: React.FC<AIModelSettingsModalProps> = ({
     </div>
   );
 };
+
+export default AIModelSettingsModal;
+

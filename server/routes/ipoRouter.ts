@@ -31,9 +31,12 @@ ipoRouter.post('/parse-deep-analysis', async (req: Request, res: Response) => {
  */
 ipoRouter.get('/listings', requireAuth, loadSubscriptionContext, async (req: Request, res: Response) => {
   try {
-    const force = req.query.refresh === 'true';
-    const listings = await ipoDataService.getAllIpos(force);
-    const maskedListings = listings.map(ipo => maskIpoData(ipo, req.planTier));
+    const listings = await ipoDataService.getAllIpos({
+      status: req.query.status as string,
+      search: req.query.search as string,
+      sector: req.query.sector as string
+    });
+    const maskedListings = (listings.data || []).map(ipo => maskIpoData(ipo, req.planTier));
     return res.json({ success: true, count: maskedListings.length, listings: maskedListings });
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message });
@@ -63,7 +66,7 @@ ipoRouter.get('/listings/:id', requireAuth, loadSubscriptionContext, async (req:
     if (!ipo) {
       return res.status(404).json({ success: false, error: 'Halka arz kaydı bulunamadı' });
     }
-    const similar = await ipoDataService.getSimilarIpos(ipo.sector, ipo.id);
+    const similar = await ipoDataService.getSimilarIpos(req.params.id);
     const maskedIpo = maskIpoData(ipo, req.planTier);
     const maskedSimilar = similar.map(s => maskIpoData(s, req.planTier));
     return res.json({ success: true, ipo: maskedIpo, similar: maskedSimilar });
@@ -104,7 +107,7 @@ adminIpoRouter.post('/upsert', async (req: Request, res: Response) => {
     const adminUid = req.user.uid;
     const adminEmail = req.user.email || 'admin@marketpulse.local';
 
-    const saved = await ipoDataService.upsertIpo(ipoData, adminUid, adminEmail);
+    const saved = await ipoDataService.upsertIpo(req.body);
     return res.json({ success: true, ipo: saved });
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message });
@@ -119,7 +122,7 @@ adminIpoRouter.delete('/:id', async (req: Request, res: Response) => {
     const adminUid = req.user.uid;
     const adminEmail = req.user.email || 'admin@marketpulse.local';
 
-    const success = await ipoDataService.deleteIpo(req.params.id, adminUid, adminEmail);
+    const success = await ipoDataService.deleteIpo(req.params.id);
     return res.json({ success });
   } catch (error: any) {
     return res.status(500).json({ success: false, error: error.message });

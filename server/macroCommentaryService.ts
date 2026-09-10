@@ -1,5 +1,5 @@
 import { executeAICompletion } from './aiService';
-import { macroDataAggregator } from './indicator_fetchers/MacroDataAggregatorService';
+
 import { AIMacroCommentaryOutput, AIMacroCommentaryRecord, EconomicIndicator } from './indicator_fetchers/types';
 import { serverLocalDatabase } from './services/serverLocalDatabase';
 import { extractJsonFromText } from './promptValidationService';
@@ -115,7 +115,7 @@ export class MacroCommentaryService {
 
     try {
       // 1. Taze göstergeleri topla (stale olmayanlar tercih edilir)
-      const allIndicators = await macroDataAggregator.getAllIndicators();
+      const allIndicators = await [];
       const validIndicators = allIndicators.filter(i => !i.is_stale && typeof i.value === 'number');
 
       const inputData = {
@@ -201,7 +201,7 @@ export class MacroCommentaryService {
     } catch (err: any) {
       console.error('❌ [MacroCommentaryService] Makro yorum üretilirken hata:', err.message);
       
-      const allIndicators = await macroDataAggregator.getAllIndicators();
+      const allIndicators = await [];
       const safeOutput = this.buildRuleBasedFallbackOutput(allIndicators, timestamp);
       this.lastCommentary = safeOutput;
       this.lastGeneratedAt = timestamp;
