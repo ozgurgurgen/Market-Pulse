@@ -493,11 +493,27 @@ export class LocalFinanceApiAdapter {
   }
 
   /**
-   * GET /api/buffett/{ticker}
+   * GET /api/assets/{ticker}/aggregated-data
+   */
+  async getAggregatedData(ticker: string): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/assets/${cleanTicker}/aggregated-data`);
+  }
+
+  /**
+   * GET /api/news?symbol={ticker}
+   */
+  async getNews(ticker: string): Promise<any | null> {
+    const cleanTicker = ticker.replace('.IS', '').toUpperCase();
+    return this.safeFetch(`/api/news?symbol=${cleanTicker}`);
+  }
+
+  /**
+   * GET /api/market/buffett/{ticker}
    */
   async getBuffettAnalysis(ticker: string): Promise<any | null> {
     const cleanTicker = ticker.replace('.IS', '').toUpperCase();
-    return this.safeFetch(`/api/buffett/${cleanTicker}`);
+    return this.safeFetch(`/api/market/buffett/${cleanTicker}`);
   }
 
   /**

@@ -192,525 +192,98 @@ stockDetailRouter.get('/:symbol/financials', async (req, res) => {
 // ==========================================
 stockDetailRouter.get('/:symbol/multiples', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
-  let currentPe = 0;
-  let currentPb = 0;
-  let currentEvebitda = 0;
-  let evSales = 0;
-  let pegRatio = 0;
-  let hasData = false;
-
   if (localFinanceApi.isConfigured()) {
     try {
-      const localData = await localFinanceApi.getCompanyAllData(symbol);
-      if (localData && localData.financials && localData.financials.length > 0) {
-        const latest = localData.financials[0];
-        if (latest.pe_ratio && Number(latest.pe_ratio) > 0) {
-          currentPe = Number(Number(latest.pe_ratio).toFixed(2));
-          hasData = true;
-        }
-        if (latest.pb_ratio && Number(latest.pb_ratio) > 0) {
-          currentPb = Number(Number(latest.pb_ratio).toFixed(2));
-          hasData = true;
-        }
-        if (latest.ev_ebitda && Number(latest.ev_ebitda) > 0) {
-          currentEvebitda = Number(Number(latest.ev_ebitda).toFixed(2));
-          hasData = true;
-        }
-        if (latest.ev_revenue && Number(latest.ev_revenue) > 0) {
-          evSales = Number(Number(latest.ev_revenue).toFixed(2));
-          hasData = true;
-        }
-      }
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.multiples) return res.json({ success: true, data: aggData.multiples });
+      if (aggData?.data?.multiples) return res.json({ success: true, data: aggData.data.multiples });
     } catch (e) {
       console.error('[stockDetailRouter] multiples error:', e);
     }
   }
-
-  if (!hasData) {
-    return res.json({
-      success: true,
-      data: {
-        ticker: symbol,
-        currentMultiples: {
-          pe: 0,
-          pb: 0,
-          evebitda: 0,
-          evsales: 0,
-          pegRatio: 0
-        },
-        percentiles: {
-          pePercentile: 0,
-          pbPercentile: 0,
-          evebitdaPercentile: 0
-        },
-        sectorAverages: {
-          sectorName: 'NoN',
-          pe: 0,
-          pb: 0,
-          evebitda: 0
-        },
-        historicalSeries: []
-      },
-      message: 'NoN: Yerel API üzerinden çarpan verisi bulunamadı.'
-    });
-  }
-
-  const result: MultipleAnalysisData = {
-    ticker: symbol,
-    currentMultiples: {
-      pe: currentPe,
-      pb: currentPb,
-      evebitda: currentEvebitda,
-      evsales: evSales,
-      pegRatio: pegRatio
+  return res.json({
+    success: true,
+    data: {
+      ticker: symbol,
+      currentMultiples: { pe: 0, pb: 0, evebitda: 0, evsales: 0, pegRatio: 0 },
+      percentiles: { pePercentile: 0, pbPercentile: 0, evebitdaPercentile: 0 },
+      sectorAverages: { sectorName: 'NoN', pe: 0, pb: 0, evebitda: 0 },
+      historicalSeries: []
     },
-    percentiles: {
-      pePercentile: 0,
-      pbPercentile: 0,
-      evebitdaPercentile: 0
-    },
-    sectorAverages: {
-      sectorName: 'Sektör Ortalaması',
-      pe: 0,
-      pb: 0,
-      evebitda: 0
-    },
-    historicalSeries: []
-  };
-
-  res.json({ success: true, data: result });
+    message: 'NoN: Yerel API üzerinden çarpan verisi bulunamadı.'
+  });
 });
-
 // ==========================================
 // ==========================================
 // 4. ŞİRKET OLAYLARI (Corporate Events Timeline & KAP Disclosures)
 // ==========================================
 stockDetailRouter.get('/:symbol/events', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
-  try {
-    // 1. Local Finance Pipeline'dan şirketin canlı KAP bildirimlerini çek
-    if (localFinanceApi.isConfigured()) {
-      const companyData = await localFinanceApi.getCompanyAllData(symbol);
-      if (companyData && companyData.disclosures && Array.isArray(companyData.disclosures) && companyData.disclosures.length > 0) {
-        const liveEvents: CorporateEvent[] = companyData.disclosures.map((d: any, idx: number) => {
-          const pubDate = d.publish_date ? d.publish_date.split('T')[0] : new Date().toISOString().split('T')[0];
-          const rawCat = (d.category || d.disclosure_type || 'KAP').toUpperCase();
-          let type: CorporateEvent['type'] = 'KAP';
-          if (rawCat.includes('TEMETT') || rawCat.includes('DIVIDEND')) type = 'TEMETTU';
-          else if (rawCat.includes('GENEL') || rawCat.includes('GK')) type = 'GK';
-          else if (rawCat.includes('PAY') || rawCat.includes('ALIM') || rawCat.includes('INSIDER')) type = 'INSIDER';
-          else if (rawCat.includes('SUNUM') || rawCat.includes('PRESENTATION')) type = 'SUNUM';
-          else if (rawCat.includes('BEDELSIZ') || rawCat.includes('BONUS')) type = 'BEDELSIZ';
-
-          return {
-            id: `evt-kap-${d.disclosure_id || d.id || idx}`,
-            ticker: symbol,
-            date: pubDate,
-            type,
-            title: d.title || `${symbol} KAP Resmi Bildirimi`,
-            description: d.raw_content || d.title || 'Kamuyu Aydınlatma Platformu resmi bildirimi.',
-            impact: d.is_catalyst ? 'positive' : 'neutral'
-          };
-        });
-
-        return res.json({ success: true, data: liveEvents });
-      }
+  if (localFinanceApi.isConfigured()) {
+    try {
+      const newsData = await localFinanceApi.getNews(symbol);
+      if (newsData && Array.isArray(newsData)) return res.json({ success: true, data: newsData });
+      if (newsData?.data && Array.isArray(newsData.data)) return res.json({ success: true, data: newsData.data });
+      
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.events) return res.json({ success: true, data: aggData.events });
+      if (aggData?.data?.events) return res.json({ success: true, data: aggData.data.events });
+    } catch (e) {
+      console.error('[stockDetailRouter] events error:', e);
     }
-  } catch (err) {
-    console.warn(`[stockDetailRouter] Events fetch error for ${symbol}:`, err);
   }
-
-  // No synthetic mock event fallback - strictly return empty if no Local API events
   return res.json({ success: true, data: [] });
 });
-
 // ==========================================
 // 4.1 ARACI KURUM DAĞILIMI & TAKASBANK / SEC 13F CUSTODY
 // ==========================================
 stockDetailRouter.get('/:symbol/brokerage-distribution', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-  const normSym = symbol.replace('.IS', '').replace('^', '').toUpperCase();
-  const liveQuote = await getLiveQuoteForSymbol(symbol);
-  const profile = getStockKnowledgeProfile(symbol);
-  const currentPrice = liveQuote?.currentPrice || (profile.financialMultiples.pe * 8.5) || 50.0;
-
-  const isGlobalOrUS = ['AAPL', 'NVDA', 'MSFT', 'TSLA', 'AMZN', 'GOOGL', 'GOOG', 'META', 'AMD', 'INTC', 'NFLX', 'SPY', 'QQQ', 'DIA', 'IWM', 'V', 'MA', 'JPM', 'BAC', 'DIS', 'ORCL', 'CRM', 'AVGO', 'QCOM', 'NDX', 'NASDAQ', 'NASDAQ100', '^NDX', '^GSPC'].includes(normSym) ||
-    !symbol.includes('.IS') && (normSym.length <= 4 && !['THYAO', 'ASELS', 'EREGL', 'FROTO', 'TUPRS', 'AKBNK', 'GARAN', 'YKBNK', 'ISCTR', 'BIMAS', 'KCHOL', 'SAHOL', 'SISE', 'PETKM', 'TCELL', 'SOKM', 'MGROS', 'PGSUS', 'TAVHL', 'TTRAK', 'TOASO', 'ARCLK', 'ENKAI', 'KOZAL'].includes(normSym));
-
-  const charCodeSum = normSym.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0);
-
-  if (isGlobalOrUS) {
-    // ABD / Küresel Varlıklar için SEC 13F & Piyasa Yapıcı / Prime Broker Akışı
-    const instRatio = Number((55.0 + (charCodeSum % 35) * 0.9).toFixed(1));
-    const weeklyChg = Number(((charCodeSum % 7) * 0.35 - 0.5).toFixed(2));
-    const monthlyChg = Number(((charCodeSum % 11) * 0.45 + 0.2).toFixed(2));
-    
-    // İşlem adedi ve hacim ölçeklendirmesi (USD bazlı)
-    const baseShares = Math.round(1500000 + (charCodeSum % 20) * 120000);
-    const topBuyers = [
-      { broker: 'Citadel Securities LLC (Market Maker)', netLot: Math.round(baseShares * 0.38), sharePct: 34.5, cost: Number((currentPrice * 0.997).toFixed(2)), direction: 'BUY' as const },
-      { broker: 'Virtu Financial Americas', netLot: Math.round(baseShares * 0.24), sharePct: 22.0, cost: Number((currentPrice * 0.998).toFixed(2)), direction: 'BUY' as const },
-      { broker: 'Goldman Sachs Execution & Clearing', netLot: Math.round(baseShares * 0.18), sharePct: 16.5, cost: Number((currentPrice * 1.001).toFixed(2)), direction: 'BUY' as const },
-      { broker: 'Morgan Stanley Prime Brokerage', netLot: Math.round(baseShares * 0.12), sharePct: 11.2, cost: Number((currentPrice * 0.996).toFixed(2)), direction: 'BUY' as const },
-      { broker: 'Jane Street Capital LLC', netLot: Math.round(baseShares * 0.08), sharePct: 7.8, cost: Number((currentPrice * 0.999).toFixed(2)), direction: 'BUY' as const }
-    ];
-
-    const sellBase = Math.round(baseShares * 0.88);
-    const topSellers = [
-      { broker: 'Susquehanna International Group (SIG)', netLot: -Math.round(sellBase * 0.32), sharePct: 28.5, cost: Number((currentPrice * 1.004).toFixed(2)), direction: 'SELL' as const },
-      { broker: 'Two Sigma Securities LLC', netLot: -Math.round(sellBase * 0.25), sharePct: 22.5, cost: Number((currentPrice * 1.002).toFixed(2)), direction: 'SELL' as const },
-      { broker: 'BofA Securities US Prime', netLot: -Math.round(sellBase * 0.19), sharePct: 17.0, cost: Number((currentPrice * 1.006).toFixed(2)), direction: 'SELL' as const },
-      { broker: 'JPMorgan Prime Brokerage', netLot: -Math.round(sellBase * 0.14), sharePct: 12.5, cost: Number((currentPrice * 0.998).toFixed(2)), direction: 'SELL' as const },
-      { broker: 'UBS Securities LLC', netLot: -Math.round(sellBase * 0.10), sharePct: 9.0, cost: Number((currentPrice * 1.003).toFixed(2)), direction: 'SELL' as const }
-    ];
-
-    const netFirst5 = topBuyers.reduce((a, b) => a + b.netLot, 0) + topSellers.reduce((a, b) => a + b.netLot, 0);
-
-    return res.json({
-      success: true,
-      data: {
-        isUS: true,
-        market: 'US_GLOBAL',
-        title: `${normSym} Kurumsal Sahiplik & Prime Broker / Piyasa Yapıcı Akışı`,
-        subtitle: 'SEC Form 13F kurumsal saklama ve US Tape / FINRA likidite akışı',
-        ownershipTitle: 'Kurumsal Fon Payı (13F):',
-        ownershipRatio: instRatio,
-        weeklyChange: weeklyChg,
-        monthlyChange: monthlyChg,
-        trend: monthlyChg >= 0 ? 'INCREASING' : 'DECREASING',
-        source: 'SEC Form 13F & FINRA Trace',
-        unit: 'Pay (Adet)',
-        currency: '$',
-        netFirst5,
-        topBuyers,
-        topSellers,
-        topCustodians: [
-          { name: 'Vanguard Group Inc.', sharePercent: 8.95, valueFormatted: '$285 Mr' },
-          { name: 'BlackRock Inc. (iShares)', sharePercent: 7.80, valueFormatted: '$248 Mr' },
-          { name: 'State Street Global Advisors', sharePercent: 4.60, valueFormatted: '$146 Mr' },
-          { name: 'Fidelity Management & Research (FMR)', sharePercent: 4.25, valueFormatted: '$135 Mr' },
-          { name: 'Geode Capital Management', sharePercent: 2.10, valueFormatted: '$67 Mr' }
-        ]
-      }
-    });
-  }
-
-  // BIST Varlıkları için Takasbank & Aracı Kurum Dağılımı (AKD)
-  // Belirli hisselere özel gerçekçi yabancı takas oranları
-  const bistForeignMap: Record<string, number> = {
-    'THYAO': 36.40,
-    'BIMAS': 52.10,
-    'TUPRS': 44.80,
-    'FROTO': 41.50,
-    'AKBNK': 48.20,
-    'GARAN': 38.50,
-    'YKBNK': 42.10,
-    'ISCTR': 39.80,
-    'ASELS': 29.80,
-    'EREGL': 26.40,
-    'SISE': 28.50,
-    'KCHOL': 56.40,
-    'SAHOL': 49.20,
-    'PGSUS': 38.20,
-    'TAVHL': 58.50,
-    'MGROS': 46.80,
-    'SOKM': 34.20
-  };
-
-  const foreignRatio = bistForeignMap[normSym] || Number((20.0 + (charCodeSum % 35) * 0.8).toFixed(2));
-  const weeklyChg = Number(((charCodeSum % 5) * 0.45 - 0.6).toFixed(2));
-  const monthlyChg = Number(((charCodeSum % 9) * 0.65 - 0.8).toFixed(2));
-
-  const baseVolumeLot = Math.round(1800000 + (charCodeSum % 15) * 150000);
-  const topBuyers = [
-    { broker: 'Bank of America Yatırım', netLot: Math.round(baseVolumeLot * 0.36), sharePct: 34.2, cost: Number((currentPrice * 0.995).toFixed(2)), direction: 'BUY' as const },
-    { broker: 'QNB Finansinvest', netLot: Math.round(baseVolumeLot * 0.21), sharePct: 19.6, cost: Number((currentPrice * 0.998).toFixed(2)), direction: 'BUY' as const },
-    { broker: 'İş Yatırım Menkul', netLot: Math.round(baseVolumeLot * 0.15), sharePct: 14.5, cost: Number((currentPrice * 1.002).toFixed(2)), direction: 'BUY' as const },
-    { broker: 'Garanti BBVA Yatırım', netLot: Math.round(baseVolumeLot * 0.12), sharePct: 11.4, cost: Number((currentPrice * 0.991).toFixed(2)), direction: 'BUY' as const },
-    { broker: 'Deniz Yatırım', netLot: Math.round(baseVolumeLot * 0.08), sharePct: 7.6, cost: Number((currentPrice * 0.997).toFixed(2)), direction: 'BUY' as const }
-  ];
-
-  const sellBaseLot = Math.round(baseVolumeLot * 0.86);
-  const topSellers = [
-    { broker: 'Yapı Kredi Yatırım', netLot: -Math.round(sellBaseLot * 0.30), sharePct: 29.8, cost: Number((currentPrice * 1.006).toFixed(2)), direction: 'SELL' as const },
-    { broker: 'Tacirler Yatırım', netLot: -Math.round(sellBaseLot * 0.20), sharePct: 19.7, cost: Number((currentPrice * 1.003).toFixed(2)), direction: 'SELL' as const },
-    { broker: 'Vakıf Yatırım', netLot: -Math.round(sellBaseLot * 0.15), sharePct: 15.0, cost: Number((currentPrice * 0.999).toFixed(2)), direction: 'SELL' as const },
-    { broker: 'Ak Yatırım', netLot: -Math.round(sellBaseLot * 0.13), sharePct: 12.7, cost: Number((currentPrice * 1.008).toFixed(2)), direction: 'SELL' as const },
-    { broker: 'Ziraat Yatırım', netLot: -Math.round(sellBaseLot * 0.08), sharePct: 8.0, cost: Number((currentPrice * 1.001).toFixed(2)), direction: 'SELL' as const }
-  ];
-
-  const netFirst5 = topBuyers.reduce((a, b) => a + b.netLot, 0) + topSellers.reduce((a, b) => a + b.netLot, 0);
-
-  res.json({
-    success: true,
-    data: {
-      isUS: false,
-      market: 'BIST',
-      title: `${normSym} Yabancı Takas & Kurum Dağılımı (AKD)`,
-      subtitle: 'Takasbank saklama ve aracı kurum net işlem dengesi',
-      ownershipTitle: 'Yabancı Payı (Takas):',
-      ownershipRatio: foreignRatio,
-      weeklyChange: weeklyChg,
-      monthlyChange: monthlyChg,
-      trend: monthlyChg >= 0 ? 'INCREASING' : 'DECREASING',
-      source: 'MKK & Takasbank',
-      unit: 'Lot',
-      currency: '₺',
-      netFirst5,
-      topBuyers,
-      topSellers,
-      topCustodians: [
-        { name: 'Citibank Yabancı A.Ş.', sharePercent: Number((foreignRatio * 0.58).toFixed(1)), valueFormatted: `%${(foreignRatio * 0.58).toFixed(1)}` },
-        { name: 'Deutsche Bank A.Ş. (Yabancı)', sharePercent: Number((foreignRatio * 0.32).toFixed(1)), valueFormatted: `%${(foreignRatio * 0.32).toFixed(1)}` },
-        { name: 'Emeklilik Yatırım Fonları', sharePercent: 14.5, valueFormatted: '%14.5' },
-        { name: 'Yatırım Fonları', sharePercent: 12.8, valueFormatted: '%12.8' },
-        { name: 'Diğer / Bireysel Yerli Yatırımcı', sharePercent: Number((100 - foreignRatio - 27.3).toFixed(1)), valueFormatted: `%${(100 - foreignRatio - 27.3).toFixed(1)}` }
-      ]
+  if (localFinanceApi.isConfigured()) {
+    try {
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.ownership) return res.json({ success: true, data: aggData.ownership });
+      if (aggData?.data?.ownership) return res.json({ success: true, data: aggData.data.ownership });
+      if (aggData?.brokerage) return res.json({ success: true, data: aggData.brokerage });
+      if (aggData?.data?.brokerage) return res.json({ success: true, data: aggData.data.brokerage });
+    } catch (e) {
+      console.error('[stockDetailRouter] brokerage error:', e);
     }
-  });
+  }
+  return res.json({ success: true, data: { isUS: false, market: 'BIST', ownershipRatio: 0, topBuyers: [], topSellers: [], topCustodians: [], netFirst5: 0 }});
 });
-
 // ==========================================
 // 5. FON POZİSYONLARI (FAZ 2: Smart Money)
 // ==========================================
 stockDetailRouter.get('/:symbol/funds', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-  const normSym = symbol.replace('.IS', '').replace('^', '').toUpperCase();
-  const profile = getStockKnowledgeProfile(symbol);
-
-  const isGlobalOrUS = ['AAPL', 'NVDA', 'MSFT', 'TSLA', 'AMZN', 'GOOGL', 'GOOG', 'META', 'AMD', 'INTC', 'NFLX', 'SPY', 'QQQ', 'DIA', 'IWM', 'V', 'MA', 'JPM', 'BAC', 'DIS', 'ORCL', 'CRM', 'AVGO', 'QCOM', 'NDX', 'NASDAQ', 'NASDAQ100', '^NDX', '^GSPC'].includes(normSym) ||
-    !symbol.includes('.IS') && (normSym.length <= 4 && !['THYAO', 'ASELS', 'EREGL', 'FROTO', 'TUPRS', 'AKBNK', 'GARAN', 'YKBNK', 'ISCTR', 'BIMAS', 'KCHOL', 'SAHOL', 'SISE', 'PETKM', 'TCELL', 'SOKM', 'MGROS', 'PGSUS', 'TAVHL', 'TTRAK', 'TOASO', 'ARCLK', 'ENKAI', 'KOZAL'].includes(normSym));
-
-  if (isGlobalOrUS) {
-    // ABD / Küresel Kurumsal Fonlar & ETF'ler
-    const summary: FundPositionSummary = {
-      ticker: normSym,
-      periodDate: '2026-08-28',
-      holdingFundCount: 4280,
-      holdingFundCountChange: 142,
-      totalPositionTRY: 98000000000000,
-      totalPositionUSD: 2450000000000,
-      sharePercentOfCompany: 74.5,
-      fundsIncreasingWeight: 2640,
-      fundsDecreasingWeight: 1120,
-      newEntries: 84,
-      fullExits: 16
-    };
-
-    const fundRows: FundDynamicsRow[] = [
-      {
-        fundCode: 'QQQ',
-        fundName: 'Invesco QQQ Trust Series 1 ETF',
-        category: 'ETF / Endeks Fonu',
-        previousWeight: 8.4,
-        currentWeight: 8.9,
-        netWeightChange: 0.5,
-        positionValueTRY: 1150000000000,
-        positionValueUSD: 28500000000,
-        managementCompany: 'Invesco Capital Management'
-      },
-      {
-        fundCode: 'SPY',
-        fundName: 'SPDR S&P 500 ETF Trust',
-        category: 'ETF / Mega Cap',
-        previousWeight: 6.8,
-        currentWeight: 7.2,
-        netWeightChange: 0.4,
-        positionValueTRY: 980000000000,
-        positionValueUSD: 24200000000,
-        managementCompany: 'State Street Global Advisors'
-      },
-      {
-        fundCode: 'VGT',
-        fundName: 'Vanguard Information Technology ETF',
-        category: 'Sektörel Teknoloji',
-        previousWeight: 14.5,
-        currentWeight: 16.2,
-        netWeightChange: 1.7,
-        positionValueTRY: 740000000000,
-        positionValueUSD: 18400000000,
-        managementCompany: 'The Vanguard Group'
-      },
-      {
-        fundCode: 'FCNTX',
-        fundName: 'Fidelity Contrafund',
-        category: 'Aktif Hisse / Büyüme',
-        previousWeight: 5.4,
-        currentWeight: 5.8,
-        netWeightChange: 0.4,
-        positionValueTRY: 420000000000,
-        positionValueUSD: 10500000000,
-        managementCompany: 'Fidelity Management & Research'
-      },
-      {
-        fundCode: 'IVV',
-        fundName: 'iShares Core S&P 500 ETF',
-        category: 'ETF / Endeks Fonu',
-        previousWeight: 6.2,
-        currentWeight: 6.5,
-        netWeightChange: 0.3,
-        positionValueTRY: 860000000000,
-        positionValueUSD: 21500000000,
-        managementCompany: 'BlackRock Fund Advisors'
-      }
-    ];
-
-    return res.json({
-      success: true,
-      data: {
-        summary,
-        funds: fundRows
-      }
-    });
-  }
-
-  // BIST Varlıkları için TEFAS Fonları
-  let liveFundRows: FundDynamicsRow[] = [];
   if (localFinanceApi.isConfigured()) {
     try {
-      const topFunds = await localFinanceApi.getFunds(50);
-      if (topFunds && Array.isArray(topFunds) && topFunds.length > 0) {
-        liveFundRows = topFunds.slice(0, 8).map((f: any, idx: number) => {
-          const aum = Number(f.market_cap) || 1000000000;
-          const weight = Number((4.0 + (idx * 0.7) % 5.5).toFixed(1));
-          const prevWeight = Number(Math.max(1.0, weight - (idx % 2 === 0 ? 0.8 : -0.5)).toFixed(1));
-          return {
-            fundCode: f.code || `FND${idx}`,
-            fundName: f.title || `${f.code} Yatırım Fonu`,
-            category: f.kind === 'HISSE' ? 'Hisse Senedi' : 'Değişken',
-            previousWeight: prevWeight,
-            currentWeight: weight,
-            netWeightChange: Number((weight - prevWeight).toFixed(1)),
-            positionValueTRY: Math.round(aum * (weight / 100)),
-            positionValueUSD: Math.round((aum * (weight / 100)) / 38.5),
-            managementCompany: f.founder || 'Portföy Yönetimi A.Ş.'
-          };
-        });
-      }
-    } catch (err) {
-      console.warn(`[stockDetailRouter] Live funds error for ${symbol}:`, err);
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.funds) return res.json({ success: true, data: aggData.funds });
+      if (aggData?.data?.funds) return res.json({ success: true, data: aggData.data.funds });
+    } catch (e) {
+      console.error('[stockDetailRouter] funds error:', e);
     }
   }
-
-  if (liveFundRows.length === 0) {
-    return res.json({
-      success: true,
-      data: {
-        summary: {
-          ticker: symbol,
-          periodDate: 'NoN',
-          holdingFundCount: 0,
-          holdingFundCountChange: 0,
-          totalPositionTRY: 0,
-          totalPositionUSD: 0,
-          sharePercentOfCompany: 0,
-          fundsIncreasingWeight: 0,
-          fundsDecreasingWeight: 0,
-          newEntries: 0,
-          fullExits: 0
-        },
-        funds: []
-      }
-    });
-  }
-
-  const summary: FundPositionSummary = {
-    ticker: symbol,
-    periodDate: new Date().toISOString().split('T')[0],
-    holdingFundCount: liveFundRows.length,
-    holdingFundCountChange: 0,
-    totalPositionTRY: liveFundRows.reduce((acc, f) => acc + f.positionValueTRY, 0),
-    totalPositionUSD: liveFundRows.reduce((acc, f) => acc + f.positionValueUSD, 0),
-    sharePercentOfCompany: 0,
-    fundsIncreasingWeight: 0,
-    fundsDecreasingWeight: 0,
-    newEntries: 0,
-    fullExits: 0
-  };
-
-  return res.json({
-    success: true,
-    data: {
-      summary,
-      funds: liveFundRows
-    }
-  });
+  return res.json({ success: true, data: { summary: { totalFundsHolding: 0, totalSharesInFunds: 0, totalValueTRY: 0, estimatedFreeFloatPct: 0 }, funds: [] }});
 });
-
 // ==========================================
 // 6. MEVSİMSELLİK (Seasonality Matrix 11 Years)
 // ==========================================
 stockDetailRouter.get('/:symbol/seasonality', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-  const mockFallbackEnabled = await isMockFallbackEnabled();
-  if (!mockFallbackEnabled) {
-    return res.json({
-      success: true,
-      data: {
-        ticker: symbol,
-        years: [],
-        monthlyReturns: [],
-        monthlyStats: []
-      },
-      message: 'NoN: Güvenli yedekleme kapalı.'
-    });
-  }
-
-  const years = [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016];
-  const monthNames = ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'];
-
-  const monthlyReturns: { year: number; month: number; returnPct: number }[] = [];
-
-  // BIST ve küresel hisse piyasası için tarihsel gerçekleşmiş ortalama aylık getiriler
-  const historicalAverages = [3.8, 1.9, 2.4, 4.2, -1.1, 1.5, 2.8, 3.4, 1.2, 2.6, 5.1, 3.9];
-
-  years.forEach((yr) => {
-    for (let m = 1; m <= 12; m++) {
-      if (yr === 2026 && m > 8) continue; // 2026 henüz Ağustos'ta
-      const baseTendency = historicalAverages[m - 1] ?? 1.5;
-      const yearWeight = (yr - 2016) / 10;
-      const returnPct = Number((baseTendency * (0.8 + 0.4 * yearWeight)).toFixed(2));
-      monthlyReturns.push({ year: yr, month: m, returnPct });
+  if (localFinanceApi.isConfigured()) {
+    try {
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.seasonality) return res.json({ success: true, data: aggData.seasonality });
+      if (aggData?.data?.seasonality) return res.json({ success: true, data: aggData.data.seasonality });
+    } catch (e) {
+      console.error('[stockDetailRouter] seasonality error:', e);
     }
-  });
-
-  const monthlyStats = monthNames.map((name, idx) => {
-    const m = idx + 1;
-    const allMReturns = monthlyReturns.filter(r => r.month === m).map(r => r.returnPct);
-    const positiveCount = allMReturns.filter(v => v > 0).length;
-    const winRate = Number(((positiveCount / allMReturns.length) * 100).toFixed(1));
-    const avgReturn = Number((allMReturns.reduce((a, b) => a + b, 0) / allMReturns.length).toFixed(2));
-    
-    const sorted = [...allMReturns].sort((a, b) => a - b);
-    const mid = Math.floor(sorted.length / 2);
-    const medianReturn = sorted.length % 2 !== 0 ? sorted[mid] : Number(((sorted[mid - 1] + sorted[mid]) / 2).toFixed(2));
-
-    const records = monthlyReturns.filter(r => r.month === m);
-    records.sort((a, b) => b.returnPct - a.returnPct);
-
-    return {
-      month: m,
-      monthName: name,
-      avgReturn,
-      medianReturn,
-      winRate,
-      bestYear: { year: records[0]?.year || 2024, returnPct: records[0]?.returnPct || 0 },
-      worstYear: { year: records[records.length - 1]?.year || 2022, returnPct: records[records.length - 1]?.returnPct || 0 }
-    };
-  });
-
-  const seasonalityData: SeasonalityData = {
-    ticker: symbol,
-    years,
-    monthlyReturns,
-    monthlyStats
-  };
-
-  res.json({ success: true, data: seasonalityData });
+  }
+  return res.json({ success: true, data: { monthlyAverages: [], analysisText: 'Mevsimsellik analizi bulunamadı.', optimalBuyingMonths: [], optimalSellingMonths: [] }});
 });
-
 // ==========================================
 // 7. AYARLANABİLİR TEKNİK ANALİZ MOTORU (Parametric Technical Engine)
 // ==========================================
@@ -809,29 +382,17 @@ stockDetailRouter.post('/:symbol/interpret-signals', async (req, res) => {
 // ==========================================
 stockDetailRouter.get('/:symbol/fairvalue', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-  const liveQuote = await getLiveQuoteForSymbol(symbol);
-  const currentPrice = liveQuote?.currentPrice || (symbol === 'THYAO' ? 318.50 : symbol === 'AKBNK' ? 58.70 : symbol === 'FROTO' ? 1125.00 : 25.00);
-  const fairValue = Number((currentPrice * 1.34).toFixed(2));
-  const upside = Number((((fairValue - currentPrice) / currentPrice) * 100).toFixed(1));
-
-  const result: FairValueEstimate = {
-    ticker: symbol,
-    currentPrice,
-    fairValueEstimate: fairValue,
-    upsidePotentialPct: upside,
-    methodology: 'İndirgenmiş Nakit Akımları (DCF %50) + Sektörel Çarpan Ortalamaları (F/K & FD/FAVÖK %50)',
-    confidenceScore: 88,
-    valuationModels: [
-      { modelName: 'İndirgenmiş Nakit Akımları (DCF Modeli)', targetPrice: Number((currentPrice * 1.38).toFixed(2)), weight: 50 },
-      { modelName: 'Tarihsel Çarpan İskontosu Modeli', targetPrice: Number((currentPrice * 1.32).toFixed(2)), weight: 30 },
-      { modelName: 'Sektör Akran Karşılaştırma Modeli', targetPrice: Number((currentPrice * 1.28).toFixed(2)), weight: 20 }
-    ],
-    generatedDate: '2026-08-28'
-  };
-
-  res.json({ success: true, data: result });
+  if (localFinanceApi.isConfigured()) {
+    try {
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.fairvalue) return res.json({ success: true, data: aggData.fairvalue });
+      if (aggData?.data?.fairvalue) return res.json({ success: true, data: aggData.data.fairvalue });
+    } catch (e) {
+      console.error('[stockDetailRouter] fairvalue error:', e);
+    }
+  }
+  return res.json({ success: true, data: { ticker: symbol, fairValueEstimate: 0, upsidePotentialPct: 0, methodology: 'NoN', valuationModels: [] }});
 });
-
 // ==========================================
 // 9. 18 KRİTERLİ FİNANSAL KARNE (Financial Scorecard)
 // ==========================================
@@ -926,156 +487,36 @@ stockDetailRouter.get('/:symbol/scorecard', async (req, res) => {
 // ==========================================
 stockDetailRouter.get('/:symbol/subsidiaries', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
-  try {
-    if (localFinanceApi.isConfigured()) {
-      const companyData = await localFinanceApi.getCompanyAllData(symbol);
-      if (companyData) {
-        const shareholders = companyData.shareholders || [];
-        const subsidiaries = companyData.subsidiaries || [];
-        const fin = companyData.financials?.[0] || {};
-        const comp = companyData.company || {};
-
-        let paidCap = Number(fin.paid_capital) || (symbol === 'THYAO' ? 1380000000 : symbol === 'AKBNK' ? 5200000000 : 2500000000);
-
-        let mappedShareholders = shareholders.map((s: any) => {
-          const ratio = Number(s.share_ratio_percent) || 0;
-          return {
-            name: s.holder_name || 'Hissedar',
-            sharePercent: ratio,
-            nominalValueTRY: Number(s.shares_amount) || Math.round(paidCap * (ratio / 100)),
-            votingPowerPercent: Number(s.voting_power_percent) || ratio,
-            isFreeFloat: s.holder_type === 'HALKA_ACIK' || String(s.holder_name || '').toLowerCase().includes('halka')
-          };
-        });
-
-        // Halka açık pay hesaplama
-        const totalMajor = mappedShareholders.filter((s: any) => !s.isFreeFloat).reduce((acc: number, s: any) => acc + s.sharePercent, 0);
-        const freeFloatRatio = Number((100 - totalMajor).toFixed(2));
-
-        if (!mappedShareholders.some((s: any) => s.isFreeFloat) && freeFloatRatio > 0) {
-          mappedShareholders.push({
-            name: 'Diğer / Halka Açık Kısım (Borsa İstanbul)',
-            sharePercent: freeFloatRatio,
-            nominalValueTRY: Math.round(paidCap * (freeFloatRatio / 100)),
-            votingPowerPercent: freeFloatRatio,
-            isFreeFloat: true
-          });
-        }
-
-        const mappedSubsidiaries = subsidiaries.map((sub: any) => ({
-          companyName: sub.name || 'Bağlı Ortaklık',
-          ownershipPercent: Number(sub.share_percent) || 100.0,
-          fieldOfActivity: sub.activity || comp.sector || 'Faaliyet ve Yatırım',
-          country: sub.country || 'Türkiye',
-          totalAssetsTRY: Number(fin.total_assets) ? Math.round(Number(fin.total_assets) * 0.15) : undefined,
-          netIncomeTRY: Number(fin.net_profit) ? Math.round(Number(fin.net_profit) * 0.15) : undefined,
-          isConsolidated: sub.relation_type === 'subsidiary' || true
-        }));
-
-        const liveSubsidiaryData: CompanySubsidiariesData = {
-          ticker: symbol,
-          freeFloatRatio: freeFloatRatio > 0 ? freeFloatRatio : (symbol === 'THYAO' ? 50.88 : 35.0),
-          paidCapitalTRY: paidCap,
-          registeredCapitalCeilingTRY: 10000000000,
-          shareholders: mappedShareholders.length > 0 ? mappedShareholders : [
-            {
-              name: `${comp.company_name || symbol} Ana Hissedar Grubu`,
-              sharePercent: 52.5,
-              nominalValueTRY: Math.round(paidCap * 0.525),
-              votingPowerPercent: 52.5,
-              isFreeFloat: false
-            },
-            {
-              name: 'Diğer / Halka Açık Kısım (Borsa İstanbul)',
-              sharePercent: 47.5,
-              nominalValueTRY: Math.round(paidCap * 0.475),
-              votingPowerPercent: 47.5,
-              isFreeFloat: true
-            }
-          ],
-          subsidiaries: mappedSubsidiaries.length > 0 ? mappedSubsidiaries : [
-            {
-              companyName: `${symbol} Yatırım & İştirak A.Ş.`,
-              ownershipPercent: 100.0,
-              fieldOfActivity: comp.sector || 'Sektörel Operasyonlar',
-              country: 'Türkiye',
-              isConsolidated: true
-            }
-          ],
-          operationalData: {
-            sectorType: comp.sector || 'Sanayi & Hizmet',
-            metrics: [
-              { metricName: 'Kapasite Kullanım Oranı (KKO)', currentValue: '%86.4', previousValue: '%82.1', unit: '% Oran', changePct: 5.2, period: '2026 Çeyrek' },
-              { metricName: 'Toplam Operasyon Hacmi', currentValue: 'Yüksek Verimlilik', previousValue: 'Normal', unit: 'Endeks', changePct: 8.5, period: '2026/06' }
-            ],
-            exportSharePct: 45.0,
-            capacityUtilizationRatePct: 86.4,
-            totalEmployees: 12500,
-            productionCapacitySummary: `${symbol}, modern entegre tesisleri ve sürdürülebilir yönetim yapısıyla sektöründe yüksek katma değer üretmektedir.`
-          }
-        };
-
-        return res.json({ success: true, data: liveSubsidiaryData });
-      }
+  if (localFinanceApi.isConfigured()) {
+    try {
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.subsidiaries) return res.json({ success: true, data: aggData.subsidiaries });
+      if (aggData?.data?.subsidiaries) return res.json({ success: true, data: aggData.data.subsidiaries });
+    } catch (e) {
+      console.error('[stockDetailRouter] subsidiaries error:', e);
     }
-  } catch (err) {
-    console.warn(`[stockDetailRouter] Subsidiaries fetch error for ${symbol}:`, err);
   }
-
-  // Return empty / NoN if Local API does not have subsidiaries & ownership data
-  return res.json({
-    success: true,
-    data: {
-      ticker: symbol,
-      freeFloatRatio: 0,
-      paidCapitalTRY: 0,
-      registeredCapitalCeilingTRY: 0,
-      shareholders: [],
-      subsidiaries: [],
-      operationalData: {
-        sectorType: 'NoN',
-        metrics: [],
-        exportSharePct: 0,
-        capacityUtilizationRatePct: 0,
-        totalEmployees: 0,
-        productionCapacitySummary: 'NoN: Yerel API üzerinden iştirak ve kapasite verisi bulunamadı.'
-      }
-    }
-  });
+  return res.json({ success: true, data: { ticker: symbol, freeFloatRatio: 0, paidCapitalTRY: 0, registeredCapitalCeilingTRY: 0, shareholders: [], subsidiaries: [], operationalData: { sectorType: 'NoN', metrics: [], exportSharePct: 0, capacityUtilizationRatePct: 0, totalEmployees: 0, productionCapacitySummary: 'NoN' } }});
 });
-
 // ==========================================
 // 11. SEKTÖREL RAKİP KARŞILAŞTIRMA (Peer Comparison)
 // ==========================================
 stockDetailRouter.get('/:symbol/peers', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
-  // Pipeline'dan sektör akran karşılaştırmasını doğrudan al
   if (localFinanceApi.isConfigured()) {
     try {
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.peers) return res.json({ success: true, data: aggData.peers });
+      if (aggData?.data?.peers) return res.json({ success: true, data: aggData.data.peers });
+      
       const remotePeers = await localFinanceApi.getSectorComparison(symbol);
-      if (remotePeers && remotePeers.peers && remotePeers.peers.length > 0) {
-        return res.json({ success: true, data: remotePeers });
-      }
+      if (remotePeers && remotePeers.peers && remotePeers.peers.length > 0) return res.json({ success: true, data: remotePeers });
     } catch (e) {
-      console.error('[stockDetailRouter] remote peers error:', e);
+      console.error('[stockDetailRouter] peers error:', e);
     }
   }
-
-  return res.json({
-    success: true,
-    data: {
-      targetTicker: symbol,
-      sectorName: 'NoN',
-      peers: [],
-      sectorAverage: { pe: 0, pb: 0, evebitda: 0, netMargin: 0, roe: 0, currentRatio: 0, netDebtToEbitda: 0 },
-      valuationAssessment: { isUndervaluedVsPeers: false, strongestMetric: 'NoN', weakestMetric: 'NoN', summary: 'NoN: Yerel API üzerinden sektör karşılaştırması bulunamadı.' }
-    }
-  });
+  return res.json({ success: true, data: { targetTicker: symbol, sectorName: 'NoN', peers: [], sectorAverage: { pe: 0, pb: 0, evebitda: 0, netMargin: 0, roe: 0, currentRatio: 0, netDebtToEbitda: 0 }, valuationAssessment: { isUndervaluedVsPeers: false, strongestMetric: 'NoN', weakestMetric: 'NoN', summary: 'NoN' } }});
 });
-
-
 // ==========================================
 // 8. BUFFETT DEĞERLEMESİ (Value Investing)
 // ==========================================
@@ -1083,57 +524,36 @@ import { calculateBuffettValuation } from '../signalEngine/buffettValuation';
 
 stockDetailRouter.get('/:symbol/buffett', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
-  // Pipeline'dan doğrudan buffett analizini al
   if (localFinanceApi.isConfigured()) {
     try {
       const remoteBuffett = await localFinanceApi.getBuffettAnalysis(symbol);
-      if (remoteBuffett && remoteBuffett.results) {
-        return res.json({ success: true, data: remoteBuffett });
-      }
+      if (remoteBuffett && (remoteBuffett.results || remoteBuffett.data)) return res.json({ success: true, data: remoteBuffett });
+      
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.buffett) return res.json({ success: true, data: aggData.buffett });
+      if (aggData?.data?.buffett) return res.json({ success: true, data: aggData.data.buffett });
     } catch (e) {
-      console.error('[stockDetailRouter] remote buffett error:', e);
+      console.error('[stockDetailRouter] buffett error:', e);
     }
   }
-
-  return res.json({
-    success: true,
-    data: null,
-    message: 'NoN: Yerel API üzerinden Buffett analizi bulunamadı.'
-  });
+  return res.json({ success: true, data: null, message: 'NoN' });
 });
-
 // ==========================================
 // 9. ANALİST DEĞERLENDİRMELERİ
 // ==========================================
 stockDetailRouter.get('/:symbol/analyst', async (req, res) => {
   const symbol = req.params.symbol.toUpperCase();
-
   if (localFinanceApi.isConfigured()) {
     try {
       const remoteAnalyst = await localFinanceApi.getAnalystData(symbol);
-      if (remoteAnalyst && remoteAnalyst.targetPriceMean) {
-        return res.json({ success: true, data: remoteAnalyst });
-      }
+      if (remoteAnalyst && remoteAnalyst.targetPriceMean) return res.json({ success: true, data: remoteAnalyst });
+      
+      const aggData = await localFinanceApi.getAggregatedData(symbol);
+      if (aggData?.analyst) return res.json({ success: true, data: aggData.analyst });
+      if (aggData?.data?.analyst) return res.json({ success: true, data: aggData.data.analyst });
     } catch (e) {
-      console.error('[stockDetailRouter] remote analyst error:', e);
+      console.error('[stockDetailRouter] analyst error:', e);
     }
   }
-
-  return res.json({
-    success: true,
-    data: {
-      ticker: symbol,
-      rating: 'NoN',
-      targetPriceMean: 0,
-      targetPriceHigh: 0,
-      targetPriceLow: 0,
-      currentPrice: 0,
-      upsidePotential: 0,
-      epsEstimates: { currentYear: 0, nextYear: 0 },
-      growthForecast: 0,
-      analystCount: 0
-    },
-    message: 'NoN: Yerel API üzerinden analist hedef fiyatı bulunamadı.'
-  });
+  return res.json({ success: true, data: { ticker: symbol, rating: 'NoN', targetPriceMean: 0, targetPriceHigh: 0, targetPriceLow: 0, currentPrice: 0, upsidePotential: 0, epsEstimates: { currentYear: 0, nextYear: 0 }, growthForecast: 0, analystCount: 0 }, message: 'NoN' });
 });
