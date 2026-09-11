@@ -121,9 +121,13 @@ export const FinancialAcademySection: React.FC = () => {
   const uiCategories = Object.keys(categoryMap);
 
   const filteredTopics = topics.filter(t => {
-    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase()) || 
-                          t.shortDescription.toLowerCase().includes(search.toLowerCase()) ||
-                          t.interpretationGuide.toLowerCase().includes(search.toLowerCase());
+    if (!t) return false;
+    const q = (search || '').trim().toLowerCase();
+    const title = (t.title || '').toLowerCase();
+    const shortDesc = (t.shortDescription || '').toLowerCase();
+    const guide = (t.interpretationGuide || '').toLowerCase();
+
+    const matchesSearch = !q || title.includes(q) || shortDesc.includes(q) || guide.includes(q);
     
     const mappedCat = categoryMap[selectedCategory];
     const matchesCat = mappedCat === 'TÜMÜ' || t.category === mappedCat;

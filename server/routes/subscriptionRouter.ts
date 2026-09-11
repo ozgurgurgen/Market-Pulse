@@ -47,8 +47,8 @@ subscriptionRouter.post('/validate-coupon', async (req: Request, res: Response) 
       return res.status(400).json({ valid: false, message: 'Lütfen geçerli bir indirim kodu giriniz.' });
     }
 
-    const price = typeof originalPriceTRY === 'number' ? originalPriceTRY : 0;
-    const targetTier: SubscriptionTier = tier || 'pro';
+    const price = typeof originalPriceTRY === 'number' ? originalPriceTRY : undefined;
+    const targetTier: SubscriptionTier | undefined = tier && tier !== 'all' ? tier : undefined;
 
     const result = await validateCoupon(code, targetTier, price);
     return res.json({ success: true, ...result });
@@ -128,22 +128,22 @@ subscriptionRouter.get('/plans', async (req: Request, res: Response) => {
 subscriptionRouter.post('/request-upgrade', async (req: Request, res: Response) => {
   try {
     const uid = req.user?.uid || 'guest_user';
-    const { requestedTier, note, billingCycle } = req.body || {};
+    const { requestedTier, note, billingCycle, couponCode, discountedPriceTRY } = req.body || {};
 
     const validTiers = Object.keys(SUBSCRIPTION_PLANS);
     if (!requestedTier || typeof requestedTier !== 'string' || !validTiers.includes(requestedTier)) {
       return res.status(400).json({ error: 'Geçersiz veya eksik abonelik paketi (requestedTier).' });
     }
 
-    if (billingCycle && !['monthly', 'annually'].includes(billingCycle)) {
-      return res.status(400).json({ error: 'Geçersiz faturalandırma dönemi (billingCycle).' });
-    }
+    const normalizedCycle = (billingCycle === 'annual' || billingCycle === 'annually') ? 'annual' : 'monthly';
 
     const requestRecord = {
       uid,
       email: req.user?.email || 'Bilinmiyor',
       requestedTier,
-      billingCycle: billingCycle || 'monthly',
+      billingCycle: normalizedCycle,
+      couponCode: typeof couponCode === 'string' ? couponCode.trim().toUpperCase() : null,
+      discountedPriceTRY: typeof discountedPriceTRY === 'number' ? discountedPriceTRY : null,
       note: typeof note === 'string' ? note.slice(0, 500) : '',
       status: 'pending',
       createdAt: new Date().toISOString(),
@@ -158,7 +158,7 @@ subscriptionRouter.post('/request-upgrade', async (req: Request, res: Response) 
     logAudit(
       'UPGRADE_REQUEST_SUBMITTED', 
       uid, 
-      `User requested upgrade to ${requestedTier} (${billingCycle})`
+      `User requested upgrade to ${requestedTier} (${normalizedCycle})${couponCode ? ` with coupon ${couponCode}` : ''}`
     );
 
     return res.json({

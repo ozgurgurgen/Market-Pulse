@@ -70,9 +70,12 @@ export const FundPositionsTab: React.FC<FundPositionsTabProps> = ({ symbol }) =>
 
   const filteredFunds = funds
     .filter(f => {
-      const matchQuery = f.fundCode.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                         f.fundName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         f.managementCompany.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!f) return false;
+      const q = (searchQuery || '').trim().toLowerCase();
+      const code = (f.fundCode || '').toLowerCase();
+      const name = (f.fundName || '').toLowerCase();
+      const mgt = (f.managementCompany || '').toLowerCase();
+      const matchQuery = !q || code.includes(q) || name.includes(q) || mgt.includes(q);
       const matchCat = selectedCategory === 'ALL' || f.category === selectedCategory;
       return matchQuery && matchCat;
     })

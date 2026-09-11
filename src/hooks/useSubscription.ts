@@ -19,6 +19,7 @@ export interface UseSubscriptionReturn {
   subscription: UserSubscription;
   usage: UserUsage;
   plan: SubscriptionPlanConfig;
+  plans: Record<SubscriptionTier, SubscriptionPlanConfig>;
   isAdmin: boolean;
   canAccess: (feature: keyof SubscriptionPlanLimits) => boolean;
   isFeatureLocked: (feature: keyof SubscriptionPlanLimits) => boolean;
@@ -160,6 +161,7 @@ export function useSubscription(): UseSubscriptionReturn {
     subscription,
     usage,
     plan,
+    plans: plansMap,
     isAdmin,
     canAccess,
     isFeatureLocked,

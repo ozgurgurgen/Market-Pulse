@@ -84,12 +84,14 @@ export const TefasFundsSection: React.FC<TefasFundsSectionProps> = ({
     // Search query filter
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase().trim();
-      result = result.filter(f => 
-        f.code.toLowerCase().includes(q) ||
-        f.name.toLowerCase().includes(q) ||
-        f.founder.toLowerCase().includes(q) ||
-        f.categoryLabel.toLowerCase().includes(q)
-      );
+      result = result.filter(f => {
+        if (!f) return false;
+        const code = (f.code || '').toLowerCase();
+        const name = (f.name || '').toLowerCase();
+        const founder = (f.founder || '').toLowerCase();
+        const cat = (f.categoryLabel || '').toLowerCase();
+        return code.includes(q) || name.includes(q) || founder.includes(q) || cat.includes(q);
+      });
     }
 
     // Category filter

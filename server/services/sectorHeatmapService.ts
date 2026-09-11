@@ -40,8 +40,36 @@ export async function getSectorsStocksHeatmapData(): Promise<SectorsHeatmapRespo
   // 1. Pipeline / Yerel Finans API adaptörünü dene
   try {
     const apiRes = await localFinanceApi.getV1SectorsStocksHeatmap();
-    if (apiRes && (apiRes.sectors || apiRes.data)) {
-      return apiRes.data || apiRes;
+    const raw = (apiRes && (apiRes.sectors || apiRes.data)) ? (apiRes.data || apiRes) : null;
+    if (raw && Array.isArray(raw.sectors) && raw.sectors.length > 0) {
+      const normalizedSectors: HeatmapSectorGroup[] = raw.sectors.map((sec: any) => ({
+        sectorName: sec.sectorName || sec.name || sec.sector || 'Diğer Sektörler',
+        stockCount: sec.stockCount || (Array.isArray(sec.stocks) ? sec.stocks.length : 0),
+        totalMarketCap: sec.totalMarketCap || 0,
+        totalVolume24h: sec.totalVolume24h || sec.totalVolume || 0,
+        weightedChange24hPercent: sec.weightedChange24hPercent || sec.changePercent || 0,
+        stocks: Array.isArray(sec.stocks) ? sec.stocks : []
+      }));
+
+      const sortedByPerf = [...normalizedSectors].sort((a, b) => b.weightedChange24hPercent - a.weightedChange24hPercent);
+      const topPerf = raw.topPerformingSector?.sectorName 
+        ? raw.topPerformingSector 
+        : (sortedByPerf[0] ? { sectorName: sortedByPerf[0].sectorName, change24hPercent: sortedByPerf[0].weightedChange24hPercent } : { sectorName: 'Bankacılık', change24hPercent: 2.1 });
+      const worstPerf = raw.worstPerformingSector?.sectorName 
+        ? raw.worstPerformingSector 
+        : (sortedByPerf[sortedByPerf.length - 1] ? { sectorName: sortedByPerf[sortedByPerf.length - 1].sectorName, change24hPercent: sortedByPerf[sortedByPerf.length - 1].weightedChange24hPercent } : { sectorName: 'Madencilik', change24hPercent: -1.4 });
+
+      return {
+        totalMarketCap: raw.totalMarketCap || normalizedSectors.reduce((a, b) => a + b.totalMarketCap, 0),
+        totalVolume24h: raw.totalVolume24h || normalizedSectors.reduce((a, b) => a + b.totalVolume24h, 0),
+        advancingCount: raw.advancingCount || 0,
+        decliningCount: raw.decliningCount || 0,
+        unchangedCount: raw.unchangedCount || 0,
+        topPerformingSector: topPerf,
+        worstPerformingSector: worstPerf,
+        sectors: normalizedSectors,
+        generatedAt: raw.generatedAt || new Date().toISOString()
+      };
     }
   } catch (err) {
     console.warn('[sectorHeatmapService] localFinanceApi fetch failed:', err);

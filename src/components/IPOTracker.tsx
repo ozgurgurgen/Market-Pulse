@@ -106,14 +106,18 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
   };
 
   // Distinct sectors
-  const allSectors = Array.from(new Set(listings.map(i => i.sector).filter(Boolean)));
+  const allSectors = Array.from(new Set(listings.map(i => i.sector || 'Genel').filter(Boolean)));
 
   // Filtered listings
   const filteredListings = listings.filter(item => {
-    const matchesSearch = item.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.sector.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesSector = sectorFilter === 'ALL' || item.sector === sectorFilter;
+    if (!item) return false;
+    const q = (searchQuery || '').trim().toLowerCase();
+    const company = (item.companyName || (item as any).name || '').toLowerCase();
+    const ticker = (item.ticker || (item as any).symbol || (item as any).code || '').toLowerCase();
+    const sec = (item.sector || (item as any).industry || '').toLowerCase();
+
+    const matchesSearch = !q || company.includes(q) || ticker.includes(q) || sec.includes(q);
+    const matchesSector = sectorFilter === 'ALL' || (item.sector || 'Genel') === sectorFilter;
     const matchesTab = activeTab === 'all' || 
                        (activeTab === 'sector') || 
                        (activeTab === 'active' && item.status === 'active') ||

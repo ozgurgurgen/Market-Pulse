@@ -18,7 +18,8 @@ import {
   MessageSquare,
   Ticket,
   Percent,
-  Coins
+  Coins,
+  Tag
 } from 'lucide-react';
 import { 
   SUBSCRIPTION_PLANS, 
@@ -35,12 +36,20 @@ interface PricingSectionProps {
   isModalView?: boolean;
 }
 
+interface AppliedCouponInfo {
+  code: string;
+  discountType: 'percentage' | 'fixed_try';
+  discountValue: number;
+  applicableTiers?: SubscriptionTier[];
+  message: string;
+}
+
 export const PricingSection: React.FC<PricingSectionProps> = ({
   onPlanSelected,
   highlightTier,
   isModalView = false,
 }) => {
-  const { tier: currentTier, subscription, usage, isAdmin } = useSubscription();
+  const { tier: currentTier, subscription, usage, isAdmin, plans } = useSubscription();
   const { user } = useAuth();
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
   const [requestStatus, setRequestStatus] = useState<{
@@ -52,20 +61,15 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
   // Coupon Code state
   const [couponInput, setCouponInput] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState<{
-    code: string;
-    discountedPriceTRY: number;
-    discountAmountTRY: number;
-    message: string;
-  } | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<AppliedCouponInfo | null>(null);
   const [couponError, setCouponError] = useState<string | null>(null);
   const [isValidatingCoupon, setIsValidatingCoupon] = useState(false);
 
   const tiers: SubscriptionTier[] = ['free', 'starter', 'pro', 'premium'];
 
-  const handleApplyCoupon = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!couponInput.trim()) return;
+  const handleApplyCouponCode = async (codeToApply: string) => {
+    const code = (codeToApply || '').trim().toUpperCase();
+    if (!code) return;
 
     setIsValidatingCoupon(true);
     setCouponError(null);
@@ -74,6 +78,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       const res = await safeFetchJson<{
         success: boolean;
         valid: boolean;
+        coupon?: {
+          code: string;
+          discountType: 'percentage' | 'fixed_try';
+          discountValue: number;
+          applicableTiers?: SubscriptionTier[];
+          description?: string;
+        };
         discountedPriceTRY: number;
         discountAmountTRY: number;
         message: string;
@@ -81,19 +92,19 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          code: couponInput.trim(),
-          tier: 'pro',
-          originalPriceTRY: SUBSCRIPTION_PLANS.pro.priceMonthlyTRY
+          code
         })
       });
 
-      if (res.ok && res.data?.valid) {
+      if (res.ok && res.data?.valid && res.data.coupon) {
         setAppliedCoupon({
-          code: couponInput.trim().toUpperCase(),
-          discountedPriceTRY: res.data.discountedPriceTRY,
-          discountAmountTRY: res.data.discountAmountTRY,
-          message: res.data.message
+          code: res.data.coupon.code.toUpperCase(),
+          discountType: res.data.coupon.discountType || 'percentage',
+          discountValue: res.data.coupon.discountValue || 20,
+          applicableTiers: res.data.coupon.applicableTiers || ['starter', 'pro', 'premium'],
+          message: res.data.message || `"%${res.data.coupon.discountValue}" indirim kodu uygulandı.`
         });
+        setCouponInput(code);
         setCouponError(null);
       } else {
         setCouponError(res.data?.message || 'Geçersiz veya süresi dolmuş indirim kodu.');
@@ -107,13 +118,28 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
     }
   };
 
-  const handleSelectPlan = async (tier: SubscriptionTier) => {
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+    await handleApplyCouponCode(couponInput);
+  };
+
+  const handleRemoveCoupon = () => {
+    setAppliedCoupon(null);
+    setCouponInput('');
+    setCouponError(null);
+  };
+
+  const handleSelectPlan = async (tier: SubscriptionTier, calculatedPriceTRY: number) => {
     if (tier === currentTier) return;
 
     if (onPlanSelected) {
       onPlanSelected(tier);
       return;
     }
+
+    const currentPlans = plans || SUBSCRIPTION_PLANS;
+    const planConfig = currentPlans[tier] || SUBSCRIPTION_PLANS[tier];
 
     setRequestStatus({ tier, loading: true });
     try {
@@ -123,7 +149,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         body: JSON.stringify({
           requestedTier: tier,
           billingCycle,
-          note: `${tier.toUpperCase()} paketi için kullanıcı talebi oluşturuldu.`
+          couponCode: appliedCoupon?.code || undefined,
+          discountedPriceTRY: calculatedPriceTRY,
+          note: `${tier.toUpperCase()} paketi için kullanıcı talebi oluşturuldu.${appliedCoupon ? ` (Kupon: ${appliedCoupon.code})` : ''}`
         })
       });
 
@@ -132,7 +160,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
           tier,
           loading: false,
           success: true,
-          message: `${SUBSCRIPTION_PLANS[tier].name} paketi talebiniz alındı! Yönetici ekibimiz inceleyip yetkilendirmeyi yapacaktır.`
+          message: `${planConfig.name} paketi talebiniz alındı! Yönetici ekibimiz inceleyip yetkilendirmeyi yapacaktır.`
         });
       } else {
         setRequestStatus({
@@ -168,7 +196,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         </p>
 
         {/* Billing Cycle Switch & Promo Code Row */}
-        <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="pt-3 flex flex-col sm:flex-row items-center justify-center gap-4 flex-wrap">
+          {/* Monthly / Annual Toggle */}
           <div className="bg-slate-900/90 p-1 rounded-xl border border-slate-800 flex items-center shadow-inner">
             <button
               type="button"
@@ -199,33 +228,82 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             </button>
           </div>
 
-          {/* Coupon Code Input */}
-          <form onSubmit={handleApplyCoupon} className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 shadow-inner">
-            <div className="flex items-center gap-1.5 px-2 text-slate-400">
-              <Ticket size={14} className="text-purple-400" />
-              <input
-                type="text"
-                value={couponInput}
-                onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
-                placeholder="İndirim Kodu Girin..."
-                className="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none font-mono font-bold w-32 uppercase"
-              />
+          {/* Coupon Code Input & Status */}
+          {appliedCoupon ? (
+            <div className="flex items-center gap-2 bg-purple-950/40 border border-purple-500/40 py-1 px-3 rounded-xl shadow-inner animate-fadeIn">
+              <Ticket size={14} className="text-purple-400 shrink-0" />
+              <div className="flex items-center gap-1.5 text-xs">
+                <span className="font-mono font-bold text-white bg-purple-900/60 px-2 py-0.5 rounded border border-purple-500/30">
+                  {appliedCoupon.code}
+                </span>
+                <span className="text-purple-300 font-semibold">
+                  {appliedCoupon.discountType === 'percentage' 
+                    ? `(%${appliedCoupon.discountValue} İndirim Aktif)` 
+                    : `(${appliedCoupon.discountValue} ₺ İndirim Aktif)`}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleRemoveCoupon}
+                className="p-1 hover:bg-purple-900/60 text-purple-300 hover:text-white rounded-lg transition-colors cursor-pointer ml-1"
+                title="Kuponu Kaldır"
+              >
+                <X size={14} />
+              </button>
             </div>
-            <button
-              type="submit"
-              disabled={isValidatingCoupon || !couponInput.trim()}
-              className="px-3 py-1 bg-purple-600 hover:bg-purple-500 disabled:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0"
-            >
-              {isValidatingCoupon ? '...' : 'Uygula'}
-            </button>
-          </form>
+          ) : (
+            <form onSubmit={handleApplyCoupon} className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-800 shadow-inner">
+              <div className="flex items-center gap-1.5 px-2 text-slate-400">
+                <Ticket size={14} className="text-purple-400" />
+                <input
+                  type="text"
+                  value={couponInput}
+                  onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                  placeholder="İndirim Kodu Girin..."
+                  className="bg-transparent text-xs text-white placeholder-slate-500 focus:outline-none font-mono font-bold w-36 uppercase"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={isValidatingCoupon || !couponInput.trim()}
+                className="px-3 py-1 bg-purple-600 hover:bg-purple-500 disabled:bg-slate-800 text-white text-xs font-bold rounded-lg transition-colors cursor-pointer shrink-0 flex items-center gap-1"
+              >
+                {isValidatingCoupon ? 'Kontrol...' : 'Uygula'}
+              </button>
+            </form>
+          )}
         </div>
+
+        {/* Quick Sample Coupon Pills */}
+        {!appliedCoupon && (
+          <div className="flex items-center justify-center gap-2 text-[11px] text-slate-400 pt-1">
+            <span className="text-slate-500">Hızlı Kodlar:</span>
+            <button
+              type="button"
+              onClick={() => handleApplyCouponCode('BORSA2026')}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300 hover:text-white transition-colors cursor-pointer"
+            >
+              <Tag size={10} />
+              <span className="font-mono font-bold">BORSA2026</span>
+              <span className="text-purple-400">(%25)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleApplyCouponCode('WELCOME50')}
+              className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-950/40 hover:bg-purple-900/60 border border-purple-500/30 text-purple-300 hover:text-white transition-colors cursor-pointer"
+            >
+              <Tag size={10} />
+              <span className="font-mono font-bold">WELCOME50</span>
+              <span className="text-purple-400">(100 ₺)</span>
+            </button>
+          </div>
+        )}
 
         {/* Coupon Feedback Message */}
         {appliedCoupon && (
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-purple-950/50 border border-purple-500/40 text-purple-300 text-xs font-medium animate-fadeIn">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-emerald-950/50 border border-emerald-500/40 text-emerald-300 text-xs font-medium animate-fadeIn">
             <CheckCircle2 size={14} className="text-emerald-400 shrink-0" />
-            <span>Kupon Uygulandı (<strong>{appliedCoupon.code}</strong>): {appliedCoupon.message}</span>
+            <span>Kupon Uygulandı (<strong>{appliedCoupon.code}</strong>): {appliedCoupon.message} Fiyatlar doğrudan indirimli olarak güncellendi.</span>
           </div>
         )}
         {couponError && (
@@ -266,14 +344,55 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
       {/* Pricing Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {tiers.map((t) => {
-          const plan = SUBSCRIPTION_PLANS[t];
+          const currentPlans = plans || SUBSCRIPTION_PLANS;
+          const plan = currentPlans[t] || SUBSCRIPTION_PLANS[t];
           const isCurrent = !isAdmin && currentTier === t;
           const isTargetHighlight = highlightTier === t;
           const isPopular = plan.isPopular;
 
-          const price = billingCycle === 'annual' 
-            ? (plan.priceAnnualTRY > 0 ? Math.round(plan.priceAnnualTRY / 12) : 0)
-            : plan.priceMonthlyTRY;
+          // Check if coupon applies to this tier
+          const isCouponApplicable = Boolean(
+            appliedCoupon &&
+            t !== 'free' &&
+            plan.priceMonthlyTRY > 0 &&
+            (!appliedCoupon.applicableTiers || 
+              appliedCoupon.applicableTiers.length === 0 || 
+              appliedCoupon.applicableTiers.includes(t))
+          );
+
+          const baseMonthly = plan.priceMonthlyTRY || 0;
+          const baseAnnual = plan.priceAnnualTRY || 0;
+
+          // Calculate discounted monthly and annual values
+          let discountedMonthly = baseMonthly;
+          let discountedAnnual = baseAnnual;
+
+          if (isCouponApplicable && appliedCoupon) {
+            if (appliedCoupon.discountType === 'percentage') {
+              discountedMonthly = Math.max(0, Math.round(baseMonthly * (1 - appliedCoupon.discountValue / 100)));
+              discountedAnnual = Math.max(0, Math.round(baseAnnual * (1 - appliedCoupon.discountValue / 100)));
+            } else {
+              discountedMonthly = Math.max(0, baseMonthly - appliedCoupon.discountValue);
+              discountedAnnual = Math.max(0, baseAnnual - (appliedCoupon.discountValue * 12));
+            }
+          }
+
+          const displayMonthlyPrice = isCouponApplicable ? discountedMonthly : baseMonthly;
+          const displayAnnualPrice = isCouponApplicable ? discountedAnnual : baseAnnual;
+
+          const currentPricePerMonth = billingCycle === 'annual'
+            ? (displayAnnualPrice > 0 ? Math.round(displayAnnualPrice / 12) : 0)
+            : displayMonthlyPrice;
+
+          const originalPricePerMonth = billingCycle === 'annual'
+            ? (baseAnnual > 0 ? Math.round(baseAnnual / 12) : 0)
+            : baseMonthly;
+
+          const hasActiveDiscount = isCouponApplicable && (
+            billingCycle === 'annual' 
+              ? displayAnnualPrice < baseAnnual 
+              : displayMonthlyPrice < baseMonthly
+          );
 
           return (
             <div
@@ -322,19 +441,49 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
                 {/* Price Display */}
                 <div className="mb-6 pb-6 border-b border-slate-800">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-extrabold text-white">
-                      ₺{price.toLocaleString('tr-TR')}
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    {hasActiveDiscount && (
+                      <span className="text-lg font-bold text-slate-500 line-through">
+                        ₺{originalPricePerMonth.toLocaleString('tr-TR')}
+                      </span>
+                    )}
+                    <span className={`text-3xl font-extrabold ${hasActiveDiscount ? 'text-emerald-400' : 'text-white'}`}>
+                      ₺{currentPricePerMonth.toLocaleString('tr-TR')}
                     </span>
                     <span className="text-xs text-slate-400 font-medium">
                       / ay
                     </span>
+                    {hasActiveDiscount && (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-extrabold px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 ml-auto">
+                        <Percent size={10} />
+                        {appliedCoupon?.discountType === 'percentage' 
+                          ? `-%${appliedCoupon.discountValue} Kupon` 
+                          : `-${appliedCoupon?.discountValue} ₺`}
+                      </span>
+                    )}
                   </div>
-                  {billingCycle === 'annual' && plan.priceAnnualTRY > 0 && (
-                    <p className="text-[11px] text-amber-400 mt-1">
-                      Yıllık ₺{plan.priceAnnualTRY.toLocaleString('tr-TR')} faturalandırılır
+
+                  {/* Subtitle / Annual Note */}
+                  {billingCycle === 'annual' && baseAnnual > 0 && (
+                    <div className="mt-1.5 space-y-0.5">
+                      {hasActiveDiscount ? (
+                        <p className="text-[11px] text-emerald-400 font-semibold">
+                          Yıllık <span className="line-through text-slate-500">₺{baseAnnual.toLocaleString('tr-TR')}</span> yerine <span className="underline font-bold">₺{displayAnnualPrice.toLocaleString('tr-TR')}</span> faturalandırılır (₺{(baseAnnual - displayAnnualPrice).toLocaleString('tr-TR')} tasarruf)
+                        </p>
+                      ) : (
+                        <p className="text-[11px] text-amber-400">
+                          Yıllık ₺{baseAnnual.toLocaleString('tr-TR')} faturalandırılır
+                        </p>
+                      )}
+                    </div>
+                  )}
+
+                  {billingCycle === 'monthly' && hasActiveDiscount && (
+                    <p className="text-[11px] text-emerald-400 font-semibold mt-1">
+                      Kupon ile ayda ₺{(baseMonthly - displayMonthlyPrice).toLocaleString('tr-TR')} indirim uygulandı
                     </p>
                   )}
+
                   {plan.priceMonthlyTRY === 0 && (
                     <p className="text-[11px] text-slate-500 mt-1">
                       Süresiz ücretsiz kullanım
@@ -376,7 +525,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   type="button"
                   id={`btn-plan-select-${t}`}
                   disabled={isAdmin || isCurrent || requestStatus.loading}
-                  onClick={() => !isAdmin && handleSelectPlan(t)}
+                  onClick={() => !isAdmin && handleSelectPlan(t, billingCycle === 'annual' ? displayAnnualPrice : displayMonthlyPrice)}
                   className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 ${
                     isAdmin
                       ? 'bg-slate-850 text-slate-300 border border-slate-700 hover:border-slate-600'
@@ -400,7 +549,9 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                     <span>İşleniyor...</span>
                   ) : (
                     <>
-                      <span>{t === 'free' ? 'Ücretsiz Başla' : `${plan.name}'a Geç`}</span>
+                      <span>
+                        {t === 'free' ? 'Ücretsiz Başla' : hasActiveDiscount ? `${plan.name} İndirimli Seç` : `${plan.name}'a Geç`}
+                      </span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}

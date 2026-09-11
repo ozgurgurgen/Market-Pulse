@@ -334,14 +334,23 @@ const DEFAULT_COUPONS: CouponCode[] = [
 ];
 
 export async function getCoupons(): Promise<CouponCode[]> {
-  if (cachedCoupons) return cachedCoupons;
+  if (cachedCoupons && cachedCoupons.length > 0) return cachedCoupons;
   try {
     const snap = await adminDb.collection('adminConfig').doc('coupons').get().catch(() => null);
-    if (snap && snap.exists && snap.data()?.list) {
+    if (snap && snap.exists && snap.data()?.list && Array.isArray(snap.data()!.list)) {
       cachedCoupons = snap.data()!.list as CouponCode[];
       return cachedCoupons;
     }
   } catch (e) {}
+
+  try {
+    const local = serverLocalDatabase.get('adminConfig', 'coupons');
+    if (local && (local as any).list && Array.isArray((local as any).list)) {
+      cachedCoupons = (local as any).list as CouponCode[];
+      return cachedCoupons;
+    }
+  } catch (e) {}
+
   cachedCoupons = [...DEFAULT_COUPONS];
   return cachedCoupons;
 }
@@ -408,8 +417,8 @@ export async function deleteCoupon(
 
 export async function validateCoupon(
   code: string,
-  tier: SubscriptionTier,
-  originalPriceTRY: number
+  tier?: SubscriptionTier,
+  originalPriceTRY?: number
 ): Promise<{
   valid: boolean;
   coupon?: CouponCode;
@@ -418,38 +427,42 @@ export async function validateCoupon(
   message?: string;
 }> {
   const coupons = await getCoupons();
-  const coupon = coupons.find(c => c.code.toUpperCase() === code.trim().toUpperCase() && c.isActive);
+  const normalizedCode = (code || '').trim().toUpperCase();
+  const coupon = coupons.find(c => c.code.toUpperCase() === normalizedCode && c.isActive);
+
+  const basePrice = typeof originalPriceTRY === 'number' && originalPriceTRY >= 0 ? originalPriceTRY : 0;
 
   if (!coupon) {
-    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Geçersiz veya süresi dolmuş indirim kodu.' };
+    return { valid: false, discountedPriceTRY: basePrice, discountAmountTRY: 0, message: 'Geçersiz veya aktif olmayan indirim kodu.' };
   }
 
   if (coupon.expiresAt && new Date(coupon.expiresAt).getTime() < Date.now()) {
-    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Bu indirim kodunun kullanım süresi dolmuştur.' };
+    return { valid: false, discountedPriceTRY: basePrice, discountAmountTRY: 0, message: 'Bu indirim kodunun kullanım süresi dolmuştur.' };
   }
 
   if (coupon.maxUses !== -1 && coupon.usedCount >= coupon.maxUses) {
-    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: 'Bu kupon kodunun maksimum kullanım limitine ulaşılmıştır.' };
+    return { valid: false, discountedPriceTRY: basePrice, discountAmountTRY: 0, message: 'Bu kupon kodunun maksimum kullanım limitine ulaşılmıştır.' };
   }
 
-  if (coupon.applicableTiers && coupon.applicableTiers.length > 0 && !coupon.applicableTiers.includes(tier)) {
-    return { valid: false, discountedPriceTRY: originalPriceTRY, discountAmountTRY: 0, message: `Bu indirim kodu seçtiğiniz (${tier.toUpperCase()}) paket için geçerli değildir.` };
+  if (tier && tier !== ('all' as any) && coupon.applicableTiers && coupon.applicableTiers.length > 0 && !coupon.applicableTiers.includes(tier)) {
+    return { valid: false, discountedPriceTRY: basePrice, discountAmountTRY: 0, message: `Bu indirim kodu seçtiğiniz (${tier.toUpperCase()}) paket için geçerli değildir.` };
   }
 
   let discountAmount = 0;
   if (coupon.discountType === 'percentage') {
-    discountAmount = Math.round((originalPriceTRY * coupon.discountValue) / 100);
+    discountAmount = basePrice > 0 ? Math.round((basePrice * coupon.discountValue) / 100) : 0;
   } else {
-    discountAmount = coupon.discountValue;
+    discountAmount = basePrice > 0 ? Math.min(basePrice, coupon.discountValue) : coupon.discountValue;
   }
 
-  const finalPrice = Math.max(0, originalPriceTRY - discountAmount);
+  const finalPrice = Math.max(0, basePrice - discountAmount);
+  const discountLabel = coupon.discountType === 'percentage' ? `%${coupon.discountValue}` : `${coupon.discountValue} ₺`;
 
   return {
     valid: true,
     coupon,
     discountedPriceTRY: finalPrice,
     discountAmountTRY: discountAmount,
-    message: `"%${coupon.discountType === 'percentage' ? coupon.discountValue : coupon.discountValue + ' TL'}" indirim kodu başarıyla uygulandı!`
+    message: `"${discountLabel}" indirim kodu (${coupon.code}) başarıyla uygulandı!`
   };
 }

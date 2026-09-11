@@ -74,17 +74,67 @@ export const SectorsHeatmapSection: React.FC<SectorsHeatmapSectionProps> = ({ on
     setLoading(true);
     setError(null);
     try {
-      const res = await safeFetchJson<{ success: boolean; data: HeatmapData }>('/api/v1/sectors/stocks-heatmap');
-      if (res.ok && res.data?.data?.sectors) {
-        setData(res.data.data);
-      } else {
+      const res = await safeFetchJson<{ success: boolean; data: any }>('/api/v1/sectors/stocks-heatmap', { timeout: 8000 });
+      let rawData = (res.ok && res.data?.data) ? res.data.data : ((res.ok && res.data && (res.data as any).sectors) ? res.data : null);
+
+      if (!rawData) {
         // Fallback endpoint
-        const fbRes = await safeFetchJson<{ success: boolean; data: HeatmapData }>('/api/sector/stocks-heatmap');
-        if (fbRes.ok && fbRes.data?.data?.sectors) {
-          setData(fbRes.data.data);
-        } else {
-          setError('Sektörel ısı haritası verisi yüklenemedi.');
+        const fbRes = await safeFetchJson<{ success: boolean; data: any }>('/api/sector/stocks-heatmap', { timeout: 8000 });
+        if (fbRes.ok && fbRes.data?.data) {
+          rawData = fbRes.data.data;
+        } else if (fbRes.ok && fbRes.data && (fbRes.data as any).sectors) {
+          rawData = fbRes.data;
         }
+      }
+
+      if (rawData && Array.isArray(rawData.sectors)) {
+        // Normalize all sector and stock objects defensively
+        const normalizedSectors: HeatmapSector[] = rawData.sectors.map((sec: any) => {
+          const sName = sec?.sectorName || sec?.name || sec?.sector || 'Diğer Sektörler';
+          const stocksList = Array.isArray(sec?.stocks) ? sec.stocks.map((st: any) => ({
+            symbol: st?.symbol || 'BIST',
+            name: st?.name || st?.symbol || 'BIST Hissesi',
+            sector: st?.sector || sName,
+            price: typeof st?.price === 'number' ? st.price : 0,
+            change24hPercent: typeof st?.change24hPercent === 'number' ? st.change24hPercent : 0,
+            marketCap: typeof st?.marketCap === 'number' ? st.marketCap : 0,
+            volume24h: typeof st?.volume24h === 'number' ? st.volume24h : 0,
+            peRatio: st?.peRatio,
+            pbRatio: st?.pbRatio
+          })) : [];
+
+          return {
+            sectorName: sName,
+            stockCount: typeof sec?.stockCount === 'number' ? sec.stockCount : stocksList.length,
+            totalMarketCap: typeof sec?.totalMarketCap === 'number' ? sec.totalMarketCap : stocksList.reduce((a: number, b: any) => a + (b.marketCap || 0), 0),
+            totalVolume24h: typeof sec?.totalVolume24h === 'number' ? sec.totalVolume24h : stocksList.reduce((a: number, b: any) => a + (b.volume24h || 0), 0),
+            weightedChange24hPercent: typeof sec?.weightedChange24hPercent === 'number' ? sec.weightedChange24hPercent : 0,
+            stocks: stocksList
+          };
+        });
+
+        const sortedSectors = [...normalizedSectors].sort((a, b) => b.weightedChange24hPercent - a.weightedChange24hPercent);
+        const topSector = rawData.topPerformingSector?.sectorName 
+          ? rawData.topPerformingSector 
+          : (sortedSectors[0] ? { sectorName: sortedSectors[0].sectorName, change24hPercent: sortedSectors[0].weightedChange24hPercent } : { sectorName: 'Bankacılık', change24hPercent: 0 });
+        
+        const worstSector = rawData.worstPerformingSector?.sectorName 
+          ? rawData.worstPerformingSector 
+          : (sortedSectors[sortedSectors.length - 1] ? { sectorName: sortedSectors[sortedSectors.length - 1].sectorName, change24hPercent: sortedSectors[sortedSectors.length - 1].weightedChange24hPercent } : { sectorName: 'Madencilik', change24hPercent: 0 });
+
+        setData({
+          totalMarketCap: typeof rawData.totalMarketCap === 'number' ? rawData.totalMarketCap : normalizedSectors.reduce((a, b) => a + b.totalMarketCap, 0),
+          totalVolume24h: typeof rawData.totalVolume24h === 'number' ? rawData.totalVolume24h : normalizedSectors.reduce((a, b) => a + b.totalVolume24h, 0),
+          advancingCount: typeof rawData.advancingCount === 'number' ? rawData.advancingCount : 0,
+          decliningCount: typeof rawData.decliningCount === 'number' ? rawData.decliningCount : 0,
+          unchangedCount: typeof rawData.unchangedCount === 'number' ? rawData.unchangedCount : 0,
+          topPerformingSector: topSector,
+          worstPerformingSector: worstSector,
+          sectors: normalizedSectors,
+          generatedAt: rawData.generatedAt || new Date().toISOString()
+        });
+      } else {
+        setError('Sektörel ısı haritası verisi yüklenemedi.');
       }
     } catch (err: any) {
       setError(err.message || 'Veri bağlantı hatası oluştu.');
@@ -120,25 +170,33 @@ export const SectorsHeatmapSection: React.FC<SectorsHeatmapSectionProps> = ({ on
 
   // Filtered Sectors
   const filteredSectors = useMemo(() => {
-    if (!data?.sectors) return [];
+    if (!data?.sectors || !Array.isArray(data.sectors)) return [];
     
     return data.sectors
       .map(sec => {
+        if (!sec) return null;
+        const secName = sec.sectorName || 'Genel';
+
         // Sector filter
-        if (selectedSector !== 'ALL' && sec.sectorName !== selectedSector) {
+        if (selectedSector !== 'ALL' && secName !== selectedSector) {
           return null;
         }
 
+        const stocks = Array.isArray(sec.stocks) ? sec.stocks : [];
+        const q = (searchQuery || '').trim().toLowerCase();
+
         // Filter stocks
-        const matchingStocks = sec.stocks.filter(st => {
-          const matchQuery = !searchQuery || 
-            st.symbol.toLowerCase().includes(searchQuery.toLowerCase()) || 
-            st.name.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchingStocks = stocks.filter(st => {
+          if (!st) return false;
+          const symbolStr = (st.symbol || '').toLowerCase();
+          const nameStr = (st.name || '').toLowerCase();
+          const matchQuery = !q || symbolStr.includes(q) || nameStr.includes(q);
           
+          const change = typeof st.change24hPercent === 'number' ? st.change24hPercent : 0;
           const matchDirection = 
             filterDirection === 'ALL' ? true :
-            filterDirection === 'GAINERS' ? st.change24hPercent > 0 :
-            st.change24hPercent < 0;
+            filterDirection === 'GAINERS' ? change > 0 :
+            change < 0;
 
           return matchQuery && matchDirection;
         });
@@ -147,6 +205,7 @@ export const SectorsHeatmapSection: React.FC<SectorsHeatmapSectionProps> = ({ on
 
         return {
           ...sec,
+          sectorName: secName,
           stocks: matchingStocks
         };
       })
@@ -155,8 +214,8 @@ export const SectorsHeatmapSection: React.FC<SectorsHeatmapSectionProps> = ({ on
 
   // Sector list for filter pill buttons
   const availableSectors = useMemo(() => {
-    if (!data?.sectors) return [];
-    return data.sectors.map(s => s.sectorName);
+    if (!data?.sectors || !Array.isArray(data.sectors)) return [];
+    return data.sectors.map(s => s?.sectorName || 'Genel').filter(Boolean);
   }, [data]);
 
   return (
@@ -261,13 +320,13 @@ export const SectorsHeatmapSection: React.FC<SectorsHeatmapSectionProps> = ({ on
             <div className="bg-slate-950/50 rounded-xl p-3 border border-slate-800/60">
               <span className="text-xs text-slate-400 block">Lider Sektör</span>
               <span className="text-xs font-bold text-emerald-400 mt-0.5 block truncate">
-                {data.topPerformingSector.sectorName} (+%{data.topPerformingSector.change24hPercent})
+                {data.topPerformingSector?.sectorName || 'BIST'} (+%{data.topPerformingSector?.change24hPercent ?? 0})
               </span>
             </div>
             <div className="bg-slate-950/50 rounded-xl p-3 border border-slate-800/60">
               <span className="text-xs text-slate-400 block">En Çok Gerileyen</span>
               <span className="text-xs font-bold text-rose-400 mt-0.5 block truncate">
-                {data.worstPerformingSector.sectorName} (%{data.worstPerformingSector.change24hPercent})
+                {data.worstPerformingSector?.sectorName || 'BIST'} (%{data.worstPerformingSector?.change24hPercent ?? 0})
               </span>
             </div>
             <div className="bg-slate-950/50 rounded-xl p-3 border border-slate-800/60">

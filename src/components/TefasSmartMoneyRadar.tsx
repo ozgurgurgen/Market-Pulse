@@ -76,9 +76,11 @@ export const TefasSmartMoneyRadar: React.FC<TefasSmartMoneyRadarProps> = ({
   const sectors = Array.from(new Set(stocks.map(s => s.sector))).filter(Boolean);
 
   const filteredStocks = stocks.filter(stock => {
-    const matchQuery = !searchQuery || 
-      stock.symbol.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      stock.name.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!stock) return false;
+    const q = (searchQuery || '').trim().toLowerCase();
+    const symbolStr = (stock.symbol || '').toLowerCase();
+    const nameStr = (stock.name || '').toLowerCase();
+    const matchQuery = !q || symbolStr.includes(q) || nameStr.includes(q);
     
     const matchSector = selectedSector === 'ALL' || stock.sector === selectedSector;
     return matchQuery && matchSector;

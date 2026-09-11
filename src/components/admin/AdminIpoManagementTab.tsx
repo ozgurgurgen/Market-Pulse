@@ -169,9 +169,13 @@ export const AdminIpoManagementTab: React.FC = () => {
   };
 
   const filteredListings = listings.filter(item => {
-    const matchesSearch = item.companyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.ticker.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          item.sector.toLowerCase().includes(searchQuery.toLowerCase());
+    if (!item) return false;
+    const q = (searchQuery || '').trim().toLowerCase();
+    const company = (item.companyName || (item as any).name || '').toLowerCase();
+    const ticker = (item.ticker || (item as any).symbol || (item as any).code || '').toLowerCase();
+    const sec = (item.sector || (item as any).industry || '').toLowerCase();
+
+    const matchesSearch = !q || company.includes(q) || ticker.includes(q) || sec.includes(q);
     const matchesStatus = statusFilter === 'all' || item.status === statusFilter;
     return matchesSearch && matchesStatus;
   });

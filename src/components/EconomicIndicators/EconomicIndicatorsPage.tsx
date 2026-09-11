@@ -113,11 +113,10 @@ export const EconomicIndicatorsPage: React.FC = () => {
       // Arama Filtresi
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
-        return (
-          ind.indicator_name.toLowerCase().includes(q) ||
-          ind.indicator_code.toLowerCase().includes(q) ||
-          ind.source_api.toLowerCase().includes(q)
-        );
+        const name = (ind?.indicator_name || '').toLowerCase();
+        const code = (ind?.indicator_code || '').toLowerCase();
+        const src = (ind?.source_api || '').toLowerCase();
+        return name.includes(q) || code.includes(q) || src.includes(q);
       }
 
       return true;
