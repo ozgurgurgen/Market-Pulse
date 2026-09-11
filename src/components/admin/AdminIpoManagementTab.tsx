@@ -304,40 +304,42 @@ export const AdminIpoManagementTab: React.FC = () => {
                       <td className="py-3.5 px-4">
                         <div className="flex items-center gap-2.5">
                           <div className="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center font-mono font-black text-cyan-400 text-[11px]">
-                            {ipo.ticker.slice(0, 4)}
+                            {(ipo.ticker || 'IPO').slice(0, 4)}
                           </div>
                           <div>
                             <div className="font-bold text-white flex items-center gap-1.5">
-                              <span>{ipo.ticker}</span>
-                              <a 
-                                href={ipo.prospectusUrl} 
-                                target="_blank" 
-                                rel="noreferrer noopener"
-                                className="text-slate-500 hover:text-cyan-400 transition-colors" 
-                                title="Resmi KAP İzahnamesi"
-                              >
-                                <ExternalLink size={12} />
-                              </a>
+                              <span>{ipo.ticker || '—'}</span>
+                              {ipo.prospectusUrl && (
+                                <a 
+                                  href={ipo.prospectusUrl} 
+                                  target="_blank" 
+                                  rel="noreferrer noopener"
+                                  className="text-slate-500 hover:text-cyan-400 transition-colors" 
+                                  title="Resmi KAP İzahnamesi"
+                                >
+                                  <ExternalLink size={12} />
+                                </a>
+                              )}
                             </div>
-                            <div className="text-[11px] text-slate-400 max-w-[180px] truncate" title={ipo.companyName}>
-                              {ipo.companyName}
+                            <div className="text-[11px] text-slate-400 max-w-[180px] truncate" title={ipo.companyName || ''}>
+                              {ipo.companyName || '—'}
                             </div>
                           </div>
                         </div>
                       </td>
 
                       <td className="py-3.5 px-3">
-                        <span className="text-[11px] text-slate-300 font-medium">{ipo.sector}</span>
-                        <div className="text-[10px] text-slate-500">{ipo.methodLabel}</div>
+                        <span className="text-[11px] text-slate-300 font-medium">{ipo.sector || 'Genel'}</span>
+                        <div className="text-[10px] text-slate-500">{ipo.methodLabel || 'Eşit Dağıtım'}</div>
                       </td>
 
                       <td className="py-3.5 px-3 font-mono font-semibold text-white">
-                        ₺{ipo.offerPrice.toFixed(2)}
+                        {ipo.offerPrice != null ? `₺${Number(ipo.offerPrice).toFixed(2)}` : '—'}
                       </td>
 
                       <td className="py-3.5 px-3 font-mono text-[11px]">
-                        <div className="text-slate-200">{ipo.bookBuildingStartDate}</div>
-                        <div className="text-slate-500 text-[10px]">{ipo.bookBuildingEndDate}</div>
+                        <div className="text-slate-200">{ipo.bookBuildingStartDate || '—'}</div>
+                        <div className="text-slate-500 text-[10px]">{ipo.bookBuildingEndDate || '—'}</div>
                       </td>
 
                       <td className="py-3.5 px-3">

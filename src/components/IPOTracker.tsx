@@ -540,21 +540,21 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
                         <div>
                           <span className="text-[10px] font-semibold text-slate-500 block">Halka Arz Fiyatı</span>
                           <span className="font-mono font-black text-white text-sm">
-                            ₺{ipo.offerPrice.toFixed(2)}
+                            {ipo.offerPrice != null ? `₺${Number(ipo.offerPrice).toFixed(2)}` : '—'}
                           </span>
                         </div>
 
                         <div>
                           <span className="text-[10px] font-semibold text-slate-500 block">Dağıtım Modeli</span>
-                          <span className="font-semibold text-slate-200 text-[11px] truncate block" title={ipo.methodLabel}>
-                            {ipo.methodLabel}
+                          <span className="font-semibold text-slate-200 text-[11px] truncate block" title={ipo.methodLabel || ''}>
+                            {ipo.methodLabel || '—'}
                           </span>
                         </div>
 
                         <div>
                           <span className="text-[10px] font-semibold text-slate-500 block">Talep Tarihleri</span>
                           <span className="font-mono text-slate-300 text-[11px]">
-                            {ipo.bookBuildingStartDate.slice(5)} / {ipo.bookBuildingEndDate.slice(5)}
+                            {(ipo.bookBuildingStartDate || '—').slice(5)} / {(ipo.bookBuildingEndDate || '—').slice(5)}
                           </span>
                         </div>
 
@@ -787,7 +787,7 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl">
                       <div className="text-[10px] text-slate-500 font-semibold mb-0.5">Halka Arz Fiyatı</div>
-                      <div className="text-base font-black text-white font-mono">₺{selectedIpo.offerPrice.toFixed(2)}</div>
+                      <div className="text-base font-black text-white font-mono">{selectedIpo.offerPrice != null ? `₺${Number(selectedIpo.offerPrice).toFixed(2)}` : '—'}</div>
                     </div>
 
                     <div className="p-3 bg-slate-950 border border-slate-800 rounded-2xl">
@@ -816,7 +816,7 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 bg-slate-950/60 border border-slate-800 rounded-2xl text-xs">
                     <div>
                       <span className="text-[10px] font-semibold text-slate-500 block">Dağıtım Yöntemi</span>
-                      <span className="font-bold text-slate-200 text-xs">{selectedIpo.methodLabel}</span>
+                      <span className="font-bold text-slate-200 text-xs">{selectedIpo.methodLabel || '—'}</span>
                     </div>
                     <div>
                       <span className="text-[10px] font-semibold text-slate-500 block">Bireysel Tahsisat</span>
@@ -876,7 +876,7 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
                     <div>
                       <span className="text-[10px] font-semibold text-slate-500 block">Talep Toplama Tarihleri</span>
                       <span className="font-mono text-slate-300 text-xs">
-                        {selectedIpo.bookBuildingStartDate} / {selectedIpo.bookBuildingEndDate}
+                        {selectedIpo.bookBuildingStartDate || '—'} / {selectedIpo.bookBuildingEndDate || '—'}
                       </span>
                     </div>
                     <div>
@@ -897,7 +897,7 @@ export const IPOTracker: React.FC<Props> = ({ onOpenUpgradeModal }) => {
                       <div>
                         <span className="text-[10px] font-semibold text-slate-500 block">Son BIST Fiyatı</span>
                         <span className="font-mono font-bold text-emerald-400 text-xs">
-                          ₺{selectedIpo.performance.currentPrice.toFixed(2)}
+                          ₺{Number(selectedIpo.performance.currentPrice).toFixed(2)}
                         </span>
                       </div>
                     )}

@@ -14,12 +14,33 @@ const app = getApps().length === 0 ? initializeApp({ projectId: PROJECT_ID }) : 
 let primaryAdminDb = getFirestore(app, DB_ID);
 let defaultAdminDb = getFirestore(app);
 
+export async function withDbTimeout<T>(promise: Promise<T>, timeoutMs: number = 750, fallbackVal?: T): Promise<T> {
+  let timer: any;
+  const timeoutPromise = new Promise<T>((resolve, reject) => {
+    timer = setTimeout(() => {
+      if (fallbackVal !== undefined) {
+        resolve(fallbackVal);
+      } else {
+        reject(new Error(`Database operation timed out after ${timeoutMs}ms`));
+      }
+    }, timeoutMs);
+  });
+
+  return Promise.race([
+    promise.then(res => {
+      clearTimeout(timer);
+      return res;
+    }),
+    timeoutPromise
+  ]);
+}
+
 export async function safeAdminGet(operation: (dbInstance: any) => Promise<any>): Promise<any> {
   try {
-    return await operation(primaryAdminDb);
+    return await withDbTimeout(operation(primaryAdminDb), 800);
   } catch (err: any) {
     try {
-      return await operation(defaultAdminDb);
+      return await withDbTimeout(operation(defaultAdminDb), 800);
     } catch {
       throw err;
     }
@@ -28,10 +49,10 @@ export async function safeAdminGet(operation: (dbInstance: any) => Promise<any>)
 
 export async function safeAdminWrite(operation: (dbInstance: any) => Promise<any>): Promise<any> {
   try {
-    return await operation(primaryAdminDb);
+    return await withDbTimeout(operation(primaryAdminDb), 800);
   } catch (err: any) {
     try {
-      return await operation(defaultAdminDb);
+      return await withDbTimeout(operation(defaultAdminDb), 800);
     } catch {
       throw err;
     }

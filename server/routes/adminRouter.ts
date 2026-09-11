@@ -27,7 +27,7 @@ import {
   logSystemError, 
   handleRouteError 
 } from '../services/auditService';
-import { adminDb, adminAuth } from '../services/firebaseAdminService';
+import { adminDb, adminAuth, withDbTimeout } from '../services/firebaseAdminService';
 import { serverLocalDatabase } from '../services/serverLocalDatabase';
 import { SubscriptionTier } from '../../src/shared/subscriptionPlans';
 import {
@@ -309,8 +309,8 @@ adminRouter.get('/users', async (req: Request, res: Response) => {
     ];
 
     try {
-      const snap = await adminDb.collection('users').get();
-      snap.forEach(docSnap => {
+      const snap = await withDbTimeout(adminDb.collection('users').get(), 600);
+      snap.forEach((docSnap: any) => {
         const d = docSnap.data();
         const uid = docSnap.id;
         const userObj = {
@@ -756,8 +756,8 @@ adminRouter.get('/system-stats', async (req: Request, res: Response) => {
     let totalUsers = 0;
     let usersList: any[] = [];
     try {
-      const snap = await adminDb.collection('users').get();
-      snap.forEach(docSnap => {
+      const snap = await withDbTimeout(adminDb.collection('users').get(), 600);
+      snap.forEach((docSnap: any) => {
         usersList.push(docSnap.data());
       });
     } catch {}

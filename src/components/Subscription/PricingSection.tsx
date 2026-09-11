@@ -357,7 +357,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             plan.priceMonthlyTRY > 0 &&
             (!appliedCoupon.applicableTiers || 
               appliedCoupon.applicableTiers.length === 0 || 
-              appliedCoupon.applicableTiers.includes(t))
+              appliedCoupon.applicableTiers.some(tierName => {
+                const normalized = (tierName || '').trim().toLowerCase();
+                return normalized === t.toLowerCase() || normalized === 'all';
+              }))
           );
 
           const baseMonthly = plan.priceMonthlyTRY || 0;
@@ -369,11 +372,13 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
           if (isCouponApplicable && appliedCoupon) {
             if (appliedCoupon.discountType === 'percentage') {
-              discountedMonthly = Math.max(0, Math.round(baseMonthly * (1 - appliedCoupon.discountValue / 100)));
-              discountedAnnual = Math.max(0, Math.round(baseAnnual * (1 - appliedCoupon.discountValue / 100)));
+              const discountRatio = Math.min(100, Math.max(0, appliedCoupon.discountValue)) / 100;
+              discountedMonthly = Math.max(0, Math.round(baseMonthly * (1 - discountRatio)));
+              discountedAnnual = Math.max(0, Math.round(baseAnnual * (1 - discountRatio)));
             } else {
+              // Fixed TRY coupon
               discountedMonthly = Math.max(0, baseMonthly - appliedCoupon.discountValue);
-              discountedAnnual = Math.max(0, baseAnnual - (appliedCoupon.discountValue * 12));
+              discountedAnnual = Math.max(0, baseAnnual - (appliedCoupon.discountValue >= 200 ? appliedCoupon.discountValue : appliedCoupon.discountValue * 12));
             }
           }
 

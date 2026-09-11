@@ -13,8 +13,6 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { safeFetchJson } from '../utils/apiClient';
-import { db } from '../lib/firebase';
-import { collection, getDocs } from 'firebase/firestore';
 import { SubscriptionTier, SubscriptionPlanConfig, SUBSCRIPTION_PLANS } from '../shared/subscriptionPlans';
 import { AdminOverviewTab } from './admin/AdminOverviewTab';
 import { AdminSubscriptionTuningTab } from './admin/AdminSubscriptionTuningTab';
@@ -67,14 +65,8 @@ export const AdminPanel: React.FC = () => {
     if (!isAdmin) return;
     setIsRefreshing(true);
 
-    // Hard safety timer: ensure loading indicator dismisses within 3.5s maximum
-    const safetyTimer = setTimeout(() => {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }, 3500);
-
     try {
-      const fetchOpts = { timeout: 4500 };
+      const fetchOpts = { timeout: 2000 };
       const [statsRes, plansRes, aiRes, usersRes, logsRes, errorRes] = await Promise.all([
         safeFetchJson<{ stats: any }>('/api/admin/system-stats', fetchOpts).catch(() => ({ ok: false, data: null })),
         safeFetchJson<{ plans: any }>('/api/admin/subscription-plans', fetchOpts).catch(() => ({ ok: false, data: null })),
@@ -87,106 +79,12 @@ export const AdminPanel: React.FC = () => {
       if (statsRes.data?.stats) setStats(statsRes.data.stats);
       if (plansRes.data?.plans) setPlans(plansRes.data.plans);
       if (aiRes.data?.settings) setAiSettings(aiRes.data.settings);
-      
-      // Direct Firestore User Fetch (Wrapped in quick 2.5s timeout)
-      const firestoreUsers: any[] = [];
-      try {
-        const fetchFsUsers = async () => {
-          const usersSnap = await getDocs(collection(db, 'users'));
-          usersSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            const uid = docSnap.id;
-            firestoreUsers.push({
-              uid,
-              id: uid,
-              email: d.email || '—',
-              fullName: d.fullName || d.displayName || 'İsimsiz Kullanıcı',
-              role: d.email === 'boschozgur@gmail.com' ? 'admin' : (d.role || 'standard_user'),
-              isActive: d.isActive !== false,
-              subscription: d.subscription || {
-                tier: d.role === 'admin' || d.email === 'boschozgur@gmail.com' ? 'premium' : 'free',
-                status: 'active',
-                grantedAt: d.createdAt || new Date().toISOString(),
-                expiresAt: null,
-                grantedBy: 'system'
-              },
-              usage: d.usage || {
-                analysisQueriesToday: 0,
-                aiReportsThisPeriod: 0,
-                lastResetDate: new Date().toISOString().slice(0, 10)
-              },
-              createdAt: d.createdAt || null
-            });
-          });
-        };
-        await Promise.race([
-          fetchFsUsers(),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore user fetch timeout')), 2500))
-        ]);
-      } catch (fsErr) {
-        console.warn('Direct Firestore user fetch info:', fsErr);
-      }
-
-      const apiUsers = usersRes.data?.users || [];
-      const mergedMap = new Map<string, any>();
-      for (const u of apiUsers) {
-        if (u.uid || u.id) mergedMap.set(u.uid || u.id, u);
-      }
-      for (const u of firestoreUsers) {
-        mergedMap.set(u.uid, u);
-      }
-      const finalUsers = Array.from(mergedMap.values());
-      if (finalUsers.length > 0) {
-        setUsers(finalUsers);
-      } else if (usersRes.data?.users) {
-        setUsers(usersRes.data.users);
-      }
-
-      setAuditLogs(logsRes.data?.logs || []);
-
-      // Direct Firestore Error Logs Fetch (Wrapped in quick 2.5s timeout)
-      const firestoreErrors: any[] = [];
-      try {
-        const fetchFsErrors = async () => {
-          const errorSnap = await getDocs(collection(db, 'errorLogs'));
-          errorSnap.forEach((docSnap) => {
-            const d = docSnap.data();
-            firestoreErrors.push({
-              id: docSnap.id,
-              message: d.message || 'Bilinmeyen Hata',
-              stack: d.stack || '',
-              context: d.context || 'SYSTEM',
-              path: d.path || '',
-              method: d.method || '',
-              userEmail: d.userEmail || '',
-              timestamp: d.timestamp || new Date().toISOString()
-            });
-          });
-        };
-        await Promise.race([
-          fetchFsErrors(),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('Firestore error logs timeout')), 2500))
-        ]);
-      } catch (fsErr) {
-        console.warn('Direct Firestore error logs fetch info:', fsErr);
-      }
-
-      const apiErrors = errorRes.data?.logs || [];
-      const errorMap = new Map<string, any>();
-      for (const e of apiErrors) {
-        if (e.id) errorMap.set(e.id, e);
-      }
-      for (const e of firestoreErrors) {
-        errorMap.set(e.id, e);
-      }
-      const finalErrors = Array.from(errorMap.values()).sort(
-        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
-      );
-      setErrorLogs(finalErrors);
+      if (usersRes.data?.users && Array.isArray(usersRes.data.users)) setUsers(usersRes.data.users);
+      if (logsRes.data?.logs && Array.isArray(logsRes.data.logs)) setAuditLogs(logsRes.data.logs);
+      if (errorRes.data?.logs && Array.isArray(errorRes.data.logs)) setErrorLogs(errorRes.data.logs);
     } catch (err) {
-      console.error('Failed to load admin data:', err);
+      console.warn('[AdminPanel] Background data refresh info:', err);
     } finally {
-      clearTimeout(safetyTimer);
       setIsLoading(false);
       setIsRefreshing(false);
     }

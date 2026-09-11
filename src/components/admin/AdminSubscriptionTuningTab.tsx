@@ -1018,7 +1018,7 @@ export const AdminSubscriptionTuningTab: React.FC<Props> = ({
                 </div>
 
                 <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1">
-                  <span>Geçerli Paketler: {coupon.applicableTiers.join(', ').toUpperCase()}</span>
+                  <span>Geçerli Paketler: {(coupon.applicableTiers || ['starter', 'pro', 'premium']).join(', ').toUpperCase()}</span>
                   <span className={`font-bold ${coupon.isActive ? 'text-emerald-400' : 'text-rose-400'}`}>
                     {coupon.isActive ? 'Aktif' : 'Pasif'}
                   </span>
