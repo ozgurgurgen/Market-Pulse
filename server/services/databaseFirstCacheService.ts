@@ -73,7 +73,7 @@ class DatabaseFirstCacheService {
     let pgClient: any = null;
     try {
       const settings = await getDatabaseIntegrationSettings();
-      if (settings.activeProvider === 'postgresql' || settings.activeProvider === 'hybrid') {
+      if ((settings.activeProvider === 'postgresql' || settings.activeProvider === 'hybrid') && settings.postgres?.enabled) {
         pgClient = await getPostgresClient();
         const res = await pgClient.query(`
           SELECT * FROM market_quotes 
@@ -248,7 +248,7 @@ class DatabaseFirstCacheService {
     let pgClient: any = null;
     try {
       const settings = await getDatabaseIntegrationSettings();
-      if (settings.activeProvider === 'postgresql' || settings.activeProvider === 'hybrid') {
+      if ((settings.activeProvider === 'postgresql' || settings.activeProvider === 'hybrid') && settings.postgres?.enabled) {
         pgClient = await getPostgresClient();
         const res = await pgClient.query(`
           SELECT data, expires_at, hit_count 

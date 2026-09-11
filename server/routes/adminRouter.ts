@@ -228,8 +228,8 @@ adminRouter.get('/users', async (req: Request, res: Response) => {
   try {
     const dbSettings = await getDatabaseIntegrationSettings();
 
-    // If activeProvider is postgresql (or hybrid), try reading from PostgreSQL first
-    if (dbSettings.activeProvider === 'postgresql' || dbSettings.activeProvider === 'hybrid') {
+    // If activeProvider is postgresql (or hybrid) AND postgres is enabled, try reading from PostgreSQL first
+    if ((dbSettings.activeProvider === 'postgresql' || dbSettings.activeProvider === 'hybrid') && dbSettings.postgres?.enabled) {
       try {
         const client = await getPostgresClient();
         const pgUsersRes = await client.query(`

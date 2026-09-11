@@ -306,14 +306,14 @@
     "defaultModel": "gemini-3.7-flash"
   },
   "databaseIntegration": {
-    "activeProvider": "postgresql",
-    "fallbackToFirestore": false,
-    "enableMockFallback": false,
+    "activeProvider": "firebase",
+    "fallbackToFirestore": true,
+    "enableMockFallback": true,
     "autoSyncEnabled": false,
     "postgres": {
       "enabled": false,
-      "connectionMode": "url",
-      "connectionUrl": "postgresql://marketpulse:marketpulse2026@0.tcp.eu.ngrok.io:17784/marketpulse",
+      "connectionMode": "params",
+      "connectionUrl": "",
       "host": "localhost",
       "port": 5432,
       "database": "marketpulse_db",
@@ -325,8 +325,7 @@
       "connectionTimeoutMillis": 5000,
       "lastStatus": "untested",
       "lastConnectedAt": null,
-      "lastErrorMessage": null,
-      "latencyMs": 245
+      "lastErrorMessage": null
     },
     "firebase": {
       "enabled": true,
